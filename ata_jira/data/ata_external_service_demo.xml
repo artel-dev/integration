@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_jira_external_service_issue_updated" model="ata.external.service">
+        <field name="name">Issues (updated)</field>
+        <field name="description">Get issues (updated)</field>
+        <field name="active" eval="True"/>
+        <field name="system_id" ref="ata_jira.ata_jira_external_system_jira_cloud"/>
+        <field name="method_name">/rest/api/latest/search</field>
+        <field name="http_method">POST</field>
+    </record>
+
+    <record id="ata_jira_external_service_issue_planned" model="ata.external.service">
+        <field name="name">Issues (planned)</field>
+        <field name="description">Get issues (planned)</field>
+        <field name="active" eval="True"/>
+        <field name="system_id" ref="ata_jira.ata_jira_external_system_jira_cloud"/>
+        <field name="method_name">/rest/api/latest/search</field>
+        <field name="http_method">POST</field>
+    </record>
+
+    <record id="ata_jira_external_service_worklog" model="ata.external.service">
+        <field name="name">Worklog</field>
+        <field name="description">Get worklog</field>
+        <field name="active" eval="True"/>
+        <field name="system_id" ref="ata_jira.ata_jira_external_system_jira_cloud"/>
+        <field name="method_name">/rest/api/latest/issue/{id}/worklog</field>
+        <field name="http_method">GET</field>
+    </record>
+
+</odoo>

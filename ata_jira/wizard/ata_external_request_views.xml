@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_jira_external_request_view_form" model="ir.ui.view">
+        <field name="name">External request form view</field>
+        <field name="model">ata.external.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="exchange_id"/>
+                        <field name="issue_id"/>
+                        <field name="system_id"/>
+                        <field name="service_id"/>
+                        <field name="method_name"/>
+                        <field name="parameters"/>
+                        <field name="status_code"/>
+                        <field name="result"/>
+                        <field name="headers"/>
+                        <field name="create_date"/>
+                        <field name="is_executed"/>
+                        <field name="execution_date"/>
+                        <field name="is_processed"/>
+                        <field name="processing_date"/>
+                        <field name="number_of_attempts"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_jira_external_request_view_tree" model="ir.ui.view">
+        <field name="name">External request list view</field>
+        <field name="model">ata.external.request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="exchange_id"/>
+                <field name="issue_id"/>
+                <field name="system_id"/>
+                <field name="service_id"/>
+                <field name="method_name"/>
+                <field name="parameters"/>
+                <field name="status_code"/>
+                <field name="result"/>
+                <field name="headers"/>
+                <field name="create_date"/>
+                <field name="is_executed"/>
+                <field name="execution_date"/>
+                <field name="is_processed"/>
+                <field name="processing_date"/>
+                <field name="number_of_attempts"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

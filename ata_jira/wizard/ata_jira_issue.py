@@ -1,0 +1,41 @@
+from odoo import fields, models
+
+
+class JiraIssue(models.TransientModel):
+    _name = 'ata.jira.issue'
+    _description = 'Jira issue'
+
+    name = fields.Char()
+    exchange_id = fields.Many2one(comodel_name='ata.exchange')
+    issue_id = fields.Char()
+    issue_key = fields.Char()
+    issue_type_name = fields.Char()
+    status_name = fields.Char()
+    priority = fields.Char()
+    project_key = fields.Char()
+    project_name = fields.Char()
+    parent_id = fields.Char()
+    parent_key = fields.Char()
+    epic_key = fields.Char()
+    epic_name = fields.Char()
+    created_date = fields.Datetime()
+    updated_date = fields.Datetime()
+    resolution_date = fields.Datetime()
+    summary = fields.Char()
+    description = fields.Char()
+    creator_name = fields.Char()
+    creator_email = fields.Char()
+    creator_avatar = fields.Binary()
+    reporter_name = fields.Char()
+    reporter_email = fields.Char()
+    assignee_name = fields.Char()
+    assignee_email = fields.Char()
+    assignee_avatar = fields.Binary()
+    original_estimate = fields.Float(digits=(15, 2))
+    remaining_estimate = fields.Float(digits=(15, 2))
+    time_spent = fields.Float(digits=(15, 2))
+    worklog_total = fields.Integer()
+    comment_total = fields.Integer()
+    browse_link = fields.Char()
+    self = fields.Char()
+    project_task_id = fields.Many2one(comodel_name='project.task')

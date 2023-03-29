@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_jira_jira_issue_view_form" model="ir.ui.view">
+        <field name="name">Jira issue form view</field>
+        <field name="model">ata.jira.issue</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="exchange_id"/>
+                        <field name="issue_id"/>
+                        <field name="issue_key"/>
+                        <field name="issue_type_name"/>
+                        <field name="status_name"/>
+                        <field name="priority"/>
+                        <field name="project_key"/>
+                        <field name="project_name"/>
+                        <field name="parent_id"/>
+                        <field name="parent_key"/>
+                        <field name="epic_key"/>
+                        <field name="epic_name"/>
+                        <field name="created_date"/>
+                        <field name="updated_date"/>
+                        <field name="resolution_date"/>
+                        <field name="summary"/>
+                        <field name="description"/>
+                        <field name="creator_name"/>
+                        <field name="creator_email"/>
+                        <field name="reporter_name"/>
+                        <field name="reporter_email"/>
+                        <field name="assignee_name"/>
+                        <field name="assignee_email"/>
+                        <field name="original_estimate"/>
+                        <field name="remaining_estimate"/>
+                        <field name="time_spent"/>
+                        <field name="worklog_total"/>
+                        <field name="comment_total"/>
+                        <field name="browse_link"/>
+                        <field name="self"/>
+                        <field name="project_task_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_jira_jira_issue_view_tree" model="ir.ui.view">
+        <field name="name">Jira issue list view</field>
+        <field name="model">ata.jira.issue</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="exchange_id"/>
+                <field name="issue_id"/>
+                <field name="issue_key"/>
+                <field name="issue_type_name"/>
+                <field name="status_name"/>
+                <field name="priority"/>
+                <field name="project_key"/>
+                <field name="project_name"/>
+                <field name="parent_id"/>
+                <field name="parent_key"/>
+                <field name="epic_key"/>
+                <field name="epic_name"/>
+                <field name="created_date"/>
+                <field name="updated_date"/>
+                <field name="resolution_date"/>
+                <field name="summary"/>
+                <field name="description"/>
+                <field name="creator_name"/>
+                <field name="creator_email"/>
+                <field name="reporter_name"/>
+                <field name="reporter_email"/>
+                <field name="assignee_name"/>
+                <field name="assignee_email"/>
+                <field name="original_estimate"/>
+                <field name="remaining_estimate"/>
+                <field name="time_spent"/>
+                <field name="worklog_total"/>
+                <field name="comment_total"/>
+                <field name="browse_link"/>
+                <field name="self"/>
+                <field name="project_task_id"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>
