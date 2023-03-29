@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="ata_jira_planned_workload_report_header_template">
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2>Planned workload report</h2>
+            </div>
+        </div>
+
+    </template>
+
+    <template id="ata_jira_planned_workload_report_table_template">
+
+        <table class="table" width="100%" border="1">
+            <thead>
+                <tr style="background-color: lightgrey;">
+                    <th class="text-center">#</th>
+                    <th class="text-center">Task key</th>
+                    <th class="text-center">State</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Date assign</th>
+                    <th class="text-center">Date end</th>
+                    <th class="text-center">Assignee</th>
+                    <th class="text-center">Count</th>
+                    <th class="text-center">Original estimate</th>
+                    <th class="text-center">Remaining estimate</th>
+                    <th class="text-center">Time spent</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-out="0"/>
+            </tbody>
+        </table>
+
+    </template>
+
+    <template id="ata_jira_planned_workload_report_footer_template">
+
+        <div class="row">
+            <div class="col-12 text-right">
+                <span>Total: </span>
+                <span t-out="total_effective_hours"/>
+            </div>
+        </div>
+
+    </template>
+
+    <template id="ata_jira_planned_workload_report_layout">
+
+        <t t-call="web.external_layout">
+
+            <t t-if="not company">
+               <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <div class="page">
+                <div t-attf-class="header o_company_#{company.id}_layout">
+                    <t t-call="ata_jira.ata_jira_planned_workload_report_header_template"/>
+                </div>
+                <div t-attf-class="article o_company_#{company.id}_layout">
+                    <t t-call="jira.integration_planned_workload_report_table_template">
+                        <t t-out="0"/>
+                    </t>
+                </div>
+                <div t-attf-class="footer o_company_#{company.id}_layout">
+                    <t t-call="ata_jira.ata_jira_planned_workload_report_footer_template"/>
+                </div>
+            </div>
+        </t>
+
+    </template>
+
+    <template id="ata_jira_planned_workload_object_template">
+
+        <t t-if="o.kanban_state == 'normal'">
+            <t t-set="color" t-value="'lightgreen'"/>
+        </t>
+        <t t-elif="o.kanban_state == 'done'">
+            <t t-set="color" t-value="'lemonchiffon'"/>
+        </t>
+        <t t-else="">
+            <t t-set="color" t-value="'lightsalmon'"/>
+        </t>
+        <t t-if="o.timesheet_ids">
+            <t t-set="timesheet_count" t-value="len(o.timesheet_ids)"/>
+        </t>
+        <t t-set="total_effective_hours" t-value="total_effective_hours + o.effective_hours"/>
+
+        <tr t-attf-style="background-color: {{color}};">
+            <td class="text-center"><span t-out="o_index + 1"/></td>
+            <td class="text-center"><span t-field="o.external_task_key"/></td>
+            <td class="text-center"><span t-field="o.kanban_state"/></td>
+            <td class="text-left"><span t-field="o.name"/></td>
+            <td class="text-center">
+                <span t-field="o.date_assign" t-options="{'format': 'dd.MM.YYYY HH:mm'}"/>
+            </td>
+            <td class="text-center">
+                <span t-field="o.date_end" t-options="{'format': 'dd.MM.YYYY HH:mm'}"/>
+            </td>
+            <td class="text-left"><span t-field="o.assignee_list"/></td>
+            <td class="text-right">
+                <span t-out="timesheet_count"/>
+            </td>
+            <td class="text-right">
+                <span t-field="o.planned_hours"/>
+            </td>
+            <td class="text-right">
+                <span t-field="o.remaining_hours"/>
+            </td>
+            <td class="text-right">
+                <span t-field="o.effective_hours"/>
+            </td>
+        </tr>
+
+    </template>
+
+    <template id="ata_jira_planned_workload_report_template">
+        <t t-call="web.html_container">
+            <t t-set="total_effective_hours" t-value="0"/>
+            <t t-foreach="docs" t-as="o">
+                <t t-set="total_effective_hours" t-value="total_effective_hours + o.effective_hours"/>
+            </t>
+            <t t-call="jira.integration_planned_workload_report_layout">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="ata_jira.ata_jira_planned_workload_object_template"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

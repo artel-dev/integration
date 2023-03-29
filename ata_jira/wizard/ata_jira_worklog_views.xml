@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_jira_jira_worklog_view_form" model="ir.ui.view">
+        <field name="name">Jira worklog form view</field>
+        <field name="model">ata.jira.worklog</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="exchange_id"/>
+                        <field name="worklog_id"/>
+                        <field name="issue_id"/>
+                        <field name="comment"/>
+                        <field name="time_spent"/>
+                        <field name="created_date"/>
+                        <field name="updated_date"/>
+                        <field name="started_date"/>
+                        <field name="author_name"/>
+                        <field name="author_display_name"/>
+                        <field name="author_email"/>
+                        <field name="update_author_name"/>
+                        <field name="update_author_display_name"/>
+                        <field name="update_author_email"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_jira_jira_worklog_view_tree" model="ir.ui.view">
+        <field name="name">Jira worklog list view</field>
+        <field name="model">ata.jira.worklog</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="exchange_id"/>
+                <field name="worklog_id"/>
+                <field name="issue_id"/>
+                <field name="comment"/>
+                <field name="time_spent"/>
+                <field name="created_date"/>
+                <field name="updated_date"/>
+                <field name="started_date"/>
+                <field name="author_name"/>
+                <field name="author_display_name"/>
+                <field name="author_email"/>
+                <field name="update_author_name"/>
+                <field name="update_author_display_name"/>
+                <field name="update_author_email"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

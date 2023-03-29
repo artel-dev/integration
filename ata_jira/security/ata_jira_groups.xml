@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_jira_group_user" model="res.groups">
+        <field name="name">Integration / User</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="base.module_category_services"/>
+        <field name="comment">User: limited access</field>
+    </record>
+
+    <record id="ata_jira_group_administrator" model="res.groups">
+        <field name="name">Integration / Administrator</field>
+        <field name="implied_ids" eval="[(4, ref('ata_jira.ata_jira_group_user'))]"/>
+        <field name="category_id" ref="base.module_category_services"/>
+        <field name="users" eval="[(4,ref('base.user_admin'))]"/>
+        <field name="comment">Administrator: full access</field>
+    </record>
+
+</odoo>

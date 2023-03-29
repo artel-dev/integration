@@ -1,0 +1,1043 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* jira
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-15 12:26+0000\n"
+"PO-Revision-Date: 2022-12-15 12:26+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ata_jira
+#: model:ir.actions.report,print_report_name:ata_jira.ata_jira_planned_workload_report_report
+msgid "('Planned workload report - %s' % (object.name))"
+msgstr "('Звіт про планове завантаження - %s' % (object.name))"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_footer_template
+msgid "<span>Total: </span>"
+msgstr "<span>Разом: </span>"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__active
+msgid "Active"
+msgstr ""
+
+#. module: ata_jira
+#: model:res.groups,comment:ata_jira.ata_jira_group_administrator
+msgid "Administrator: full access"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__assignee_id
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_table_template
+msgid "Assignee"
+msgstr "Виконавець"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__assignee_avatar
+msgid "Assignee Avatar"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__assignee_email
+msgid "Assignee Email"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_project_task__assignee_list
+msgid "Assignee List"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__assignee_name
+msgid "Assignee Name"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__assignees
+msgid "Assignees"
+msgstr "Виконавці"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__author_avatar
+msgid "Author Avatar"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__author_display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__author_display_name
+msgid "Author Display Name"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__author_email
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__author_email
+msgid "Author Email"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__author_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__author_name
+msgid "Author Name"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields.selection,name:jira.selection__integration_planned_workload_report__kanban_state__blocked
+#: model:ir.model.fields.selection,name:jira.selection__integration_task_report__kanban_state__blocked
+msgid "Blocked"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__body
+msgid "Body"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__browse_link
+msgid "Browse Link"
+msgstr ""
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_view_form
+msgid "Cancel"
+msgstr "Відміна"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira._exchange_log__color
+msgid "Color"
+msgstr "Колір"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__comment_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__comment
+msgid "Comment"
+msgstr "Коментар"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__comment_link
+msgid "Comment Link"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__comment_total
+msgid "Comment Total"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.ui.menu,name:ata_jira.ata_jira_menu_config
+msgid "Configuration"
+msgstr "Налаштування"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_table_template
+msgid "Count"
+msgstr "Кількість"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__create_date
+msgid "Create Date"
+msgstr ""
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_view_form
+msgid "Create/update tasks"
+msgstr "Створити/оновити завдання"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__created_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__created_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__created_date
+msgid "Created Date"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__create_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__create_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__create_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__create_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter__create_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__create_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__create_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__create_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__create_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__create_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__create_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__create_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter__create_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__create_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__create_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__create_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__create_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__creator_avatar
+msgid "Creator Avatar"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__creator_email
+msgid "Creator Email"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__creator_name
+msgid "Creator Name"
+msgstr ""
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_task_report_view_search
+msgid "Current month"
+msgstr "Поточний місяць"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_task_report_view_search
+msgid "Date"
+msgstr "Дата"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__date_assign
+msgid "Date Assign"
+msgstr "Дата призначення"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__date_end
+msgid "Date End"
+msgstr "Дата закінчення"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_table_template
+msgid "Date assign"
+msgstr "Дата призначення"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_table_template
+msgid "Date end"
+msgstr "Дата закінчення"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__day_delta
+msgid "Day Delta"
+msgstr "Кількість днів"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_kanban
+msgid "Delete"
+msgstr "Видалити"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__description
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter__description
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__description
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__description
+msgid "Description"
+msgstr "Опис"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__display_name
+msgid "Display Name"
+msgstr "Назва"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_kanban
+msgid "Dropdown menu"
+msgstr ""
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_kanban
+msgid "Edit"
+msgstr "Редагувати"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__effective_hours
+msgid "Effective Hours"
+msgstr "Відпрацьовано (год.)"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__employee_id
+msgid "Employee"
+msgstr "Співробітник"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__epic_key
+msgid "Epic Key"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__epic_name
+msgid "Epic Name"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model,name:jira.model_integration_exchange
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__exchange_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__exchange_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__exchange_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__exchange_id
+#: model:ir.ui.menu,name:ata_jira.ata_jira_menu_exchange_general
+msgid "Exchange"
+msgstr "Обмін"
+
+#. module: ata_jira
+#: model:ir.actions.act_window,name:ata_jira.ata_jira_exchange_log_action
+#: model:ir.model,name:jira.model_integration_exchange_log
+#: model:ir.ui.menu,name:ata_jira.ata_jira_exchange_log_menu
+msgid "Exchange log"
+msgstr "Журнал обміну"
+
+#. module: ata_jira
+#: model:ir.actions.act_window,name:ata_jira.ata_jira_exchange_action
+#: model:ir.ui.menu,name:ata_jira.ata_jira_exchange_menu
+msgid "Exchange with Jira"
+msgstr "Обмін з Jira"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__execution_date
+msgid "Execution Date"
+msgstr "Дата виконання"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__execution_time
+msgid "Execution Time"
+msgstr "Час виконання"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_kanban
+msgid "Execution time:"
+msgstr "Час виконання:"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_project_project__external_project_key
+msgid "External Project Key"
+msgstr "Ключ зовнішнього проекту"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__external_task_key
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__external_task_key
+#: model:ir.model.fields,field_description:ata_jira.field_project_task__external_task_key
+msgid "External Task Key"
+msgstr "Ключ зовнішнього завдання"
+
+#. module: ata_jira
+#: model:ir.model,name:jira.model_integration_external_request
+msgid "External request"
+msgstr "Зовнішній запит"
+
+#. module: ata_jira
+#: model:ir.actions.act_window,name:ata_jira.ata_jira_external_service_action
+#: model:ir.model,name:jira.model_integration_external_service
+#: model:ir.ui.menu,name:ata_jira.ata_jira_external_service_menu
+msgid "External service"
+msgstr "Зовнішній сервіс"
+
+#. module: ata_jira
+#: model:ir.actions.act_window,name:ata_jira.ata_jira_external_service_parameter_action
+#: model:ir.model,name:jira.model_integration_external_service_parameter
+#: model:ir.ui.menu,name:ata_jira.ata_jira_external_service_parameter_menu
+msgid "External service parameter"
+msgstr "Параметр зовнішнього сервису"
+
+#. module: ata_jira
+#: model:ir.actions.act_window,name:ata_jira.ata_jira_external_system_action
+#: model:ir.model,name:jira.model_integration_external_system
+#: model:ir.ui.menu,name:ata_jira.ata_jira_external_system_menu
+msgid "External system"
+msgstr "Зовнішня система"
+
+#. module: ata_jira
+#: model:ir.actions.act_window,name:ata_jira.ata_jira_external_system_user_action
+#: model:ir.model,name:jira.model_integration_external_system_user
+#: model:ir.ui.menu,name:ata_jira.ata_jira_external_system_user_menu
+msgid "External system user"
+msgstr "Користувач зовнішньої системи"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__finish_date
+msgid "Finish Date"
+msgstr "Дата закінчення"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__from_date
+msgid "From Date"
+msgstr "З дати"
+
+#. module: ata_jira
+#: model:ir.model.fields.selection,name:jira.selection__integration_external_service__http_method__get
+msgid "GET"
+msgstr ""
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_form
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_view_form
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_external_service_view_form
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_external_system_view_form
+msgid "General"
+msgstr "Загальні"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_external_service_view_search
+msgid "HTTP method: GET"
+msgstr "HTTP метод: GET"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_external_service_view_search
+msgid "HTTP method: POST"
+msgstr "HTTP метод: POST"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__headers
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__headers
+msgid "Headers"
+msgstr "Заголовки"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__http_method
+msgid "Http Method"
+msgstr "Http метод"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__id
+msgid "ID"
+msgstr ""
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_view_form
+msgid "Import Jira data"
+msgstr "Завантаження даних з Jira"
+
+#. module: ata_jira
+#: model:ir.model.fields.selection,name:jira.selection__integration_planned_workload_report__kanban_state__normal
+#: model:ir.model.fields.selection,name:jira.selection__integration_task_report__kanban_state__normal
+msgid "In Progress"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.ui.menu,name:ata_jira.ata_jira_menu_root
+msgid "Integration"
+msgstr "Інтеграція"
+
+#. module: ata_jira
+#: model:res.groups,name:ata_jira.ata_jira_group_administrator
+msgid "Integration / Administrator"
+msgstr ""
+
+#. module: ata_jira
+#: model:res.groups,name:ata_jira.ata_jira_group_user
+msgid "Integration / User"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__is_executed
+msgid "Is Executed"
+msgstr "Виконано"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__is_processed
+msgid "Is Processed"
+msgstr "Оброблено"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__is_secure_connection
+msgid "Is Secure Connection"
+msgstr "Це захищене з'єднання"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__is_token_authentication
+msgid "Is Token Authentication"
+msgstr "Це аутентифікація з токеном"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__issue_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__issue_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__issue_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__issue_id
+msgid "Issue"
+msgstr "Завдання"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__issue_key
+msgid "Issue Key"
+msgstr "Ключ завдання"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__issue_type_name
+msgid "Issue Type Name"
+msgstr "Назва типу завдання"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__jira_comment_ids
+msgid "Jira Comment"
+msgstr "Комментар Jira"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__jira_issue_ids
+msgid "Jira Issue"
+msgstr "Завдання Jira"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__jira_worklog_ids
+msgid "Jira Worklog"
+msgstr "Робочий час Jira"
+
+#. module: ata_jira
+#: model:ir.model,name:jira.model_integration_jira_comment
+msgid "Jira comment"
+msgstr "Коментар Jira"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_view_form
+msgid "Jira comments"
+msgstr "Коментарі Jira"
+
+#. module: ata_jira
+#: model:ir.model,name:jira.model_integration_jira_issue
+msgid "Jira issue"
+msgstr "Завдання Jira"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_view_form
+msgid "Jira issues"
+msgstr "Завдання Jira"
+
+#. module: ata_jira
+#: model:ir.model,name:jira.model_integration_jira_worklog
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_view_form
+msgid "Jira worklog"
+msgstr "Робочий час Jira"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report____last_update
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__write_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__write_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__write_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__write_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter__write_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__write_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__write_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__write_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__write_uid
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__write_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__write_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__write_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__write_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter__write_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__write_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__write_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__write_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__write_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__login
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__login
+msgid "Login"
+msgstr "Логін"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__method_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__method_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__method_name
+msgid "Method Name"
+msgstr "Назва методу"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__name
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_table_template
+msgid "Name"
+msgstr "Назва"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_external_system_view_search
+msgid "Not secure connection"
+msgstr "Не захищене з'єднання"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_external_system_view_search
+msgid "Not token authentication"
+msgstr "Аутентифікація без токену"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__number_of_attempts
+msgid "Number Of Attempts"
+msgstr "Кількість спроб"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__original_estimate
+msgid "Original Estimate"
+msgstr "Планова оцінка"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_table_template
+msgid "Original estimate"
+msgstr "Планова оцінка"
+
+#. module: ata_jira
+#: model:ir.model.fields.selection,name:jira.selection__integration_external_service__http_method__post
+msgid "POST"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__parameter_ids
+msgid "Parameter"
+msgstr "Параметр"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__parameters
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__parameters
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_external_service_view_form
+msgid "Parameters"
+msgstr "Параметри"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__parent_id
+msgid "Parent"
+msgstr "Батько"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__parent_key
+msgid "Parent Key"
+msgstr "Батьківський ключ"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__password
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__password
+msgid "Password"
+msgstr "Пароль"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__planned_hours
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__planned_hours
+msgid "Planned Hours"
+msgstr "Заплановано (год.)"
+
+#. module: ata_jira
+#: model:ir.actions.report,name:ata_jira.ata_jira_planned_workload_report_report
+#: model:ir.model,name:jira.model_integration_planned_workload_report
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_header_template
+msgid "Planned workload report"
+msgstr "Звіт про планове навантаження"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_task_report_view_search
+msgid "Previous month"
+msgstr "Попередній місяць"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__priority
+msgid "Priority"
+msgstr "Приоритет"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__processing_date
+msgid "Processing Date"
+msgstr "Дата обробки"
+
+#. module: ata_jira
+#: model:ir.model,name:jira.model_project_project
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__project_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__project_id
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_task_report_view_search
+msgid "Project"
+msgstr "Проєкт"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__project_key
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__project_key
+msgid "Project Key"
+msgstr "Ключ проєкту"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__project_name
+msgid "Project Name"
+msgstr "Назва проєкта"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__project_task_id
+msgid "Project Task"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__proxy_login
+msgid "Proxy Login"
+msgstr "Логін проксі"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__proxy_password
+msgid "Proxy Password"
+msgstr "Пароль проксі"
+
+#. module: ata_jira
+#: model:ir.model.fields.selection,name:jira.selection__integration_planned_workload_report__kanban_state__done
+#: model:ir.model.fields.selection,name:jira.selection__integration_task_report__kanban_state__done
+msgid "Ready"
+msgstr "Готово"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__remaining_estimate
+msgid "Remaining Estimate"
+msgstr "Залишок плану"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__remaining_hours
+msgid "Remaining Hours"
+msgstr "Залишок (год.)"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_table_template
+msgid "Remaining estimate"
+msgstr "Залишок плану"
+
+#. module: ata_jira
+#: model:ir.ui.menu,name:ata_jira.ata_jira_menu_report
+msgid "Report"
+msgstr "Звіт"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__reporter_id
+msgid "Reporter"
+msgstr "Відповідальний"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__reporter_email
+msgid "Reporter Email"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__reporter_name
+msgid "Reporter Name"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__request_ids
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__request
+msgid "Request"
+msgstr "Запит"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_view_form
+msgid "Requests"
+msgstr "Запити"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__resolution_date
+msgid "Resolution Date"
+msgstr "Дата вирішення"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__response
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_form
+msgid "Response"
+msgstr "Відповідь"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__result
+msgid "Result"
+msgstr "Результат"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_external_system_view_search
+msgid "Secure connection"
+msgstr "Захищене з'єднання"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__self
+msgid "Self"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__server_address
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__server_address
+msgid "Server Address"
+msgstr "Адреса сервера"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__server_port
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__server_port
+msgid "Server Port"
+msgstr "Порт сервера"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__service_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__service_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__service_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter__service_id
+msgid "Service"
+msgstr "Сервіс"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_kanban
+msgid "Service:"
+msgstr "Сервіс:"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__start_date
+msgid "Start Date"
+msgstr "Дата початку"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_kanban
+msgid "Start date:"
+msgstr "Дата початку:"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__started_date
+msgid "Started Date"
+msgstr "Дата початку"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_table_template
+msgid "State"
+msgstr "Стан"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__kanban_state
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__kanban_state
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_task_report_view_search
+msgid "Status"
+msgstr "Статус"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange_log__status_code
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__status_code
+msgid "Status Code"
+msgstr "Код статусу"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__status_name
+msgid "Status Name"
+msgstr "Назва статусу"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_kanban
+msgid "Status code:"
+msgstr "Код статусу:"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_search
+msgid "Status: Error"
+msgstr "Статус: помилка"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_exchange_log_view_search
+msgid "Status: OK"
+msgstr "Статус: Ок"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__summary
+msgid "Summary"
+msgstr "Назва"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__system_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_request__system_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service__system_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__system_id
+msgid "System"
+msgstr "Система"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__system_user_ids
+msgid "System User"
+msgstr "Користувач системи"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_external_system_view_form
+msgid "System users"
+msgstr "Користувачи ситеми"
+
+#. module: ata_jira
+#: model:ir.model,name:jira.model_project_task
+#: model:ir.model.fields,field_description:ata_jira.field_ata_planned_workload_report__task_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__task_id
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_task_report_view_search
+msgid "Task"
+msgstr "Завдання"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_table_template
+msgid "Task key"
+msgstr "Ключ завдання"
+
+#. module: ata_jira
+#: model:ir.model,name:jira.model_integration_task_report
+#: model:ir.ui.menu,name:ata_jira.ata_jira_task_report_menu
+msgid "Task report"
+msgstr "Звіт про завдання"
+
+#. module: ata_jira
+#: model:ir.actions.act_window,name:ata_jira.ata_jira_task_report_action
+msgid "Task report (timesheet)"
+msgstr "Звіт про завдання (табель)"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__time_spent
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__time_spent
+msgid "Time Spent"
+msgstr "Відпрацьований час"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_planned_workload_report_table_template
+msgid "Time spent"
+msgstr "Відпрацьований час"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__timesheet_comment
+msgid "Timesheet Comment"
+msgstr "Коментар до табелю"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__timesheet_count
+msgid "Timesheet Count"
+msgstr "Кількість записів в табелі"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__timesheet_date
+msgid "Timesheet Date"
+msgstr "Дата робочого часу"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__to_date
+msgid "To Date"
+msgstr "По дату"
+
+#. module: ata_jira
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_external_system_view_search
+msgid "Token authentication"
+msgstr "Токен аутентифікації"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__update_author_display_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__update_author_display_name
+msgid "Update Author Display Name"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__update_author_email
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__update_author_email
+msgid "Update Author Email"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__update_author_name
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__update_author_name
+msgid "Update Author Name"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_comment__updated_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__updated_date
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__updated_date
+msgid "Updated Date"
+msgstr "Дата оновлення"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system__use_proxy
+msgid "Use Proxy"
+msgstr "Використовувати проксі"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_system_user__user_id
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__user_id
+#: model_terms:ir.ui.view,arch_db:ata_jira.ata_jira_task_report_view_search
+msgid "User"
+msgstr "Користувач"
+
+#. module: ata_jira
+#: model:res.groups,comment:ata_jira.ata_jira_group_user
+msgid "User: limited access"
+msgstr ""
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_external_service_parameter__value
+msgid "Value"
+msgstr "Значення"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_task_report__worked_hours
+msgid "Worked Hours"
+msgstr "Відпрацьовано (год.)"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_worklog__worklog_id
+msgid "Worklog"
+msgstr "Робочий час"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_exchange__worklog_service_id
+msgid "Worklog Service"
+msgstr "Сервіс Робочий час"
+
+#. module: ata_jira
+#: model:ir.model.fields,field_description:ata_jira.field_ata_jira_issue__worklog_total
+msgid "Worklog Total"
+msgstr "Разом робочого часу"

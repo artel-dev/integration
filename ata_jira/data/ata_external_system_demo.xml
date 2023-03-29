@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_jira_external_system_jira_cloud" model="ata.external.system">
+        <field name="name">Atlassian Jira (cloud)</field>
+        <field name="description">Atlassian task tracker in cloud</field>
+        <field name="server_address">atlassian.net</field>
+        <field name="server_port">0</field>
+        <field name="is_token_authentication" eval="False"/>
+        <field name="use_proxy" eval="False"/>
+        <field name="is_secure_connection" eval="True"/>
+    </record>
+
+</odoo>

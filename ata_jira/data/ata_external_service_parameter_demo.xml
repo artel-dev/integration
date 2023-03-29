@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_jira_external_service_parameter_issue_updated_jql"
+            model="ata.external.service.parameter">
+        <field name="service_id" ref="ata_jira.ata_jira_external_service_issue_updated"/>
+        <field name="name">jql</field>
+        <field name="value">project = '{ProjectKey}' &amp; updated>= '{updated1}'</field>
+        <field name="description">Request for issues</field>
+    </record>
+
+    <record id="ata_jira_external_service_parameter_issue_updated_fields"
+            model="ata.external.service.parameter">
+        <field name="service_id" ref="ata_jira.ata_jira_external_service_issue_updated"/>
+        <field name="name">fields</field>
+        <field name="value">{fields}</field>
+        <field name="description">Fields for returning</field>
+    </record>
+
+    <record id="ata_jira_external_service_parameter_issue_updated_start_at"
+            model="ata.external.service.parameter">
+        <field name="service_id" ref="ata_jira.ata_jira_external_service_issue_updated"/>
+        <field name="name">startAt</field>
+        <field name="value">0</field>
+        <field name="description">Record number for request start</field>
+    </record>
+
+    <record id="ata_jira_external_service_parameter_issue_updated_max_results"
+            model="ata.external.service.parameter">
+        <field name="service_id" ref="ata_jira.ata_jira_external_service_issue_updated"/>
+        <field name="name">maxResults</field>
+        <field name="value">100</field>
+        <field name="description">Max number of records for request</field>
+    </record>
+
+    <record id="ata_jira_external_service_parameter_issue_planned_jql"
+            model="ata.external.service.parameter">
+        <field name="service_id" ref="ata_jira.ata_jira_external_service_issue_planned"/>
+        <field name="name">jql</field>
+        <field name="value">project = '{ProjectKey}' &amp; resolution = Unresolved</field>
+        <field name="description">Request for issues</field>
+    </record>
+
+    <record id="ata_jira_external_service_parameter_issue_planned_fields"
+            model="ata.external.service.parameter">
+        <field name="service_id" ref="ata_jira.ata_jira_external_service_issue_planned"/>
+        <field name="name">fields</field>
+        <field name="value">{fields}</field>
+        <field name="description">Fields for returning</field>
+    </record>
+
+    <record id="ata_jira_external_service_parameter_issue_planned_start_at"
+            model="ata.external.service.parameter">
+        <field name="service_id" ref="ata_jira.ata_jira_external_service_issue_planned"/>
+        <field name="name">startAt</field>
+        <field name="value">0</field>
+        <field name="description">Record number for request start</field>
+    </record>
+
+    <record id="ata_jira_external_service_parameter_issue_planned_max_results"
+            model="ata.external.service.parameter">
+        <field name="service_id" ref="ata_jira.ata_jira_external_service_issue_planned"/>
+        <field name="name">maxResults</field>
+        <field name="value">100</field>
+        <field name="description">Max number of records for request</field>
+    </record>
+
+    <record id="ata_jira_external_service_parameter_worklog_id"
+            model="ata.external.service.parameter">
+        <field name="service_id" ref="ata_jira.ata_jira_external_service_worklog"/>
+        <field name="name">id</field>
+        <field name="value"/>
+        <field name="description">Issue id of worklog for request</field>
+    </record>
+
+</odoo>

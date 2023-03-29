@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_jira_external_service_view_form" model="ir.ui.view">
+        <field name="name">External service form view</field>
+        <field name="model">ata.external.service</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <notebook>
+                        <page string="General">
+                            <group>
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="active"/>
+                                <field name="system_id"/>
+                                <field name="method_name"/>
+                                <field name="http_method"/>
+                            </group>
+                        </page>
+                        <page string="Parameters">
+                            <group>
+                                <field name="parameter_ids"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_jira_external_service_view_tree" model="ir.ui.view">
+        <field name="name">External service list view</field>
+        <field name="model">ata.external.service</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="system_id"/>
+                <field name="method_name"/>
+                <field name="http_method"/>
+                <field name="description"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ata_jira_external_service_view_search" model="ir.ui.view">
+        <field name="name">External service search view</field>
+        <field name="model">ata.external.service</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="system_id"/>
+                <field name="method_name"/>
+                <separator/>
+                <filter name="filter_http_method_get" string="HTTP method: GET"
+                        domain="[('http_method', '=', 'GET')]"/>
+                <filter name="filter_http_method_post" string="HTTP method: POST"
+                        domain="[('http_method', '=', 'POST')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="ata_jira_external_service_action" model="ir.actions.act_window">
+        <field name="name">External service</field>
+        <field name="res_model">ata.external.service</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="ata_jira_external_service_menu"
+            name="External service"
+            parent="ata_jira_menu_config"
+            action="ata_jira_external_service_action"
+            sequence="30"
+    />
+
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <menuitem
+            id="ata_jira_menu_root"
+            name="Integration"
+            web_icon="jira,static/description/icon.png"
+            sequence="10"
+    />
+
+    <menuitem
+            id="ata_jira_menu_exchange_general"
+            name="Exchange"
+            parent="ata_jira_menu_root"
+            sequence="10"
+    />
+
+    <menuitem
+            id="ata_jira_menu_report"
+            name="Report"
+            parent="ata_jira_menu_root"
+            sequence="20"
+    />
+
+    <menuitem
+            id="ata_jira_menu_config"
+            name="Configuration"
+            parent="ata_jira_menu_root"
+            sequence="30"
+    />
+
+</odoo>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="integration_project_project_view_form" model="ir.ui.view">
+        <field name="name">Project form view</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='analytic_account_id']" position="before">
+                <field name="external_project_key" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="integration_project_project_view_tree" model="ir.ui.view">
+        <field name="name">Project task list view</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="external_project_key" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
