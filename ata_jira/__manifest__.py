@@ -8,7 +8,7 @@ Loading projects, tasks, timesheets
     'author': 'Igor Kutko',
     'website': 'https://www.it-artel.ua',
     'category': 'project',
-    'version': '15.0.1.0.1',
+    'version': '15.0.1.0.2',
 
     'depends': [
         'project',
