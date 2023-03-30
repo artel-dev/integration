@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem id="ata_unitalk_operator_menu"
+        name="Unitalk operator"
+        parent="crm.crm_menu_config"
+        action="ata_unitalk_operator_action"
+        sequence="0"
+    />
+</odoo>
