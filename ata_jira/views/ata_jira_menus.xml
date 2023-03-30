@@ -4,7 +4,7 @@
     <menuitem
             id="ata_jira_menu_root"
             name="Integration"
-            web_icon="jira,static/description/icon.png"
+            web_icon="ata_jira,static/description/icon.png"
             sequence="10"
     />
 
