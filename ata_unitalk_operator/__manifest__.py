@@ -10,9 +10,9 @@
     'data': [
         'security/ir.model.access.csv',
         'wizard/ata_unitalk_operator_views.xml',
-        'wizard/ata_unitalk_operator_history_calls.xml',
+        # 'wizard/ata_unitalk_operator_history_calls.xml',
         'views/ata_unitalk_operator_menu.xml',
         'views/ata_unitalk_operator_incalls.xml',
-        # 'views/ata_unitalk_operator_history_calls.xml'
+        'views/ata_unitalk_operator_history_calls.xml'
     ]
 }
