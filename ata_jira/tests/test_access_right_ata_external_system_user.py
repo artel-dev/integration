@@ -17,7 +17,7 @@ class TestAccessRightExternalSystemUser(TransactionCase):
         )
 
     def create_system(self, user, **values):
-        ext_system = self.env['ata_jira.ata.external.system'].with_user(user)
+        ext_system = self.env['ata.external.system'].with_user(user)
         return ext_system.create({
             'name': 'test_system',
             **values
@@ -25,7 +25,7 @@ class TestAccessRightExternalSystemUser(TransactionCase):
 
     def create_external_system_user(self, user, **values):
         return self.env[
-            'ata_jira.ata.external.system.user'
+            'ata.external.system.user'
         ].with_user(user).create({
             'name': 'test external system user',
             **values

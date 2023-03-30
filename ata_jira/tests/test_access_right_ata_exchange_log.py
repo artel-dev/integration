@@ -17,14 +17,14 @@ class TestAccessRightExchangeLog(TransactionCase):
         )
 
     def create_system(self, user, **values):
-        ext_system = self.env['ata_jira.ata.external.system'].with_user(user)
+        ext_system = self.env['ata.external.system'].with_user(user)
         return ext_system.create({
             'name': 'test_system',
             **values
         })
 
     def create_service(self, user, **values):
-        external_service_manager = self.env['ata_jira.ata.external.service']
+        external_service_manager = self.env['ata.external.service']
         return external_service_manager.with_user(user).create({
             'name': 'test_service',
             **values
@@ -32,7 +32,7 @@ class TestAccessRightExchangeLog(TransactionCase):
 
     def create_exchange_log(self, user, **values):
         one_hour = timedelta(hours=1)
-        exchange_log_manager = self.env['ata_jira.ata.exchange.log']
+        exchange_log_manager = self.env['ata.exchange.log']
         return exchange_log_manager.with_user(user).create({
             'name': 'test_exchange_log',
             'start_date': datetime.now(),
@@ -66,7 +66,7 @@ class TestAccessRightExchangeLog(TransactionCase):
             finish_date=finish_date,
         )
 
-        exchange_log_manager = self.env['ata_jira.ata.exchange.log']
+        exchange_log_manager = self.env['ata.exchange.log']
         domain_today = [('id', '=', test_exchange_log_now.id)]
         domain_not_today = [('id', '=', test_exchange_log_old.id)]
         today_count = exchange_log_manager.with_user(
