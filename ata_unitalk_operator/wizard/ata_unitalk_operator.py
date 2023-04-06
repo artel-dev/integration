@@ -10,7 +10,7 @@ from odoo import api, fields, models
 
 class UnitalkOperator(models.TransientModel):
     _name = 'ata.unitalk.operator'
-
+    _description = 'Unitalk Operator'
     # _rec_name = 'user_id'
 
     phone_number = fields.Char(
