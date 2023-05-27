@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_external_system_view_form" model="ir.ui.view">
+        <field name="name">External system form view</field>
+        <field name="model">ata.external.system</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <notebook>
+                        <page string="General">
+                            <group>
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="is_secure_connection"/>
+                                <field name="server_address"/>
+                                <field name="server_port"/>
+                                <field name="is_token_authentication"/>
+                                <field name="login"/>
+                                <field name="password" password="True"/>
+                                <field name="use_proxy"/>
+                                <field name="proxy_login"/>
+                                <field name="proxy_password" password="True"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_external_system_view_tree" model="ir.ui.view">
+        <field name="name">External system list view</field>
+        <field name="model">ata.external.system</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="is_secure_connection"/>
+                <field name="server_address"/>
+                <field name="server_port"/>
+                <field name="is_token_authentication"/>
+                <field name="login"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ata_external_system_view_search" model="ir.ui.view">
+        <field name="name">External system search view</field>
+        <field name="model">ata.external.system</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="server_address"/>
+                <field name="server_port"/>
+                <separator/>
+                <filter name="filter_is_secure_connection" string="Secure connection"
+                        domain="[('is_secure_connection', '=', True)]"/>
+                <filter name="filter_is_not_secure_connection" string="Not secure connection"
+                        domain="[('is_secure_connection', '=', False)]"/>
+                <filter name="filter_is_token_authentication" string="Token authentication"
+                        domain="[('is_token_authentication', '=', True)]"/>
+                <filter name="filter_is_not_token_authentication" string="Not token authentication"
+                        domain="[('is_token_authentication', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="ata_external_system_action" model="ir.actions.act_window">
+        <field name="name">External system</field>
+        <field name="res_model">ata.external.system</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="ata_external_system_menu"
+            name="External system"
+            parent="ata_integration_menu_external_connection_config"
+            action="ata_external_system_action"
+            sequence="10"
+    />
+
+</odoo>
