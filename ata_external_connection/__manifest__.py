@@ -1,7 +1,7 @@
 {
     'name': 'External connection',
     'summary': 'External connection',
-    'version': '16.0.1.0.0',
+    'version': '16.0.1.0.1',
     'author': 'ToDo',
     'website': 'it-artel.ua',
     'license': 'OPL-1',

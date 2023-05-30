@@ -1,0 +1,316 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ata_external_connection
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-30 10:12+0000\n"
+"PO-Revision-Date: 2023-05-30 10:12+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__color
+msgid "Color"
+msgstr "Колір"
+
+#. module: ata_external_connection
+#: model:ir.ui.menu,name:ata_external_connection.ata_integration_menu_external_connection_config
+msgid "Configuration"
+msgstr "Налаштування"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__create_date
+msgid "Create Date"
+msgstr "Дата створення"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__create_uid
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__create_uid
+msgid "Created by"
+msgstr "Автор"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__create_date
+msgid "Created on"
+msgstr "Створено"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__day_delta
+msgid "Day Delta"
+msgstr "Кілкість днів"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_kanban
+msgid "Delete"
+msgstr "Видалити"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__description
+msgid "Description"
+msgstr "Опис"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__display_name
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__display_name
+msgid "Display Name"
+msgstr "Представлення"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_kanban
+msgid "Dropdown menu"
+msgstr "Спадаюче меню"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_kanban
+msgid "Edit"
+msgstr "Редагувати"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__exchange_id
+msgid "Exchange"
+msgstr "Обмін"
+
+#. module: ata_external_connection
+#: model:ir.actions.act_window,name:ata_external_connection.ata_exchange_log_action
+#: model:ir.model,name:ata_external_connection.model_ata_exchange_log
+#: model:ir.ui.menu,name:ata_external_connection.ata_exchange_log_menu
+msgid "Exchange log"
+msgstr "Журнал обміну"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_kanban
+msgid "Exchange:"
+msgstr "Обмін:"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__execution_date
+msgid "Execution Date"
+msgstr "Дата виконання"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__execution_time
+msgid "Execution Time"
+msgstr "Час виконання"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_kanban
+msgid "Execution time:"
+msgstr "Час виконання:"
+
+#. module: ata_external_connection
+#: model:ir.ui.menu,name:ata_external_connection.ata_integration_menu_external_connection_general
+msgid "External connection"
+msgstr "Зовнішнє з'єднання"
+
+#. module: ata_external_connection
+#: model:ir.actions.act_window,name:ata_external_connection.ata_external_system_action
+#: model:ir.model,name:ata_external_connection.model_ata_external_system
+#: model:ir.ui.menu,name:ata_external_connection.ata_external_system_menu
+msgid "External system"
+msgstr "Зовнішня система"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__finish_date
+msgid "Finish Date"
+msgstr "Дата завершення"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_form
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_external_system_view_form
+msgid "General"
+msgstr "Загальні"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__headers
+msgid "Headers"
+msgstr "Заголовки"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__id
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__id
+msgid "ID"
+msgstr "Ід."
+
+#. module: ata_external_connection
+#: model:ir.ui.menu,name:ata_external_connection.ata_integration_menu_root
+msgid "Integration"
+msgstr "Інтеграція"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__is_executed
+msgid "Is Executed"
+msgstr "Виконано"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__is_processed
+msgid "Is Processed"
+msgstr "Оброблено"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__is_secure_connection
+msgid "Is Secure Connection"
+msgstr "Це захищене з'єднання"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__is_token_authentication
+msgid "Is Token Authentication"
+msgstr "Автентифікація через токен"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log____last_update
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system____last_update
+msgid "Last Modified on"
+msgstr "Остання зміна"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__write_uid
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__write_uid
+msgid "Last Updated by"
+msgstr "Автор останнього оновлення"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__write_date
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__write_date
+msgid "Last Updated on"
+msgstr "Останнє оновлення"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__login
+msgid "Login"
+msgstr "Логін"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__method_name
+msgid "Method Name"
+msgstr "Ім'я методу"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__name
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__name
+msgid "Name"
+msgstr "Ім'я"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_external_system_view_search
+msgid "Not secure connection"
+msgstr "Не захищене з'єднання"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_external_system_view_search
+msgid "Not token authentication"
+msgstr "Автентифікація без токену"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__number_of_attempts
+msgid "Number Of Attempts"
+msgstr "Кількість спроб"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__parameters
+msgid "Parameters"
+msgstr "Параметри"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__password
+msgid "Password"
+msgstr "Пароль"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__processing_date
+msgid "Processing Date"
+msgstr "Дата виконання"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__proxy_login
+msgid "Proxy Login"
+msgstr "Логін проксі"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__proxy_password
+msgid "Proxy Password"
+msgstr "Пароль проксі"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__request
+msgid "Request"
+msgstr "Запит"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__request_body
+msgid "Request Body"
+msgstr "Тіло запиту"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__response
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_form
+msgid "Response"
+msgstr "Відповідь"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_external_system_view_search
+msgid "Secure connection"
+msgstr "Захищене з'єднання"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__server_address
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__server_address
+msgid "Server Address"
+msgstr "Адреса серверу"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__server_port
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__server_port
+msgid "Server Port"
+msgstr "Порт серверу"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__start_date
+msgid "Start Date"
+msgstr "Дата початку"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_kanban
+msgid "Start date:"
+msgstr "Дата початку:"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__status_code
+msgid "Status Code"
+msgstr "Код статусу"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_kanban
+msgid "Status code:"
+msgstr "Код статусу"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_search
+msgid "Status: Error"
+msgstr "Статус: Помилка"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_search
+msgid "Status: OK"
+msgstr "Статус: ОК"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__system_id
+msgid "System"
+msgstr "Система"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_external_system_view_search
+msgid "Token authentication"
+msgstr "Токен автентифікація"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__use_proxy
+msgid "Use Proxy"
+msgstr "Використовувати проксі"
