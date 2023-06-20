@@ -1,0 +1,9 @@
+<templates>
+    <t t-extend="voip.PhoneCallDetails">
+        <t t-jquery=".o_dial_to_partner" t-operation="replace">
+             <a class="o_dial_to_partner btn btn-light p-3 border rounded-circle" href="#">
+                 <i aria-label="Customer" class="fa fa-fw fa-lg fa-user"/>
+             </a>
+        </t>
+    </t>
+</templates>
