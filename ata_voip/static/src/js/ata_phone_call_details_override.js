@@ -1,4 +1,4 @@
-odoo.define('ata_unitalk.PhoneCallDetailsOverride', function (require) {
+odoo.define('ata_voip.PhoneCallDetailsOverride', function (require) {
     "use strict";
 
     var PhoneCallDetails = require('voip.phone_call_details');
@@ -43,7 +43,6 @@ odoo.define('ata_unitalk.PhoneCallDetailsOverride', function (require) {
             if (resId !== undefined) {
                 this.do_action({
                     res_id: resId,
-                    default_phoneNumber: this.phoneNumber,
                     res_model: "res.partner",
                     target: 'new',
                     type: 'ir.actions.act_window',
@@ -65,6 +64,7 @@ odoo.define('ata_unitalk.PhoneCallDetailsOverride', function (require) {
                 this.do_action({
                     context,
                     res_model: 'res.partner',
+                    default_phoneNumber: this.phoneNumber,
                     target: 'new',
                     type: 'ir.actions.act_window',
                     views: [[false, 'form']],

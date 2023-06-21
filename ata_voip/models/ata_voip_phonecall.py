@@ -13,12 +13,9 @@ class AtaVoipPhoneCall(models.Model):
                     body = "{} {} {} start time: {}".format(record.state, record.direction,
                                                             record.display_name,
                                                             timestamp.strftime('%Y-%m-%d %H:%M:%S'))
+                    record.partner_id.message_post(body=body)
                 elif vals.get("state") == 'done':
                     body = "{} {} {} duration: {}".format('done', record.direction,
                                                           record.display_name, vals["duration"])
-                else:
-                    return super(AtaVoipPhoneCall, self).write(vals)
-                record.partner_id.message_post(body=body)
-            else:
-                return super(AtaVoipPhoneCall, self).write(vals)
+                    record.partner_id.message_post(body=body)
         return super(AtaVoipPhoneCall, self).write(vals)

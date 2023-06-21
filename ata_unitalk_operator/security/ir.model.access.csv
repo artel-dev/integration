@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ata_unitalk_operator_group_user,ata_unitalk_operator,model_ata_unitalk_operator,base.group_user,1,1,1,1
