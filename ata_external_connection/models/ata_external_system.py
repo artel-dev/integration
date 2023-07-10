@@ -6,6 +6,7 @@ from requests.auth import HTTPBasicAuth
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+#import odoo.addons.ata_external_connection.models.ata_convert
 
 _logger = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ class ExternalSystem(models.Model):
     description = fields.Char()
     server_address = fields.Char()
     server_port = fields.Integer()
+    resource_address = fields.Char()
     is_secure_connection = fields.Boolean()
     login = fields.Char()
     password = fields.Char()
@@ -28,6 +30,10 @@ class ExternalSystem(models.Model):
     use_proxy = fields.Boolean()
     proxy_login = fields.Char()
     proxy_password = fields.Char()
+    content_type = fields.Selection(
+        selection=[("json", "JSON")],
+        default="json"
+    )
 
     @staticmethod
     def base64encodestring(s: str):
@@ -48,13 +54,18 @@ class ExternalSystem(models.Model):
 
     @api.model
     def create_request(self, ext_service):
+        if self.content_type == "json":
+            request_body = self.env['ata_external_connection.ata_json'].dumps(ext_service["request_body"])
+        else:
+            request_body = ext_service["request_body"]
+
         ext_request = {
             'exchange_id': ext_service["exchange_id"],
             'name': ext_service["name"],
             'method_name': ext_service["method_name"],
             'http_method': ext_service["http_method"],
             'params': ext_service["params"],
-            'request_body': ext_service["request_body"],
+            'request_body': request_body,
             'result': '',
             'headers': '',
             'create_date': datetime.now(),
@@ -151,7 +162,10 @@ class ExternalSystem(models.Model):
         if not ext_request["result"]:
             return result
 
-        result = ext_request["result"]
+        if self.content_type == "json":
+            result = self.env['ata_external_connection.ata_json'].loads(ext_request["result"])
+        else:
+            result = ext_request["result"]
 
         vals = {
             'is_processed': True,
@@ -177,11 +191,15 @@ class ExternalSystem(models.Model):
         if not server_address.startswith('http'):
             url_http_protocol = f'{http_protocol}://'
         url_port = f':{server_port}' if server_port else ''
+        resource_address = self.format_resource_address()
         method_name_prefix = '' if method_name.startswith('/') else '/'
         url_method_name = f'{method_name_prefix}{method_name}'
-        url = f'{url_http_protocol}{server_address}{url_port}{url_method_name}'
+        url = f'{url_http_protocol}{server_address}{url_port}{resource_address}{url_method_name}'
 
         return url
+
+    def format_resource_address(self):
+        return '' if not self.resource_address else '/' + self.resource_address.strip('/')
 
     def get_headers_auth(self, ext_request):
         # source data for request
