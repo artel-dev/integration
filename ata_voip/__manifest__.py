@@ -1,10 +1,11 @@
-
 {
-    'name': 'Best VOIP',
-    'version': '1.0',
-    'category': 'Customer Relationship Management',
-    'description': 'Integration CRM with UniTalk',
-    'category': 'Uncategorized',
+    'name': 'VOIP customization',
+    'summary': 'VOIP customization',
+    'version': '16.0.1.0.1',
+    'category': 'VOIP',
+    'author': 'ToDo',
+    'website': 'https://it-artel.ua',
+    'license': 'OPL-1',
     'depends': ['base', 'voip'],
     'data': [
        #'views/phonecall_views.xml',
@@ -17,4 +18,9 @@
     ],
     'installable': True,
     'application': False,
+    'assets': {
+        'mail.assets_messaging': [
+            'ata_voip/static/src/models/*.js',
+        ],
+    },
 }
