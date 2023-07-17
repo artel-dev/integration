@@ -33,17 +33,21 @@ class AtaVoipPhoneCall(models.Model):
                                        record.phone)
 
             if body:
-                sanitized_phone = self.env['res.partner']._voip_sanitization(record.phone)
-                finded_leeds_count = self.env['crm.lead'].search_count([('phone_mobile_search', 'like', sanitized_phone)])
-                if finded_leeds_count == 1:
-                    finded_leed = self.env['crm.lead'].search([('phone_mobile_search', 'like', sanitized_phone)])
-                    finded_leed.message_post(body=body)
-                    if finded_leed.partner_id:
-                        finded_leed.partner_id.message_post(body=body)
-                elif finded_leeds_count == 0 and record.partner_id:
+                partner_manager = self.env['res.partner']
+                sanitized_phone = partner_manager._voip_sanitization(record.phone)
+                lead_manager = self.env['crm.lead']
+                domain = [('phone_mobile_search', 'like', sanitized_phone)]
+                found_leads_count = lead_manager.search_count(domain)
+                if found_leads_count == 1:
+                    found_lead = lead_manager.search(domain)
+                    found_lead.message_post(body=body)
+                    if found_lead.partner_id:
+                        found_lead.partner_id.message_post(body=body)
+                elif found_leads_count == 0 and record.partner_id:
                     record.partner_id.message_post(body=body)
                 else:
-                    finded_partner = self.env['res.partner'].search([('phone_mobile_search', 'like', sanitized_phone)])
-                    finded_partner.message_post(body=body)
+                    found_partner = partner_manager.search(domain)
+                    if found_partner and found_partner.count == 1:
+                        found_partner.message_post(body=body)
 
         return super(AtaVoipPhoneCall, self).write(vals)
