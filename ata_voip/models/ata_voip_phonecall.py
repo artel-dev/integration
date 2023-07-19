@@ -47,7 +47,7 @@ class AtaVoipPhoneCall(models.Model):
                     record.partner_id.message_post(body=body)
                 else:
                     found_partner = partner_manager.search(domain)
-                    if found_partner and found_partner.count == 1:
+                    if found_partner and len(found_partner) == 1:
                         found_partner.message_post(body=body)
 
         return super(AtaVoipPhoneCall, self).write(vals)
