@@ -6,7 +6,7 @@
     'author': 'ToDo',
     'website': 'https://it-artel.ua',
     'license': 'OPL-1',
-    'depends': ['base', 'voip'],
+    'depends': ['base', 'voip', 'mail'],
     'data': [
        #'views/phonecall_views.xml',
     ],
@@ -17,8 +17,11 @@
        # 'static/src/js/ata_phone_call_details_override.js',
     ],
     'installable': True,
-    'application': False,
+    'application': True,
     'assets': {
+        # 'web.assets_backend': [
+        #     'ata_voip/static/src/js/ata_phone_call_details.js',
+        # ],
         'mail.assets_messaging': [
             'ata_voip/static/src/models/*.js',
         ],
