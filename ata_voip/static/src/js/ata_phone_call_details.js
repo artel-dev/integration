@@ -1,11 +1,13 @@
 /** @odoo-module **/
 
-import config from "web.config";
+
 import { useBus, useService } from "@web/core/utils/hooks";
 import { patch } from "@web/core/utils/patch";
 import { StatusBarField } from "@web/views/fields/statusbar/statusbar_field";
-const PhoneCallDetails = require('voip.PhoneCallDetails');
 import { WarningDialog } from "@web/core/errors/error_dialogs";
+
+const PhoneCallDetails = require('voip.PhoneCallDetails');
+const config = require('web.config');
 
 patch(PhoneCallDetails.prototype, "ata_voip.PhoneCallDetails", {
      async _onClickToPartner(ev) {
@@ -28,7 +30,9 @@ patch(PhoneCallDetails.prototype, "ata_voip.PhoneCallDetails", {
                     ['phone', '=', this.phoneNumber],
                     ['mobile', '=', this.phoneNumber]];
             } else if (this.mobileNumber) {
-                domain = [['mobile', '=', this.mobileNumber]];
+                domain = ['|',
+                    ['phone', '=', this.mobileNumber],//+ATA Boretskiy
+                    ['mobile', '=', this.mobileNumber]];
             }
             const ids = await this._rpc({
                 method: 'search_read',
@@ -65,6 +69,7 @@ patch(PhoneCallDetails.prototype, "ata_voip.PhoneCallDetails", {
                 context.mobileNumber = this.mobileNumber;
             }
             context['default_phone'] = this.phoneNumber //+ATA Boretskiy
+            context['default_mobile'] = this.mobileNumber //+ATA Boretskiy
             this.do_action({
                 context,
                 res_model: 'res.partner',
