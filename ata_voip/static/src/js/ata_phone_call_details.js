@@ -1,10 +1,7 @@
 /** @odoo-module **/
 
 
-import { useBus, useService } from "@web/core/utils/hooks";
 import { patch } from "@web/core/utils/patch";
-import { StatusBarField } from "@web/views/fields/statusbar/statusbar_field";
-import { WarningDialog } from "@web/core/errors/error_dialogs";
 
 const PhoneCallDetails = require('voip.PhoneCallDetails');
 const config = require('web.config');
