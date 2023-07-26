@@ -6,8 +6,6 @@ from requests.auth import HTTPBasicAuth
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
-#import odoo.addons.ata_external_connection.models.ata_convert
-
 _logger = logging.getLogger(__name__)
 
 

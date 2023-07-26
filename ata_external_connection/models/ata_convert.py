@@ -27,8 +27,9 @@ class AtaJson(models.AbstractModel):
         return obj
 
     @staticmethod
-    def parse_json_with_dates(json_str):
-        parsed_json = json.loads(json_str, object_hook=AtaJson.parse_datetime)
+    def parse_json_with_dates(json_str_in):
+        json_str = json_str_in.decode() if isinstance(json_str_in, bytes) else json_str_in
+        parsed_json = json.loads(json_str.lstrip('\ufeff'), object_hook=AtaJson.parse_datetime)
         return parsed_json
 
     @staticmethod

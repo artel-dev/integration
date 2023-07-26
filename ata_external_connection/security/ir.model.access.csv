@@ -3,3 +3,5 @@ access_ata_external_system_user,ata.external.system,model_ata_external_system,ba
 access_ata_external_system_admin,ata.external.system,model_ata_external_system,base.group_system,1,1,1,1
 access_ata_exchange_log_user,ata.exchange.log,model_ata_exchange_log,base.group_user,1,0,0,0
 access_ata_exchange_log_admin,ata.exchange.log,model_ata_exchange_log,base.group_system,1,1,1,1
+access_ata_exchange_objects_user,ata.exchange.objects,model_ata_exchange_objects,base.group_user,1,0,0,0
+access_ata_exchange_objects_admin,ata.exchange.objects,model_ata_exchange_objects,base.group_system,1,1,1,1
