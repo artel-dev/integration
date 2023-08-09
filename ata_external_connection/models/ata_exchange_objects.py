@@ -11,6 +11,8 @@ class AtaExchangeObjects(models.Model):
     ref_object = fields.Reference(
         selection=[('res.partner', 'Partner'), ('crm.lead', 'Lead')],
         string="Object exchange")
+    method = fields.Char(
+        string='Method exchange in model')
     state_exchange = fields.Selection(
         selection=[
             ('new', 'New'),
@@ -20,7 +22,7 @@ class AtaExchangeObjects(models.Model):
         default='new')
 
     @api.model
-    def add(self, records):
+    def add(self, records, method=''):
         for record in records:
             ref_record = self._fields['ref_object'].convert_to_cache(record, self)
             if ref_record is not None:
@@ -33,7 +35,8 @@ class AtaExchangeObjects(models.Model):
                     # add new record to DB
                     vals = {
                         'ref_object': ref_record,
-                        'state_exchange': 'new'
+                        'state_exchange': 'new',
+                        'method': method
                     }
                     record_add = self.create(vals)
                     # start manual exchange over cron
@@ -51,10 +54,15 @@ class AtaExchangeObjects(models.Model):
         for record in records:
             model_id = record.ref_object._name
             records_update = self.env[model_id].search([('id', '=', record.ref_object.id)])
-            if records_update.ata_update_ext_system():
-                record.unlink()
+            func_update = getattr(records_update,
+                                  f'ata_update_{record.method}' if record.method else 'ata_update_ext_system')
+            if hasattr(records_update, func_update):
+                if func_update(records_update):
+                    record.unlink()
+                else:
+                    record.write({'state_exchange': 'idle'})
             else:
-                record.write({'state_exchange': 'idle'})
+                pass
 
     def exchange_immediately(self):
         records = self.sudo().search([
