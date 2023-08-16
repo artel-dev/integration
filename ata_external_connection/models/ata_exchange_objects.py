@@ -44,7 +44,7 @@ class AtaExchangeObjects(models.Model):
         if not records:
             records = self.sudo().search([
                 ('state_exchange', 'in', ('new', 'idle'))
-            ])
+            ], limit=100)
 
         records.write({'state_exchange': 'in_exchange'})
 
@@ -59,6 +59,6 @@ class AtaExchangeObjects(models.Model):
     def exchange_immediately(self):
         records = self.sudo().search([
             ('state_exchange', '=', 'new')
-        ])
+        ], limit=100)
         records.write({'state_exchange': 'idle'})
         self.exchange(records)
