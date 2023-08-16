@@ -54,10 +54,10 @@ class AtaExchangeObjects(models.Model):
         for record in records:
             model_id = record.ref_object._name
             records_update = self.env[model_id].search([('id', '=', record.ref_object.id)])
-            func_update = getattr(records_update,
-                                  f'ata_update_{record.method}' if record.method else 'ata_update_ext_system')
-            if hasattr(records_update, func_update):
-                if func_update(records_update):
+            func_name = f'ata_update_{record.method}' if record.method else 'ata_update_ext_system'
+            if hasattr(records_update, func_name):
+                func_update = getattr(records_update, func_name)
+                if func_update():
                     record.unlink()
                 else:
                     record.write({'state_exchange': 'idle'})
