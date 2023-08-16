@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_exchange_objects_view_form" model="ir.ui.view">
+        <field name="name">Exchange objects form view</field>
+        <field name="model">ata.exchange.objects</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <notebook>
+                        <page string="General">
+                            <group>
+                                <field name="ref_object"/>
+                                <field name="state_exchange"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_exchange_objects_view_tree" model="ir.ui.view">
+        <field name="name">Exchange objects list view</field>
+        <field name="model">ata.exchange.objects</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ref_object"/>
+                <field name="state_exchange"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ata_exchange_objects_action" model="ir.actions.act_window">
+        <field name="name">Exchange objects</field>
+        <field name="res_model">ata.exchange.objects</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="ata_exchange_objects_menu"
+            name="Exchange objects"
+            parent="ata_integration_menu_external_connection_general"
+            action="ata_exchange_objects_action"
+            sequence="20"
+    />
+</odoo>
