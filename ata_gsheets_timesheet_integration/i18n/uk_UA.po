@@ -1,0 +1,255 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ata_gsheets_timesheet_integration
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-11 08:13+0000\n"
+"PO-Revision-Date: 2023-10-11 08:13+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_res_config_settings__ata_active
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Active"
+msgstr "Активний"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model,name:ata_gsheets_timesheet_integration.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Рядок аналітики"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__crm
+msgid "CRM"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.account_sync_gsheet_wizard_form
+msgid "Cancel"
+msgstr "Скасувати"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model,name:ata_gsheets_timesheet_integration.model_res_config_settings
+msgid "Config Settings"
+msgstr "Параметри конфігурації"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_res_config_settings__ata_credentials
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Credentials"
+msgstr "Облікові дані"
+
+#. module: ata_gsheets_timesheet_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Credentials json"
+msgstr "Облікові дані json"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__ata_date_form
+msgid "Date form"
+msgstr "Дата з"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__ata_date_to
+msgid "Date to"
+msgstr "Дата до"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Google Sheet page name"
+msgstr "Назва сторінки Google Sheet"
+
+#. module: ata_gsheets_timesheet_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Google sheet timesheet"
+msgstr "Google sheet табелі"
+
+#. module: ata_gsheets_timesheet_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Google sheet timesheet integration"
+msgstr "Інтеграція табелів Google sheet"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Is integration active"
+msgstr "Інтеграція активна"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__lms
+msgid "LMS"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_res_config_settings__ata_page_name
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Page name"
+msgstr "Назва сторінки"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_project_task__ata_section
+msgid "Section"
+msgstr "Розділ"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.actions.act_window,name:ata_gsheets_timesheet_integration.pbx_config_settings_google_sheet_timesheet_action
+msgid "Settings"
+msgstr "Налаштування"
+
+#. module: ata_gsheets_timesheet_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Spreadsheet ID"
+msgstr "Ідентифікатор електронної таблиці"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_res_config_settings__ata_spreadsheet_id
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Spreadsheet id"
+msgstr "Ідентифікатор електронної таблиці"
+
+#. module: ata_gsheets_timesheet_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.account_sync_gsheet_wizard_form
+msgid "Sync"
+msgstr "Синхронізувати"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.actions.act_window,name:ata_gsheets_timesheet_integration.account_sync_gsheet_wizard_action
+msgid "Sync timesheet with Google sheet"
+msgstr "Синхронізація розкладу з таблицею Google"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model,name:ata_gsheets_timesheet_integration.model_gsheet_timesheet_sync_wizard
+msgid "Sync timesheet with google sheet"
+msgstr "Синхронізація розкладу з таблицею Google"
+
+#. module: ata_gsheets_timesheet_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
+msgid "Synchronize"
+msgstr "Синхронізувати"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model,name:ata_gsheets_timesheet_integration.model_project_task
+msgid "Task"
+msgstr "Завдання"
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__accounting
+msgid "Бухгалтерський облік"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__website
+msgid "Веб-сайт"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__production
+msgid "Виробництво"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__all_sections
+msgid "Всі розділи"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__procurement
+msgid "Закупівлі"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__salary
+msgid "Заробітна плата"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__personnel
+msgid "Кадри"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__calendar
+msgid "Календар"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__logistics
+msgid "Логістика"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__marketing
+msgid "Маркетинг"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__sales
+msgid "Продажі"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__projects
+msgid "Проекти"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__recruiting
+msgid "Рекрутинг"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__repairs
+msgid "Ремонти"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__storage
+msgid "Склад"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__managerial_accounting
+msgid "Управлінський облік"
+msgstr ""
