@@ -1,9 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_ata_external_system_user,ata.external.system,model_ata_external_system,base.group_user,1,0,0,0
 access_ata_external_system_admin,ata.external.system,model_ata_external_system,base.group_system,1,1,1,1
-access_ata_exchange_log_user,ata.exchange.log,model_ata_exchange_log,base.group_user,1,0,0,0
+access_ata_exchange_log_user,ata.exchange.log,model_ata_exchange_log,base.group_user,1,1,1,1
 access_ata_exchange_log_admin,ata.exchange.log,model_ata_exchange_log,base.group_system,1,1,1,1
-access_ata_exchange_queue_user,ata.exchange.queue,model_ata_exchange_queue,base.group_user,1,0,0,0
+access_ata_exchange_queue_user,ata.exchange.queue,model_ata_exchange_queue,base.group_user,1,1,1,1
 access_ata_exchange_queue_admin,ata.exchange.queue,model_ata_exchange_queue,base.group_system,1,1,1,1
 access_ata_exchange_queue_usage_user,ata.exchange.queue.usage,model_ata_exchange_queue_usage,base.group_user,1,0,0,0
 access_ata_exchange_queue_usage_admin,ata.exchange.queue.usage,model_ata_exchange_queue_usage,base.group_system,1,1,1,1
