@@ -1,15 +1,15 @@
 from odoo import api, fields, models
 
 
-class AtaExchangeObjects(models.Model):
+class AtaExchangeQueue(models.Model):
     """
     stored objects that need to be exchanged with external systems
     """
-    _name = "ata.exchange.objects"
-    _description = "Exchange objects with external systems"
+    _name = "ata.exchange.queue"
+    _description = "Exchange queue objects with external systems"
 
     ref_object = fields.Reference(
-        selection=[('res.partner', 'Partner'), ('crm.lead', 'Lead')],
+        selection=[],
         string="Object exchange")
     method = fields.Char(
         string='Method exchange in model')
@@ -40,8 +40,8 @@ class AtaExchangeObjects(models.Model):
                     }
                     record_add = self.create(vals)
                     # start manual exchange over cron
-                    # record_add.exchange()
-                    self.env.ref('ata_external_connection.ata_exchange_objects_cron_immediately')._trigger()
+                    if self.env["ata.exchange.queue.usage"].use_immediate_exchange(record_add.ref_object._name):
+                        self.env.ref('ata_external_connection.ata_exchange_queue_cron_immediately')._trigger()
 
     def exchange(self, records=None):
         if not records:
@@ -52,17 +52,11 @@ class AtaExchangeObjects(models.Model):
         records.write({'state_exchange': 'in_exchange'})
 
         for record in records:
-            model_id = record.ref_object._name
-            records_update = self.env[model_id].search([('id', '=', record.ref_object.id)])
-            func_name = f'ata_update_{record.method}' if record.method else 'ata_update_ext_system'
-            if hasattr(records_update, func_name):
-                func_update = getattr(records_update, func_name)
-                if func_update():
-                    record.unlink()
-                else:
-                    record.write({'state_exchange': 'idle'})
+            result_update = self.env["ata.external.connection.base"].exchange(record.ref_object, record.method)
+            if result_update:
+                record.unlink()
             else:
-                pass
+                record.write({'state_exchange': 'idle'})
 
     def exchange_immediately(self):
         records = self.sudo().search([

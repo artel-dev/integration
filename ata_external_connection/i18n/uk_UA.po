@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-01 19:55+0000\n"
-"PO-Revision-Date: 2023-08-01 19:55+0000\n"
+"POT-Creation-Date: 2023-09-18 13:02+0000\n"
+"PO-Revision-Date: 2023-09-18 13:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,16 +16,21 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: ata_external_connection
-#: model:ir.actions.server,name:ata_external_connection.ata_exchange_objects_cron_ir_actions_server
-#: model:ir.cron,cron_name:ata_external_connection.ata_exchange_objects_cron
-msgid "ATA : Exchange of objects with external systems"
+#: model:ir.actions.server,name:ata_external_connection.ata_exchange_queue_cron_ir_actions_server
+#: model:ir.cron,cron_name:ata_external_connection.ata_exchange_queue_cron
+msgid "ATA : Exchange queue with external systems"
 msgstr "Обмін об'єктами с зовнішними системами"
 
 #. module: ata_external_connection
-#: model:ir.actions.server,name:ata_external_connection.ata_exchange_objects_cron_immediately_ir_actions_server
-#: model:ir.cron,cron_name:ata_external_connection.ata_exchange_objects_cron_immediately
-msgid "ATA : Exchange of objects with external systems (immediately)"
+#: model:ir.actions.server,name:ata_external_connection.ata_exchange_queue_cron_immediately_ir_actions_server
+#: model:ir.cron,cron_name:ata_external_connection.ata_exchange_queue_cron_immediately
+msgid "ATA : Exchange queue with external systems (immediately start)"
 msgstr "Обмін об'єктами с зовнішними системами (миттєво)"
+
+#. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_queue_usage_view_form
+msgid "All models"
+msgstr "Всі моделі"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__color
@@ -43,7 +48,7 @@ msgid "Content Type"
 msgstr "Тип обміну"
 
 #. module: ata_external_connection
-#: model:ir.model,name:ata_external_connection.model_ata_external_connection_ata_json
+#: model:ir.model,name:ata_external_connection.model_ata_external_connection_json
 msgid "Convert json functions (ATA)"
 msgstr "Функції конвертації json (ATA)"
 
@@ -54,13 +59,17 @@ msgstr "Дата створення"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__create_uid
-#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_objects__create_uid
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue__create_uid
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage__create_uid
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__create_uid
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__create_uid
 msgid "Created by"
 msgstr "Автор"
 
 #. module: ata_external_connection
-#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_objects__create_date
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue__create_date
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage__create_date
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__create_date
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__create_date
 msgid "Created on"
 msgstr "Створено"
@@ -81,11 +90,38 @@ msgid "Description"
 msgstr "Опис"
 
 #. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__disabled
+msgid "Disabled"
+msgstr "Вимкнено"
+
+#. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__display_name
-#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_objects__display_name
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue__display_name
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage__display_name
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__display_name
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__display_name
 msgid "Display Name"
 msgstr "Представлення"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__domain
+msgid "Domain"
+msgstr "Фільтр"
+
+#. module: ata_external_connection
+#: model:ir.actions.act_window,name:ata_external_connection.ata_external_connection_domain_action
+msgid "Domain for ext. system"
+msgstr "Фільтр для зовн. системи"
+
+#. module: ata_external_connection
+#: model:ir.ui.menu,name:ata_external_connection.ata_external_connection_domain
+msgid "Domain for ext. systems"
+msgstr "Фільтр для зовн. систем"
+
+#. module: ata_external_connection
+#: model:ir.model,name:ata_external_connection.model_ata_external_connection_domain
+msgid "Domain for search external system"
+msgstr "Фільтр для пошуку зовнішніх систем"
 
 #. module: ata_external_connection
 #: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_kanban
@@ -103,6 +139,18 @@ msgid "Exchange"
 msgstr "Обмін"
 
 #. module: ata_external_connection
+#: model:ir.model,name:ata_external_connection.model_ata_external_connection_method_mixing
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__method
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_method_mixing__method
+msgid "Exchange http methods"
+msgstr "Методи http обміну"
+
+#. module: ata_external_connection
+#: model:ir.ui.menu,name:ata_external_connection.ata_integration_menu_external_connection_general
+msgid "Exchange information"
+msgstr "Зовнішнє з'єднання"
+
+#. module: ata_external_connection
 #: model:ir.actions.act_window,name:ata_external_connection.ata_exchange_log_action
 #: model:ir.model,name:ata_external_connection.model_ata_exchange_log
 #: model:ir.ui.menu,name:ata_external_connection.ata_exchange_log_menu
@@ -110,9 +158,21 @@ msgid "Exchange log"
 msgstr "Журнал обміну"
 
 #. module: ata_external_connection
-#: model:ir.model,name:ata_external_connection.model_ata_exchange_objects
-msgid "Exchange objects with external systems"
+#: model:ir.actions.act_window,name:ata_external_connection.ata_exchange_queue_action
+#: model:ir.ui.menu,name:ata_external_connection.ata_exchange_queue_menu
+msgid "Exchange queue"
+msgstr "Черга обміну"
+
+#. module: ata_external_connection
+#: model:ir.model,name:ata_external_connection.model_ata_exchange_queue
+msgid "Exchange queue objects with external systems"
 msgstr "Об'єкти, що обмінюються з зовнішніми системами"
+
+#. module: ata_external_connection
+#: model:ir.actions.act_window,name:ata_external_connection.ata_exchange_queue_usage_action
+#: model:ir.ui.menu,name:ata_external_connection.ata_exchange_queue_usage_menu
+msgid "Exchange queue usage"
+msgstr "Використання черги обміну"
 
 #. module: ata_external_connection
 #: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_kanban
@@ -135,15 +195,20 @@ msgid "Execution time:"
 msgstr "Час виконання:"
 
 #. module: ata_external_connection
-#: model:ir.ui.menu,name:ata_external_connection.ata_integration_menu_external_connection_general
-msgid "External connection"
-msgstr "Зовнішнє з'єднання"
+#: model:ir.model,name:ata_external_connection.model_ata_external_connection_base
+msgid "External connection base model"
+msgstr "Базова модель обробки зовнішніх з'єднань"
 
 #. module: ata_external_connection
 #: model:ir.actions.act_window,name:ata_external_connection.ata_external_system_action
 #: model:ir.model,name:ata_external_connection.model_ata_external_system
-#: model:ir.ui.menu,name:ata_external_connection.ata_external_system_menu
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__ext_system
 msgid "External system"
+msgstr "Зовнішня система"
+
+#. module: ata_external_connection
+#: model:ir.ui.menu,name:ata_external_connection.ata_external_system_menu
+msgid "External systems"
 msgstr "Зовнішня система"
 
 #. module: ata_external_connection
@@ -153,9 +218,16 @@ msgstr "Дата завершення"
 
 #. module: ata_external_connection
 #: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_form
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_queue_usage_view_form
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_queue_view_form
 #: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_external_system_view_form
 msgid "General"
 msgstr "Загальні"
+
+#. module: ata_external_connection
+#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_external_system__content_type__html
+msgid "HTML"
+msgstr ""
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__headers
@@ -164,18 +236,25 @@ msgstr "Заголовки"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__id
-#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_objects__id
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue__id
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage__id
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__id
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__id
 msgid "ID"
 msgstr "Ід."
 
 #. module: ata_external_connection
-#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_exchange_objects__state_exchange__idle
+#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_exchange_queue__state_exchange__idle
 msgid "Idle"
 msgstr "Очікування"
 
 #. module: ata_external_connection
-#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_exchange_objects__state_exchange__in_exchange
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage__immediate
+msgid "Immediate"
+msgstr "Миттєво"
+
+#. module: ata_external_connection
+#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_exchange_queue__state_exchange__in_exchange
 msgid "In exchange"
 msgstr "Обмінюється"
 
@@ -211,27 +290,33 @@ msgstr ""
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log____last_update
-#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_objects____last_update
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue____last_update
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage____last_update
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain____last_update
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system____last_update
 msgid "Last Modified on"
 msgstr "Остання зміна"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__write_uid
-#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_objects__write_uid
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue__write_uid
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage__write_uid
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__write_uid
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__write_uid
 msgid "Last Updated by"
 msgstr "Автор останнього оновлення"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__write_date
-#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_objects__write_date
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue__write_date
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage__write_date
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__write_date
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__write_date
 msgid "Last Updated on"
 msgstr "Останнє оновлення"
 
 #. module: ata_external_connection
-#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_exchange_objects__ref_object__crm_lead
+#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_exchange_queue__ref_object__crm_lead
 msgid "Lead"
 msgstr "Лід"
 
@@ -246,13 +331,34 @@ msgid "Method Name"
 msgstr "Ім'я методу"
 
 #. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue__method
+msgid "Method exchange in model"
+msgstr "Метод обміну в моделі"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage__model_id
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__model_id
+msgid "Model"
+msgstr "Модель"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_domain__model_name
+msgid "Model Name"
+msgstr "Ім'я моделі"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage__model_desc
+msgid "Model description"
+msgstr "Опис моделі"
+
+#. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__name
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__name
 msgid "Name"
 msgstr "Ім'я"
 
 #. module: ata_external_connection
-#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_exchange_objects__state_exchange__new
+#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_exchange_queue__state_exchange__new
 msgid "New"
 msgstr "Новий"
 
@@ -272,9 +378,9 @@ msgid "Number Of Attempts"
 msgstr "Кількість спроб"
 
 #. module: ata_external_connection
-#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_objects__ref_object
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue__ref_object
 msgid "Object exchange"
-msgstr ""
+msgstr "Об'єкт обміну"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__parameters
@@ -282,9 +388,9 @@ msgid "Parameters"
 msgstr "Параметри"
 
 #. module: ata_external_connection
-#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_exchange_objects__ref_object__res_partner
+#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_exchange_queue__ref_object__res_partner
 msgid "Partner"
-msgstr ""
+msgstr "Партнер"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__password
@@ -355,9 +461,9 @@ msgid "Start date:"
 msgstr "Дата початку:"
 
 #. module: ata_external_connection
-#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_objects__state_exchange
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue__state_exchange
 msgid "State exchange objects"
-msgstr ""
+msgstr "Стан обміну об'єкта"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__status_code
@@ -385,6 +491,12 @@ msgid "System"
 msgstr "Система"
 
 #. module: ata_external_connection
+#: model:ir.actions.server,name:ata_external_connection.ata_external_system_action_test_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_external_system_view_form
+msgid "Test connection"
+msgstr "Тест з'єднання"
+
+#. module: ata_external_connection
 #: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_external_system_view_search
 msgid "Token authentication"
 msgstr "Токен автентифікація"
@@ -393,3 +505,19 @@ msgstr "Токен автентифікація"
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_system__use_proxy
 msgid "Use Proxy"
 msgstr "Використовувати проксі"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_queue_usage__usage
+msgid "Use exchange queue"
+msgstr "Використовувати чергу обміну"
+
+#. module: ata_external_connection
+#: model:ir.model,name:ata_external_connection.model_ata_exchange_queue_usage
+msgid "Using exchange queue objects with external system"
+msgstr "Використання черги обміну з зовнішніми системами"
+
+#. module: ata_external_connection
+#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_external_connection_domain__method__test
+#: model:ir.model.fields.selection,name:ata_external_connection.selection__ata_external_connection_method_mixing__method__test
+msgid "test"
+msgstr "тест"

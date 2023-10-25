@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_exchange_queue_usage_view_form" model="ir.ui.view">
+        <field name="name">Exchange queue usage form view</field>
+        <field name="model">ata.exchange.queue.usage</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <notebook>
+                        <page string="General">
+                            <group>
+                                <field name="model_id" placeholder="All models"/>
+                                <field name="usage"/>
+                                <field name="immediate" attrs="{'readonly': [('model_id', '=', False)]}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_exchange_queue_usage_view_tree" model="ir.ui.view">
+        <field name="name">Exchange queue usage tree view</field>
+        <field name="model">ata.exchange.queue.usage</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="usage"/>
+                <field name="immediate"/>
+                <field name="model_desc"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ata_exchange_queue_usage_action" model="ir.actions.act_window">
+        <field name="name">Exchange queue usage</field>
+        <field name="res_model">ata.exchange.queue.usage</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="ata_exchange_queue_usage_menu"
+            name="Exchange queue usage"
+            parent="ata_integration_menu_external_connection_config"
+            action="ata_exchange_queue_usage_action"
+            sequence="20"
+    />
+</odoo>
