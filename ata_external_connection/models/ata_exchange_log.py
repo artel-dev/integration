@@ -49,4 +49,5 @@ class ExchangeLog(models.Model):
     @api.depends('start_date')
     def _compute_day_delta(self):
         for obj in self:
-            obj.day_delta = (datetime.today() - obj.start_date).days
+            obj.day_delta = (datetime.today() -
+                             (obj.start_date if isinstance(obj.start_date, datetime) else datetime.today())).days

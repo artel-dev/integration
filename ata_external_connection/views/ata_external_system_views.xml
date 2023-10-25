@@ -6,10 +6,15 @@
         <field name="model">ata.external.system</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_test_connection" string="Test connection" class="oe_highlight"
+                            type="object"/>
+                </header>
                 <sheet>
                     <notebook>
                         <page string="General">
                             <group>
+                                <field name="disabled"/>
                                 <field name="name"/>
                                 <field name="description"/>
                                 <field name="is_secure_connection"/>
@@ -36,6 +41,7 @@
         <field name="model">ata.external.system</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="disabled"/>
                 <field name="name"/>
                 <field name="is_secure_connection"/>
                 <field name="server_address"/>
@@ -78,12 +84,24 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <record id="ata_external_system_action_test_connection" model="ir.actions.server">
+        <field name="name">Test connection</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_ata_external_system"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_test_connection()
+        </field>
+        <field name="binding_model_id" ref="ata_external_connection.model_ata_external_system"/>
+        <field name="binding_type">action</field>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
     <menuitem
             id="ata_external_system_menu"
-            name="External system"
+            name="External systems"
             parent="ata_integration_menu_external_connection_config"
             action="ata_external_system_action"
             sequence="10"
     />
-
 </odoo>

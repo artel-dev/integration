@@ -12,10 +12,12 @@
     'data': [
         'security/ir.model.access.csv',
         'views/ata_external_connection_menus.xml',
+        'views/ata_external_connection_domain.xml',
         'views/ata_external_system_views.xml',
         'views/ata_exchange_log_views.xml',
-        'views/ata_exchange_objects_views.xml',
-        "data/ata_exchange_objects_cron.xml",
+        'views/ata_exchange_queue_views.xml',
+        'views/ata_exchange_queue_usage_views.xml',
+        'data/ata_exchange_queue_cron.xml',
     ],
     'installable': 'True',
 }

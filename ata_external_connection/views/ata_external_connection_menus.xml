@@ -10,7 +10,7 @@
 
     <menuitem
             id="ata_integration_menu_external_connection_general"
-            name="External connection"
+            name="Exchange information"
             parent="ata_integration_menu_root"
             sequence="10"
     />

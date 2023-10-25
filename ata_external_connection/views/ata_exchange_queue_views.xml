@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_exchange_queue_view_form" model="ir.ui.view">
+        <field name="name">Exchange queue form view</field>
+        <field name="model">ata.exchange.queue</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <notebook>
+                        <page string="General">
+                            <group>
+                                <field name="ref_object"/>
+                                <field name="state_exchange"/>
+                                <field name="method" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_exchange_queue_view_tree" model="ir.ui.view">
+        <field name="name">Exchange queue list view</field>
+        <field name="model">ata.exchange.queue</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ref_object"/>
+                <field name="state_exchange"/>
+                <field name="method"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ata_exchange_queue_action" model="ir.actions.act_window">
+        <field name="name">Exchange queue</field>
+        <field name="res_model">ata.exchange.queue</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="ata_exchange_queue_menu"
+            name="Exchange queue"
+            parent="ata_integration_menu_external_connection_general"
+            action="ata_exchange_queue_action"
+            sequence="20"
+    />
+
+</odoo>
