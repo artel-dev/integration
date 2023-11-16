@@ -64,3 +64,6 @@ class AtaExchangeQueue(models.Model):
         ], limit=100)
         records.write({'state_exchange': 'idle'})
         self.exchange(records)
+
+    def action_start_exchange(self):
+        self.exchange(self)

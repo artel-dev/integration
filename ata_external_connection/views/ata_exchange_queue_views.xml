@@ -26,6 +26,10 @@
         <field name="model">ata.exchange.queue</field>
         <field name="arch" type="xml">
             <tree>
+                <header>
+                    <button name="action_start_exchange" string="Start exchange"
+                            type="object" class="oe_highlight"></button>
+                </header>
                 <field name="ref_object"/>
                 <field name="state_exchange"/>
                 <field name="method"/>
