@@ -32,11 +32,11 @@ class AtaExternalConnectionBase(models.AbstractModel):
         return True
 
     @api.model
-    def add_exchange_queue(self, record, method):
+    def add_exchange_queue(self, record, method: str):
         self.env["ata.exchange.queue"].add(record, method)
 
     @api.model
-    def exchange(self, record, method):
+    def exchange(self, record, method: str) -> bool:
         result = False
 
         ext_systems = self.env["ata.external.connection.domain"].get_ext_systems(record, method)
@@ -61,7 +61,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
                         # parse response body
                         response_data, result = self._parse_response_body(record, method, response_body)
                         # post-processing response data
-                        result = result and self._post_processing_request(record, method, response_data)
+                        result = result and self._post_processing_response(record, method, response_data)
 
         return result
 
@@ -92,13 +92,13 @@ class AtaExternalConnectionBase(models.AbstractModel):
         return response_data, result
 
     @staticmethod
-    def _post_processing_request(record, method: str, response_data: dict) -> bool:
+    def _post_processing_response(record, method: str, response_data: dict) -> bool:
         func_post_processing_name = f'ata_post_processing_exchange_{method.lower()}'
         return getattr(record, func_post_processing_name)(response_data) \
             if hasattr(record, func_post_processing_name) else False
 
-    @api.model
-    def get_record_data_exchange(self, record, type_exchange=""):
+    @staticmethod
+    def get_record_data_exchange(record, type_exchange: str = "") -> dict:
         if record and type_exchange:
             func_get_data_name = f'ata_get_data_exchange_{type_exchange}'
             return getattr(record, func_get_data_name)() if hasattr(record, func_get_data_name) else {}
@@ -106,5 +106,5 @@ class AtaExternalConnectionBase(models.AbstractModel):
             return {}
 
     @api.model
-    def get_record_data_exchange_1c(self, record):
+    def get_record_data_exchange_1c(self, record) -> dict:
         return self.get_record_data_exchange(record, "1c")

@@ -22,7 +22,7 @@ class AtaExchangeQueue(models.Model):
         default='new')
 
     @api.model
-    def add(self, records, method=''):
+    def add(self, records, method: str = ""):
         for record in records:
             ref_record = self._fields['ref_object'].convert_to_cache(record, self)
             if ref_record is not None:
