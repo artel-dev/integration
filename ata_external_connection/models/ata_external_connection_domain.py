@@ -7,15 +7,8 @@ class AtaExternalConnectionDomain(models.Model):
     _description = "Domain for search external system"
     _inherit = ['ata.external.connection.method.mixing']
 
-    # model_id = fields.Many2one('ir.model', string="Model")
-    # model_name = fields.Char(string='Model Name', readonly=True, store=True, compute="_compute_model_name")
     domain = fields.Char(string="Domain")
     ext_system = fields.Many2one(comodel_name="ata.external.system", string="External system")
-
-    # @api.depends('model_id')
-    # def _compute_model_name(self):
-    #    for record in self:
-    #        record.model_name = record.model_id.model
 
     @api.model
     def get_ext_systems(self, record, method):
@@ -48,7 +41,7 @@ class AtaExternalConnectionDomain(models.Model):
 
         return ext_systems
 
-    def _get_eval_context(self):
+    def _get_eval_context(self) -> dict:
         """ Prepare the context used when evaluating python code
             :returns: dict -- evaluation context given to safe_eval
         """

@@ -45,7 +45,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
             # request_data may be empty
             if request_data:
                 ext_service = {
-                    'exchange_id': f'Model: {record._name}, Id: {record.id}',
+                    'exchange_id': f'Model: {record._name}, Id: {record.id}' if record else '',
                     'name': f'/{method}',
                     'description': f'/{method}',
                     'method_name': f'{method}',
@@ -65,11 +65,17 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
         return result
 
-    @staticmethod
-    def _get_request_data(record, method: str) -> dict:
+    @api.model
+    def _get_request_data(self, record, method: str) -> dict:
         func_get_data_name = f'ata_get_data_exchange_{method.lower()}'
-        return getattr(record, func_get_data_name)() \
-            if hasattr(record, func_get_data_name) \
+        if record is None:
+            model_name = self._get_model_data_from_dict(method)[1]
+            record_model = self.env[model_name] if model_name else False
+        else:
+            record_model = record
+
+        return getattr(record_model, func_get_data_name)() \
+            if hasattr(record_model, func_get_data_name) \
             else {}
 
     @staticmethod
@@ -95,7 +101,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
     def _post_processing_response(record, method: str, response_data: dict) -> bool:
         func_post_processing_name = f'ata_post_processing_exchange_{method.lower()}'
         return getattr(record, func_post_processing_name)(response_data) \
-            if hasattr(record, func_post_processing_name) else False
+            if hasattr(record, func_post_processing_name) else True
 
     @staticmethod
     def get_record_data_exchange(record, type_exchange: str = "") -> dict:

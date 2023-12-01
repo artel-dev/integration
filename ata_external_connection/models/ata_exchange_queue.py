@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from collections import OrderedDict
 
 
 class AtaExchangeQueue(models.Model):
@@ -7,12 +8,12 @@ class AtaExchangeQueue(models.Model):
     """
     _name = "ata.exchange.queue"
     _description = "Exchange queue objects with external systems"
+    _inherit = ['ata.external.connection.method.mixing']
 
     ref_object = fields.Reference(
         selection=[],
-        string="Object exchange")
-    method = fields.Char(
-        string='Method exchange in model')
+        string="Object exchange"
+        )
     state_exchange = fields.Selection(
         selection=[
             ('new', 'New'),
@@ -20,6 +21,17 @@ class AtaExchangeQueue(models.Model):
             ('in_exchange', 'In exchange')],
         string='State exchange objects',
         default='new')
+
+    def init(self):
+        super().init()
+        self._fields['ref_object'].selection +=\
+            [(value, value) for value in list(OrderedDict.fromkeys(self._method_model_dict.values()))]
+
+    @api.onchange('method')
+    def _compute_ref_object(self):
+        model = self._method_model_dict.get(self.method, False)
+        if model:
+            self.ref_object = self.env[model].sudo().search([], limit=1)
 
     @api.model
     def add(self, records, method: str = ""):
@@ -32,16 +44,19 @@ class AtaExchangeQueue(models.Model):
                     ('state_exchange', 'in', ('new', 'idle'))
                 ])
                 if not record_exist:
-                    # add new record to DB
-                    vals = {
-                        'ref_object': ref_record,
-                        'state_exchange': 'new',
-                        'method': method
-                    }
-                    record_add = self.create(vals)
-                    # start manual exchange over cron
-                    if self.env["ata.exchange.queue.usage"].use_immediate_exchange(record_add.ref_object._name):
-                        self.env.ref('ata_external_connection.ata_exchange_queue_cron_immediately')._trigger()
+                    # check the need over domain
+                    ext_systems = self.env["ata.external.connection.domain"].get_ext_systems(record, method)
+                    if ext_systems:
+                        # add new record to DB
+                        vals = {
+                            'ref_object': ref_record,
+                            'state_exchange': 'new',
+                            'method': method
+                        }
+                        record_add = self.create(vals)
+                        # start manual exchange over cron
+                        if self.env["ata.exchange.queue.usage"].use_immediate_exchange(record_add.ref_object._name):
+                            self.env.ref('ata_external_connection.ata_exchange_queue_cron_immediately')._trigger()
 
     def exchange(self, records=None):
         if not records:
