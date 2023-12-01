@@ -12,7 +12,7 @@
                             <group>
                                 <field name="ref_object"/>
                                 <field name="state_exchange"/>
-                                <field name="method" readonly="1"/>
+                                <field name="method"/>
                             </group>
                         </page>
                     </notebook>

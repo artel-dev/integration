@@ -7,10 +7,13 @@
             <form>
                 <sheet>
                     <group>
-                        <!--<field name="model_id"/>
-                        <field name="model_name" invisible="1" />-->
                         <field name="method"/>
-                        <field name="domain" widget="domain" options="{'model': 'model_name', 'in_dialog': True}"/>
+                        <field name="model_name" invisible="1" />
+                        <field name="model_id" readonly="1"
+                            attrs="{'invisible': [('model_name', '=', False)]}"/>
+                        <field name="domain" widget="domain"
+                            options="{'model': 'model_name', 'in_dialog': True}"
+                            attrs="{'invisible': [('model_name', '=', False)]}"/>
                         <field name="ext_system"/>
                     </group>
                 </sheet>
