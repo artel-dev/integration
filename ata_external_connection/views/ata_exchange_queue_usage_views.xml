@@ -10,7 +10,9 @@
                     <notebook>
                         <page string="General">
                             <group>
-                                <field name="model_id" placeholder="All models"/>
+                                <field name="method" placeholder="All methods"/>
+                                <field name="model_id" placeholder="All models" readonly="1"
+                                       attrs="{'invisible': [('method', '=', False)]}"/>
                                 <field name="usage"/>
                                 <field name="immediate" attrs="{'readonly': [('model_id', '=', False)]}"/>
                             </group>
@@ -26,6 +28,7 @@
         <field name="model">ata.exchange.queue.usage</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="method"/>
                 <field name="usage"/>
                 <field name="immediate"/>
                 <field name="model_desc"/>

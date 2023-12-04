@@ -7,6 +7,7 @@ class AtaExternalConnectionMethodMixing(models.AbstractModel):
 
     model_id = fields.Many2one('ir.model', string="Model", compute="_compute_model_name")
     model_name = fields.Char(string='Model Name', readonly=True, compute="_compute_model_name")
+    model_desc = fields.Char(string="Model description", compute="_compute_model_name")
 
     method = fields.Selection(
         selection=[],
@@ -28,15 +29,16 @@ class AtaExternalConnectionMethodMixing(models.AbstractModel):
     @api.onchange('method')
     def _compute_model_name(self):
         for record in self:
-            record.model_id, record.model_name = self._get_model_data_from_dict(record.method)
+            record.model_id, record.model_name, record.model_desc = self._get_model_data_from_dict(record.method)
 
     @api.model
     def _get_model_data_from_dict(self, method):
         _model = self._method_model_dict.get(method, False)
-        model_id = self.env['ir.model'].sudo().search([('model', '=', _model)])
-        model_name = model_id.model
+        model_id = self.env['ir.model'].sudo().search([('model', '=', _model)]) if _model else False
+        model_name = model_id.model if model_id else False
+        model_desc = f'{model_name} ({model_id.model})' if model_id else f'All models'
 
-        return model_id, model_name
+        return model_id, model_name, model_desc
 
 
 

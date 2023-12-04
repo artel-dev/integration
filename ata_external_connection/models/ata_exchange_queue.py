@@ -53,9 +53,9 @@ class AtaExchangeQueue(models.Model):
                             'state_exchange': 'new',
                             'method': method
                         }
-                        record_add = self.create(vals)
+                        self.create(vals)
                         # start manual exchange over cron
-                        if self.env["ata.exchange.queue.usage"].use_immediate_exchange(record_add.ref_object._name):
+                        if self.env["ata.exchange.queue.usage"].use_immediate_exchange(method):
                             self.env.ref('ata_external_connection.ata_exchange_queue_cron_immediately')._trigger()
 
     def exchange(self, records=None):

@@ -18,16 +18,15 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
     @api.model
     def start_exchange(self, record, method, immediately=False):
-        model_id = record._name
-        if self.need_exchange(model_id):
+        if self.need_exchange(method):
             # checking the need to add for exchange queue
-            if immediately is False and self.env["ata.exchange.queue.usage"].use_exchange_queue(model_id):
+            if immediately is False and self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
                 self.add_exchange_queue(record, method)
             else:
                 self.exchange(record, method)
 
     @api.model
-    def need_exchange(self, model_id):
+    def need_exchange(self, method):
         # checking the need for an exchange on the basis of a one-time exchange
         return True
 
