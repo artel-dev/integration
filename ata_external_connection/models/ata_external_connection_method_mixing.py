@@ -16,15 +16,19 @@ class AtaExternalConnectionMethodMixing(models.AbstractModel):
     # dictionary of correspondence methods and models that are used to define a domain
     _method_model_dict = {}
 
+    def init(self):
+        self.method_model_add()
+
+    def method_model_add(self):
+        if hasattr(self, "_method_model_dict_ext"):
+            self._method_model_dict.update(self._method_model_dict_ext)
+            self._method_model_dict_ext.clear()
+
     @api.depends('method')
     @api.onchange('method')
     def _compute_model_name(self):
         for record in self:
             record.model_id, record.model_name = self._get_model_data_from_dict(record.method)
-
-            # _model = record._method_model_dict.get(record.method, False)
-            # record.model_id = self.env['ir.model'].sudo().search([('model', '=', _model)])
-            # record.model_name = record.model_id.model
 
     @api.model
     def _get_model_data_from_dict(self, method):
@@ -34,5 +38,5 @@ class AtaExternalConnectionMethodMixing(models.AbstractModel):
 
         return model_id, model_name
 
-    def method_model_add(self, data: dict):
-        self._method_model_dict.update(data)
+
+
