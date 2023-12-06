@@ -12,7 +12,7 @@
                             <group>
                                 <field name="method" placeholder="All methods"/>
                                 <field name="model_id" placeholder="All models" readonly="1"
-                                       attrs="{'invisible': [('method', '=', False)]}"/>
+                                       attrs="{'invisible': [('model_id', '=', False)]}"/>
                                 <field name="usage"/>
                                 <field name="immediate" attrs="{'readonly': [('model_id', '=', False)]}"/>
                             </group>

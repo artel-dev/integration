@@ -1,3 +1,4 @@
+from . import ata_external_connection_method
 from . import ata_external_connection_method_mixing
 from . import ata_external_connection_base
 from . import ata_external_connection_domain
