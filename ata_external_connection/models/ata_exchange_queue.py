@@ -1,5 +1,6 @@
 from odoo import api, fields, models
-from collections import OrderedDict
+
+from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
 
 
 class AtaExchangeQueue(models.Model):
@@ -10,10 +11,15 @@ class AtaExchangeQueue(models.Model):
     _description = "Exchange queue objects with external systems"
     _inherit = ['ata.external.connection.method.mixing']
 
-    ref_object = fields.Reference(
-        selection=[],
-        string="Object exchange"
-        )
+    @api.model
+    def _selection_ref_object_model(self):
+        return [(model.model, model.name) for model in self.env['ir.model'].sudo().search([
+            ('model', 'in',
+             [model_method.model_name for model_method in self.env['ata.external.connection.method'].sudo().search([])]
+             ),
+        ])]
+
+    ref_object = fields.Reference('_selection_ref_object_model', string="Object exchange")
     state_exchange = fields.Selection(
         selection=[
             ('new', 'New'),
@@ -22,19 +28,13 @@ class AtaExchangeQueue(models.Model):
         string='State exchange objects',
         default='new')
 
-    def init(self):
-        super().init()
-        self._fields['ref_object'].selection +=\
-            [(value, value) for value in list(OrderedDict.fromkeys(self._method_model_dict.values()))]
-
     @api.onchange('method')
     def _compute_ref_object(self):
-        model = self._method_model_dict.get(self.method, False)
-        if model:
-            self.ref_object = self.env[model].sudo().search([], limit=1)
+        if self.method:
+            self.ref_object = self.env[self.method.model_name].sudo().search([], limit=1)
 
     @api.model
-    def add(self, records, method: str = ""):
+    def add(self, records, method: ExtMethod):
         for record in records:
             ref_record = self._fields['ref_object'].convert_to_cache(record, self)
             if ref_record is not None:
@@ -51,7 +51,7 @@ class AtaExchangeQueue(models.Model):
                         vals = {
                             'ref_object': ref_record,
                             'state_exchange': 'new',
-                            'method': method
+                            'method': method.id
                         }
                         self.create(vals)
                         # start manual exchange over cron

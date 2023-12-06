@@ -1,5 +1,7 @@
 from odoo import api, fields, models
 
+from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
+
 
 class AtaExchangeQueueUsage(models.Model):
     _name = "ata.exchange.queue.usage"
@@ -16,16 +18,16 @@ class AtaExchangeQueueUsage(models.Model):
             record.immediate = min(record.immediate, bool(record.method))
 
     @api.model
-    def use_exchange_queue(self, method):
+    def use_exchange_queue(self, method: ExtMethod):
         return bool(self.search([
-            ('method', 'in', (method, False)),
+            ('method', 'in', (method.id, False)),
             ('usage', "=", True)
         ]))
 
     @api.model
-    def use_immediate_exchange(self, method):
+    def use_immediate_exchange(self, method: ExtMethod):
         return bool(self.search([
-            ('method', '=', method),
+            ('method', '=', method.id),
             ('usage', "=", True),
             ('immediate', '=', True)
         ]))

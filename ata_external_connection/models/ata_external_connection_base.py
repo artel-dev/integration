@@ -1,6 +1,8 @@
 from odoo import api, models
 from typing import Tuple
 
+from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
+
 
 # predefined function in modules:
 # ata_get_data_exchange_{method.lower()}() - get dict() data for send to ext. system for (model, method)
@@ -17,8 +19,9 @@ class AtaExternalConnectionBase(models.AbstractModel):
     _inherit = ['ata.external.connection.method.mixing']
 
     @api.model
-    def start_exchange(self, record, method, immediately=False):
-        if self.need_exchange(method):
+    def start_exchange(self, record, method_name: str, immediately=False):
+        method = self.env['ata.external.connection.method'].sudo().search([('name', '=', method_name)])
+        if method and self.need_exchange(method):
             # checking the need to add for exchange queue
             if immediately is False and self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
                 self.add_exchange_queue(record, method)
@@ -26,16 +29,16 @@ class AtaExternalConnectionBase(models.AbstractModel):
                 self.exchange(record, method)
 
     @api.model
-    def need_exchange(self, method):
+    def need_exchange(self, method: ExtMethod):
         # checking the need for an exchange on the basis of a one-time exchange
         return True
 
     @api.model
-    def add_exchange_queue(self, record, method: str):
+    def add_exchange_queue(self, record, method: ExtMethod):
         self.env["ata.exchange.queue"].add(record, method)
 
     @api.model
-    def exchange(self, record, method: str) -> bool:
+    def exchange(self, record, method: ExtMethod) -> bool:
         result = False
 
         ext_systems = self.env["ata.external.connection.domain"].get_ext_systems(record, method)
@@ -45,9 +48,9 @@ class AtaExternalConnectionBase(models.AbstractModel):
             if request_data:
                 ext_service = {
                     'exchange_id': f'Model: {record._name}, Id: {record.id}' if record else '',
-                    'name': f'/{method}',
-                    'description': f'/{method}',
-                    'method_name': f'{method}',
+                    'name': f'{method.description}',
+                    'description': f'{method.description}',
+                    'method_name': f'{method.name}',
                     'http_method': 'POST',
                     'params': dict(),
                     'request_body': self._get_request_body(record, method, request_data)
@@ -61,32 +64,31 @@ class AtaExternalConnectionBase(models.AbstractModel):
                         response_data, result = self._parse_response_body(record, method, response_body)
                         # post-processing response data
                         result = result and self._post_processing_response(record, method, response_data)
+            else:
+                # for delete from queue
+                result = True
 
         return result
 
     @api.model
-    def _get_request_data(self, record, method: str) -> dict:
-        func_get_data_name = f'ata_get_data_exchange_{method.lower()}'
-        if record is None:
-            model_name = self._get_model_data_from_dict(method)[1]
-            record_model = self.env[model_name] if model_name else False
-        else:
-            record_model = record
+    def _get_request_data(self, record, method: ExtMethod) -> dict:
+        func_get_data_name = f'ata_get_data_exchange_{method.name.lower()}'
+        record_model = record if record else self.env[method.model_name]
 
         return getattr(record_model, func_get_data_name)() \
             if hasattr(record_model, func_get_data_name) \
             else {}
 
     @staticmethod
-    def _get_request_body(record, method: str, request_data: dict) -> dict:
-        func_request_body_name = f'ata_request_body_exchange_{method.lower()}'
+    def _get_request_body(record, method: ExtMethod, request_data: dict) -> dict:
+        func_request_body_name = f'ata_request_body_exchange_{method.name.lower()}'
         return getattr(record, func_request_body_name)(request_data) \
             if hasattr(record, func_request_body_name) \
             else {"Data": request_data}
 
     @staticmethod
-    def _parse_response_body(record, method: str, response_body: dict) -> Tuple[dict, bool]:
-        func_parse_response_name = f'ata_parse_response_exchange_{method.lower()}'
+    def _parse_response_body(record, method: ExtMethod, response_body: dict) -> Tuple[dict, bool]:
+        func_parse_response_name = f'ata_parse_response_exchange_{method.name.lower()}'
         if hasattr(record, func_parse_response_name):
             response_data, result = getattr(record, func_parse_response_name)(response_body)
         else:
@@ -97,8 +99,8 @@ class AtaExternalConnectionBase(models.AbstractModel):
         return response_data, result
 
     @staticmethod
-    def _post_processing_response(record, method: str, response_data: dict) -> bool:
-        func_post_processing_name = f'ata_post_processing_exchange_{method.lower()}'
+    def _post_processing_response(record, method: ExtMethod, response_data: dict) -> bool:
+        func_post_processing_name = f'ata_post_processing_exchange_{method.name.lower()}'
         return getattr(record, func_post_processing_name)(response_data) \
             if hasattr(record, func_post_processing_name) else True
 

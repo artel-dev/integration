@@ -9,3 +9,5 @@ access_ata_exchange_queue_usage_user,ata.exchange.queue.usage,model_ata_exchange
 access_ata_exchange_queue_usage_admin,ata.exchange.queue.usage,model_ata_exchange_queue_usage,base.group_system,1,1,1,1
 access_ata_external_connection_domain_user,ata.external.connection.domain,model_ata_external_connection_domain,base.group_user,1,0,0,0
 access_ata_external_connection_domain_admin,ata.external.connection.domain,model_ata_external_connection_domain,base.group_system,1,1,1,1
+access_ata_external_connection_method_user,ata.external.connection.method,model_ata_external_connection_method,base.group_user,1,0,0,0
+access_ata_external_connection_method_admin,ata.external.connection.method,model_ata_external_connection_method,base.group_system,1,1,1,1
