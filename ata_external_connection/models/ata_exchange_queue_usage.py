@@ -31,3 +31,6 @@ class AtaExchangeQueueUsage(models.Model):
             ('usage', "=", True),
             ('immediate', '=', True)
         ]))
+
+    def action_test_queue(self):
+        self.env["ata.exchange.queue"].test_queue()
