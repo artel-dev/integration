@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
 
 
 class AtaExternalConnectionMethodMixing(models.AbstractModel):
@@ -25,5 +26,6 @@ class AtaExternalConnectionMethodMixing(models.AbstractModel):
 
         return model_id, model_name, model_desc
 
-
-
+    @api.model
+    def _get_method_for_name(self, method_name: str) -> ExtMethod:
+        return self.env['ata.external.connection.method'].sudo().search([('name', '=', method_name)])
