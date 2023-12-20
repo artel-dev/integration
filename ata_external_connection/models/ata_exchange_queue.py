@@ -78,7 +78,7 @@ class AtaExchangeQueue(models.Model):
         if not records:
             records = self.sudo().search([
                 ('state_exchange', 'in', ('new', 'idle'))
-            ], limit=100)
+            ], limit=10)
 
         records = self._check_ref_object(records)
 
