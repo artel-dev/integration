@@ -24,7 +24,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
     @api.model
     def start_exchange(self, record, method_name: str, immediately=False):
-        method = self.env['ata.external.connection.method'].sudo().search([('name', '=', method_name)])
+        method = self._get_method_for_name(method_name)
         if method and self.need_exchange(method) and not self._record_in_re_exchanged(record):
             # checking the need to add for exchange queue
             if immediately is False and self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
