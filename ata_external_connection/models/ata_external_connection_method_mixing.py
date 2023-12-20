@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
 
 
 class AtaExternalConnectionMethodMixing(models.AbstractModel):
