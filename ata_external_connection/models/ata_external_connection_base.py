@@ -1,10 +1,12 @@
-from odoo import api, models
+from odoo import api, models, http
 from typing import Tuple
 
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
 
 
 # predefined function in modules:
+# ata_prepare_exchange_{method.lower()}() - prepare record after exchange.
+#   return continue_exchange, delete_from_queue
 # ata_get_data_exchange_{method.lower()}() - get dict() data for send to ext. system for (model, method)
 # ata_get_data_exchange_1c() - get dict() data for subordinates objects
 # ata_request_body_exchange_{method.lower()}() - request body customization
@@ -18,15 +20,34 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
     _inherit = ['ata.external.connection.method.mixing']
 
+    _re_exchanged = []
+
     @api.model
     def start_exchange(self, record, method_name: str, immediately=False):
         method = self.env['ata.external.connection.method'].sudo().search([('name', '=', method_name)])
-        if method and self.need_exchange(method):
+        if method and self.need_exchange(method) and not self._record_in_re_exchanged(record):
             # checking the need to add for exchange queue
             if immediately is False and self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
                 self.add_exchange_queue(record, method)
             else:
                 self.exchange(record, method)
+
+    # check for recursive re-exchange
+    @api.model
+    def _record_in_re_exchanged(self, record) -> bool:
+        ref = self._get_ref_from_record(record)
+        return ref in self._re_exchanged
+
+    @api.model
+    def _add_re_exchanged(self, record) -> None:
+        ref = self._get_ref_from_record(record)
+        self._re_exchanged.append(ref)
+
+    @api.model
+    def _delete_re_exchanged(self, record) -> None:
+        ref = self._get_ref_from_record(record)
+        if ref in self._re_exchanged:
+            self._re_exchanged.remove(ref)
 
     @api.model
     def need_exchange(self, method: ExtMethod):
@@ -40,35 +61,54 @@ class AtaExternalConnectionBase(models.AbstractModel):
     @api.model
     def exchange(self, record, method: ExtMethod) -> bool:
         result = False
+        self._add_re_exchanged(record)
 
         ext_systems = self.env["ata.external.connection.domain"].get_ext_systems(record, method)
-        for ext_system in ext_systems:
-            request_data = self._get_request_data(record, method)
-            # request_data may be empty
-            if request_data:
-                ext_service = {
-                    'exchange_id': f'Model: {record._name}, Id: {record.id}' if record else '',
-                    'name': f'{method.description}',
-                    'description': f'{method.description}',
-                    'method_name': f'{method.name}',
-                    'http_method': 'POST',
-                    'params': dict(),
-                    'request_body': self._get_request_body(record, method, request_data)
-                }
+        if ext_systems:
+            # prepare record after exchange
+            continue_exchange, delete_from_queue = self._prepare_record(record, method)
+            if continue_exchange:
+                for ext_system in ext_systems:
+                    request_data = self._get_request_data(record, method)
+                    # request_data may be empty
+                    if request_data:
+                        ext_service = {
+                            'exchange_id': f'Model: {record._name}, Id: {record.id}' if record else '',
+                            'name': f'{method.description}',
+                            'description': f'{method.description}',
+                            'method_name': f'{method.name}',
+                            'http_method': 'POST',
+                            'params': dict(),
+                            'request_body': self._get_request_body(record, method, request_data)
+                        }
 
-                response_body = ext_system.execute(ext_service)
-                if response_body:
-                    error = response_body.get("Error", False)
-                    if not error:
-                        # parse response body
-                        response_data, result = self._parse_response_body(record, method, response_body)
-                        # post-processing response data
-                        result = result and self._post_processing_response(record, method, response_data)
-            else:
-                # for delete from queue
+                        response_body = ext_system.execute(ext_service)
+                        if response_body:
+                            error = response_body.get("Error", False)
+                            if not error:
+                                # parse response body
+                                response_data, result = self._parse_response_body(record, method, response_body)
+                                # post-processing response data
+                                result = result and self._post_processing_response(record, method, response_data)
+                    else:
+                        # for delete from queue
+                        result = True
+            elif delete_from_queue:
                 result = True
+        else:
+            # for delete from queue, if nothing ext. systems
+            result = True
+
+        self._delete_re_exchanged(record)
 
         return result
+
+    @api.model
+    def _prepare_record(self, record, method: ExtMethod) -> (bool, bool):
+        func_prepare_name = f'ata_prepare_exchange_{method.name.lower()}'
+        return getattr(record, func_prepare_name)() \
+            if hasattr(record, func_prepare_name)\
+            else (True, False)
 
     @api.model
     def _get_request_data(self, record, method: ExtMethod) -> dict:
@@ -115,3 +155,26 @@ class AtaExternalConnectionBase(models.AbstractModel):
     @api.model
     def get_record_data_exchange_1c(self, record) -> dict:
         return self.get_record_data_exchange(record, "1c")
+
+    @api.model
+    def save_attachment(self, save_data: dict) -> None:
+        attachments_items = self.env["ir.attachment"].sudo().search(
+            [("res_id", "=", save_data["record_id"]),
+             ('res_model', '=', save_data["model_name"]),
+             ('name', '=', save_data["file_name"])])
+
+        if attachments_items:
+            attachment = attachments_items[0]
+            vals = {
+                'datas': save_data["file_data"]
+            }
+            attachment.write(vals)
+        else:
+            self.env['ir.attachment'].sudo().create({
+                'name': save_data["file_name"],
+                'type': 'binary',
+                'res_id': save_data["record_id"],
+                'res_model': save_data["model_name"],
+                'datas': save_data["file_data"],
+                'mimetype': save_data["mimetype"]
+            })

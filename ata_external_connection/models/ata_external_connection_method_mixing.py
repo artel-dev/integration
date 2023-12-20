@@ -25,5 +25,6 @@ class AtaExternalConnectionMethodMixing(models.AbstractModel):
 
         return model_id, model_name, model_desc
 
-
-
+    @api.model
+    def _get_ref_from_record(self, record):
+        return "%s,%s" % (record._name, record.id) if record else None
