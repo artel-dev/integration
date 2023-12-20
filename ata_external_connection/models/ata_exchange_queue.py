@@ -58,11 +58,29 @@ class AtaExchangeQueue(models.Model):
                         if self.env["ata.exchange.queue.usage"].use_immediate_exchange(method):
                             self.env.ref('ata_external_connection.ata_exchange_queue_cron_immediately')._trigger()
 
+    def test_queue(self):
+        records = self.sudo().search([
+            ('state_exchange', 'in', ('new', 'idle'))
+        ], limit=100)
+
+        self._check_ref_object(records)
+
+    def _check_ref_object(self, records):
+        # записи можуть бути видалені з БД, тому перед обміном перевіряємо, щоб вони ще були в БД
+        for record in records:
+            if not record.ref_object.exists():
+                record.unlink()
+                records -= record
+
+        return records
+
     def exchange(self, records=None):
         if not records:
             records = self.sudo().search([
                 ('state_exchange', 'in', ('new', 'idle'))
             ], limit=10)
+
+        records = self._check_ref_object(records)
 
         records.write({'state_exchange': 'in_exchange'})
 

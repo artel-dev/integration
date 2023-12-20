@@ -1,4 +1,4 @@
-from odoo import api, models, http
+from odoo import api, models
 from typing import Tuple
 
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod

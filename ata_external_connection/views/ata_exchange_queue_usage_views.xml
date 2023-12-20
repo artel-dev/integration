@@ -42,6 +42,19 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <record id="ata_exchange_queue_usage_action_test_queue" model="ir.actions.server">
+        <field name="name">Test queue</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_ata_exchange_queue_usage"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_test_queue()
+        </field>
+        <field name="binding_model_id" ref="ata_external_connection.model_ata_exchange_queue_usage"/>
+        <field name="binding_type">action</field>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
     <menuitem
             id="ata_exchange_queue_usage_menu"
             name="Exchange queue usage"
