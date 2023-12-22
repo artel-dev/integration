@@ -22,6 +22,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
     _re_exchanged = []
 
+    # --- outgoing exchange ---
     @api.model
     def start_exchange(self, record, method_name: str, immediately=False):
         method = self._get_method_for_name(method_name)
@@ -103,8 +104,8 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
         return result
 
-    @api.model
-    def _prepare_record(self, record, method: ExtMethod) -> (bool, bool):
+    @staticmethod
+    def _prepare_record(record, method: ExtMethod) -> (bool, bool):
         func_prepare_name = f'ata_prepare_exchange_{method.name.lower()}'
         return getattr(record, func_prepare_name)() \
             if hasattr(record, func_prepare_name)\
@@ -156,6 +157,45 @@ class AtaExternalConnectionBase(models.AbstractModel):
     def get_record_data_exchange_1c(self, record) -> dict:
         return self.get_record_data_exchange(record, "1c")
 
+    # --- incoming request ---
+    @api.model
+    def handle_request(self, request_data, method_name: str):
+        method = self._get_method_for_name(method_name)
+        if method:
+            result = self._handle_request_data_model(request_data, method)
+            response_str = self._formation_response(method, result)
+        else:
+            result = "Processing method not found"
+            response_str = self.response_form(result)
+
+        return response_str # self.env['ata.external.connection.json'].dumps(response_str)
+
+    @api.model
+    def _handle_request_data_model(self, request_data, method):
+        func_post_processing_name = f'ata_handle_request_{method.name.lower()}'
+        return getattr(self.env[method.model_name], func_post_processing_name)(request_data) \
+            if hasattr(self.env[method.model_name], func_post_processing_name) \
+            else False
+
+    @api.model
+    def _formation_response(self, method: ExtMethod, result) -> str:
+        func_post_processing_name = f'ata_formation_response_{method.name.lower()}'
+        return getattr(self.env[method.model_name], func_post_processing_name)(result) \
+            if hasattr(self.env[method.model_name], func_post_processing_name)\
+            else self.response_form(result)
+
+    @classmethod
+    def response_form(cls, result):
+        if isinstance(result, dict) or isinstance(result, str):
+            _response = {"Error": result}
+        elif result:
+            _response = {"Data": {"Status": True}}
+        else:
+            _response = {"Data": {"Status": False}}
+
+        return _response
+
+    # --- additional functions ---
     @api.model
     def save_attachment(self, save_data: dict) -> None:
         attachments_items = self.env["ir.attachment"].sudo().search(
