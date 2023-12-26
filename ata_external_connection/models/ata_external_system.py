@@ -95,10 +95,13 @@ class ExternalSystem(models.Model):
 
         if http_method not in ['GET', 'POST']:
             msg = f'{msg_prefix} unknown HTTP method {http_method}'
-            ext_request['result'] = msg
+            ext_request.update({
+                'result': msg,
+                'error': True,
+            })
             raise UserError(msg)
 
-        url = self.get_url(ext_request)
+        ext_request.update({'url': self.get_url(ext_request)})
         headers, auth = self.get_headers_auth(ext_request)
 
         start_date = datetime.now()
@@ -107,7 +110,7 @@ class ExternalSystem(models.Model):
         try:
             if http_method == 'GET':
                 response = requests.get(
-                    url=url,
+                    url=ext_request['url'],
                     params=params,
                     headers=headers,
                     auth=auth,
@@ -115,7 +118,7 @@ class ExternalSystem(models.Model):
                 )
             elif http_method == 'POST':
                 response = requests.post(
-                    url=url,
+                    url=ext_request['url'],
                     data=request_body,
                     headers=headers,
                     auth=auth,
@@ -125,16 +128,19 @@ class ExternalSystem(models.Model):
                 return False
 
         except Exception as e:
-            msg = f'{msg_prefix} Can’t execute the request from URL {url}'
+            msg = f'{msg_prefix} Can’t execute the request from URL {ext_request["url"]}'
             ext_request['result'] = msg
             _logger.warning(msg)
             logging.exception(e)
+            ext_request.update({
+                'result': msg,
+                'error': True,
+            })
             return False
 
         finish_date = datetime.now()
 
-        vals = {
-            'url': url,
+        ext_request.update({
             'status_code': response.status_code,
             'result': response.text,
             'headers': response.headers,
@@ -143,10 +149,7 @@ class ExternalSystem(models.Model):
             'number_of_attempts': ext_request["number_of_attempts"] + 1,
             'start_date': start_date,
             'finish_date': finish_date,
-        }
-
-        for key, value in vals.items():
-            ext_request[key] = value
+        })
 
         return True
 
@@ -225,29 +228,32 @@ class ExternalSystem(models.Model):
 
     def create_exchange_log(self, ext_request):
         exchange_id = ext_request["exchange_id"]
-
         exchange_log_manager = self.env['ata.exchange.log']
+
         log_vals = {
             'name': f'Exchange id: {exchange_id}, service: {ext_request["name"]}',
             'exchange_id': exchange_id,
             'system_id': self["id"],
             'server_address': self.server_address,
             'server_port': self.server_port,
-            'method_name': ext_request["method_name"],
-            'request_body': ext_request["request_body"],
-            'request': ext_request["url"],
-            'response': ext_request["result"],
             'headers': ext_request["headers"],
-            'status_code': ext_request["status_code"],
-            'create_date': ext_request["create_date"],
-            'is_executed': ext_request["is_executed"],
-            'execution_date': ext_request["execution_date"],
-            'is_processed': ext_request["is_processed"],
-            'processing_date': ext_request["processing_date"],
-            'number_of_attempts': ext_request["number_of_attempts"],
-            'start_date': ext_request["start_date"],
-            'finish_date': ext_request["finish_date"],
+            'method_name': ext_request["method_name"],
+            'request': ext_request["url"],
+            'request_body': ext_request["request_body"],
+            'response': ext_request["result"],
         }
+        if not ext_request.get('error', False):
+            log_vals.update({
+                'status_code': ext_request["status_code"],
+                'create_date': ext_request["create_date"],
+                'is_executed': ext_request["is_executed"],
+                'execution_date': ext_request["execution_date"],
+                'is_processed': ext_request["is_processed"],
+                'processing_date': ext_request["processing_date"],
+                'number_of_attempts': ext_request["number_of_attempts"],
+                'start_date': ext_request["start_date"],
+                'finish_date': ext_request["finish_date"],
+            })
         exchange_log_manager.create(log_vals)
 
     def action_test_connection(self):
