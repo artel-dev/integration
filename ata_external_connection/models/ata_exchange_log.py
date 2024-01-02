@@ -51,3 +51,6 @@ class ExchangeLog(models.Model):
         for obj in self:
             obj.day_delta = (datetime.today() -
                              (obj.start_date if isinstance(obj.start_date, datetime) else datetime.today())).days
+
+    def action_delete_all(self):
+        self.sudo().search([]).unlink()
