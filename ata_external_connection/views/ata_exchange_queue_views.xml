@@ -28,7 +28,7 @@
             <tree>
                 <header>
                     <button name="action_start_exchange" string="Start exchange"
-                            type="object" class="oe_highlight"></button>
+                            type="object" class="oe_highlight" />
                 </header>
                 <field name="ref_object"/>
                 <field name="state_exchange"/>
