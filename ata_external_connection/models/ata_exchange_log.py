@@ -8,6 +8,7 @@ class ExchangeLog(models.Model):
     """
     _name = 'ata.exchange.log'
     _description = 'Exchange log'
+    _order = 'start_date desc'
 
     name = fields.Char()
     exchange_id = fields.Char()
