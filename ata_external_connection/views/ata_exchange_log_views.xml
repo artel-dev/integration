@@ -165,7 +165,7 @@
             name="Exchange log"
             parent="ata_integration_menu_external_connection_general"
             action="ata_exchange_log_action"
-            sequence="10"
+            sequence="30"
     />
 
 </odoo>
