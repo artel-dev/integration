@@ -95,13 +95,13 @@ class GsheetTimesheetSyncWizard(models.TransientModel):
                     datetime.datetime.strftime(
                         line_id.date,
                         '%d.%m.%Y'
-                    ),
-                    line_id.project_id.name,
-                    line_id.task_id.name,
+                    ) if line_id.date else '',
+                    line_id.project_id.name if line_id.project_id else '',
+                    line_id.task_id.name if line_id.task_id else '',
                     section if section else '',
                     line_id.name,
                     line_id.unit_amount,
-                    line_id.employee_id.name,
+                    line_id.employee_id.name if line_id.employee_id else '',
                     line_id.partner_id.name if line_id.partner_id else '',
                 ])
 

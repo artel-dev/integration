@@ -94,13 +94,13 @@ class AccountAnalyticLine(models.Model):
                 'date': datetime.datetime.strftime(
                     self.date,
                     '%d.%m.%Y'
-                ),
-                'project': self.project_id.name,
-                'task': self.task_id.name,
+                ) if self.date else '',
+                'project': self.project_id.name if self.project_id else '',
+                'task': self.task_id.name if self.task_id else '',
                 'section': section if section else '',
                 'description': self.name,
                 'unit_amount': self.unit_amount,
-                'employee': self.employee_id.name,
+                'employee': self.employee_id.name if self.employee_id else '',
                 'partner': self.partner_id.name if self.partner_id else '',
             }
             try:
@@ -130,13 +130,13 @@ class AccountAnalyticLine(models.Model):
                 'date': datetime.datetime.strftime(
                     row.date,
                     '%d.%m.%Y'
-                ),
-                'project': row.project_id.name,
-                'task': row.task_id.name,
+                ) if row.date else '',
+                'project': row.project_id.name if row.project_id else '',
+                'task': row.task_id.name if row.task_id else '',
                 'section': section if section else '',
                 'description': row.name,
                 'unit_amount': row.unit_amount,
-                'employee': row.employee_id.name,
+                'employee': row.employee_id.name if row.employee_id else '',
                 'partner': row.partner_id.name if row.partner_id else '',
             }
             try:
