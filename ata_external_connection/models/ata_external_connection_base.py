@@ -1,5 +1,6 @@
 from odoo import api, models
 from typing import Tuple
+from odoo.tools.misc import get_lang
 
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
 
@@ -21,6 +22,10 @@ class AtaExternalConnectionBase(models.AbstractModel):
     _inherit = ['ata.external.connection.method.mixing']
 
     _re_exchanged = []
+
+    @api.model
+    def get_default_lang(self):
+        return 'en_US'
 
     # --- outgoing exchange ---
     @api.model
@@ -62,6 +67,8 @@ class AtaExternalConnectionBase(models.AbstractModel):
     @api.model
     def exchange(self, record, method: ExtMethod) -> bool:
         result = False
+        self = self.with_context(lang=self.get_default_lang())
+
         self._add_re_exchanged(record)
 
         ext_systems = self.env["ata.external.connection.domain"].get_ext_systems(record, method)
@@ -105,7 +112,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
         return result
 
     @staticmethod
-    def _prepare_record(record, method: ExtMethod) -> (bool, bool):
+    def _prepare_record(record, method: ExtMethod) -> Tuple[bool, bool]:
         func_prepare_name = f'ata_prepare_exchange_{method.name.lower()}'
         return getattr(record, func_prepare_name)() \
             if hasattr(record, func_prepare_name)\
@@ -114,7 +121,9 @@ class AtaExternalConnectionBase(models.AbstractModel):
     @api.model
     def _get_request_data(self, record, method: ExtMethod) -> dict:
         func_get_data_name = f'ata_get_data_exchange_{method.name.lower()}'
-        record_model = record if record else self.env[method.model_name]
+        record_model = record.with_context(lang=self.env.lang) \
+            if record \
+            else self.env[method.model_name].with_context(lang=self.env.lang)
 
         return getattr(record_model, func_get_data_name)() \
             if hasattr(record_model, func_get_data_name) \
@@ -200,8 +209,8 @@ class AtaExternalConnectionBase(models.AbstractModel):
     def save_attachment(self, save_data: dict) -> None:
         attachments_items = self.env["ir.attachment"].sudo().search(
             [("res_id", "=", save_data["record_id"]),
-             ('res_model', '=', save_data["model_name"]),
-             ('name', '=', save_data["file_name"])])
+            ('res_model', '=', save_data["model_name"]),
+            ('name', '=', save_data["file_name"])])
 
         if attachments_items:
             attachment = attachments_items[0]
