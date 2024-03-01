@@ -16,7 +16,7 @@ def timesheet_to_gsheet(row, values, service, spreadsheet_id, page_name):
         body={
             "valueInputOption": "USER_ENTERED",
             "data": [
-                {"range": f"{page_name}!A{row}:H",
+                {"range": f"{page_name}!A{row}:I",
                  "majorDimension": "ROWS",
                  "values": values}]}).execute()
 
@@ -64,7 +64,10 @@ class GsheetTimesheetSyncWizard(models.TransientModel):
                 range=f'{page_name}!A1:A',
                 majorDimension='COLUMNS'
             ).execute()
-            values = values['values'][0]
+            if 'values' in values:
+                values = values['values'][0]
+            else:
+                values = []
 
             _logger.info(f"got ids from google sheet")
 
