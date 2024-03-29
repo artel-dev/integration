@@ -155,16 +155,16 @@ class AtaExternalConnectionBase(models.AbstractModel):
             if hasattr(record, func_post_processing_name) else True
 
     @staticmethod
-    def get_record_data_exchange(record, type_exchange: str = "") -> dict:
+    def get_record_data_exchange(record, type_exchange: str = "", **kwargs) -> dict:
         if record and type_exchange:
             func_get_data_name = f'ata_get_data_exchange_{type_exchange}'
-            return getattr(record, func_get_data_name)() if hasattr(record, func_get_data_name) else {}
+            return getattr(record, func_get_data_name)(**kwargs) if hasattr(record, func_get_data_name) else {}
         else:
             return {}
 
     @api.model
-    def get_record_data_exchange_1c(self, record) -> dict:
-        return self.get_record_data_exchange(record, "1c")
+    def get_record_data_exchange_1c(self, record, **kwargs) -> dict:
+        return self.get_record_data_exchange(record, "1c", **kwargs)
 
     # --- incoming request ---
     @api.model
