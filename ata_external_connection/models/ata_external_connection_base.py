@@ -34,7 +34,8 @@ class AtaExternalConnectionBase(models.AbstractModel):
         if method and self.need_exchange(method) and not self._record_in_re_exchanged(record):
             # checking the need to add for exchange queue
             if immediately is False and self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
-                self.add_exchange_queue(record, method)
+                if self._prepare_record(record, method)[0]:
+                    self.add_exchange_queue(record, method)
             else:
                 self.exchange(record, method)
 
@@ -112,6 +113,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
         return result
 
     @staticmethod
+    # return [continue_exchange, delete_from_queue]
     def _prepare_record(record, method: ExtMethod) -> Tuple[bool, bool]:
         func_prepare_name = f'ata_prepare_exchange_{method.name.lower()}'
         return getattr(record, func_prepare_name)() \
