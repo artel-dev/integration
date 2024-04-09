@@ -34,7 +34,8 @@ class AtaExternalConnectionBase(models.AbstractModel):
         if method and self.need_exchange(method) and not self._record_in_re_exchanged(record):
             # checking the need to add for exchange queue
             if immediately is False and self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
-                self.add_exchange_queue(record, method)
+                if self._prepare_record(record, method)[0]:
+                    self.add_exchange_queue(record, method)
             else:
                 self.exchange(record, method)
 
@@ -112,6 +113,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
         return result
 
     @staticmethod
+    # return [continue_exchange, delete_from_queue]
     def _prepare_record(record, method: ExtMethod) -> Tuple[bool, bool]:
         func_prepare_name = f'ata_prepare_exchange_{method.name.lower()}'
         return getattr(record, func_prepare_name)() \
@@ -155,16 +157,16 @@ class AtaExternalConnectionBase(models.AbstractModel):
             if hasattr(record, func_post_processing_name) else True
 
     @staticmethod
-    def get_record_data_exchange(record, type_exchange: str = "") -> dict:
+    def get_record_data_exchange(record, type_exchange: str = "", **kwargs) -> dict:
         if record and type_exchange:
             func_get_data_name = f'ata_get_data_exchange_{type_exchange}'
-            return getattr(record, func_get_data_name)() if hasattr(record, func_get_data_name) else {}
+            return getattr(record, func_get_data_name)(**kwargs) if hasattr(record, func_get_data_name) else {}
         else:
             return {}
 
     @api.model
-    def get_record_data_exchange_1c(self, record) -> dict:
-        return self.get_record_data_exchange(record, "1c")
+    def get_record_data_exchange_1c(self, record, **kwargs) -> dict:
+        return self.get_record_data_exchange(record, "1c", **kwargs)
 
     # --- incoming request ---
     @api.model
