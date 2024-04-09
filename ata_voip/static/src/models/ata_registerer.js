@@ -7,7 +7,7 @@ registerPatch({
     name: "Registerer",
     lifecycleHooks: {
         _created() {
-            const sipJsRegisterer = new window.SIP.Registerer(this.userAgent.__sipJsUserAgent, { expires: 60 });
+            const sipJsRegisterer = new window.SIP.Registerer(this.userAgent.__sipJsUserAgent, { expires: 180 });
             sipJsRegisterer.stateChange.addListener((state) => this.update({ state }));
             this.update({
                 state: sipJsRegisterer.state,
