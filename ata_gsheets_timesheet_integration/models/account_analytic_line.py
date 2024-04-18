@@ -54,7 +54,7 @@ class AccountAnalyticLine(models.Model):
             body={
                 "valueInputOption": "USER_ENTERED",
                 "data": [
-                    {"range": f"{ata_page_name}!A{row}:H",
+                    {"range": f"{ata_page_name}!A{row}:I",
                      "majorDimension": "ROWS",
                      "values": [[
                          vals['id'] if action != 'unlink' else '',
@@ -65,6 +65,7 @@ class AccountAnalyticLine(models.Model):
                          vals['description'] if action != 'unlink' else '',
                          vals['unit_amount'] if action != 'unlink' else '',
                          vals['employee'] if action != 'unlink' else '',
+                         vals['partner'] if action != 'unlink' else '',
                      ]]}]}).execute()
 
     def write(self, vals):
@@ -87,20 +88,20 @@ class AccountAnalyticLine(models.Model):
         if any(x in vals for x in field_list):
             section = dict(self.task_id._fields['ata_section'].selection).get(
                 self.task_id.ata_section)
-            print('section', section)
 
             import_dict = {
                 'id': self.id,
                 'date': datetime.datetime.strftime(
                     self.date,
                     '%d.%m.%Y'
-                ),
-                'project': self.project_id.name,
-                'task': self.task_id.name,
+                ) if self.date else '',
+                'project': self.project_id.name if self.project_id else '',
+                'task': self.task_id.name if self.task_id else '',
                 'section': section if section else '',
                 'description': self.name,
                 'unit_amount': self.unit_amount,
-                'employee': self.employee_id.name,
+                'employee': self.employee_id.name if self.employee_id else '',
+                'partner': self.partner_id.name if self.partner_id else '',
             }
             try:
                 self.write_timesheet_to_google_sheet(
@@ -110,7 +111,7 @@ class AccountAnalyticLine(models.Model):
             except Exception as exc:
                 _logger.error(f"write error: {exc}")
         return res
-    
+
     def create(self, vals_list):
         with_user = self.env['ir.config_parameter'].sudo()
         ata_active = with_user.get_param(
@@ -129,13 +130,14 @@ class AccountAnalyticLine(models.Model):
                 'date': datetime.datetime.strftime(
                     row.date,
                     '%d.%m.%Y'
-                ),
-                'project': row.project_id.name,
-                'task': row.task_id.name,
+                ) if row.date else '',
+                'project': row.project_id.name if row.project_id else '',
+                'task': row.task_id.name if row.task_id else '',
                 'section': section if section else '',
                 'description': row.name,
                 'unit_amount': row.unit_amount,
-                'employee': row.employee_id.name,
+                'employee': row.employee_id.name if row.employee_id else '',
+                'partner': row.partner_id.name if row.partner_id else '',
             }
             try:
                 self.write_timesheet_to_google_sheet(

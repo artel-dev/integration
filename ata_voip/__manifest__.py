@@ -1,7 +1,7 @@
 {
     'name': 'VOIP customization',
     'summary': 'VOIP customization',
-    'version': '16.0.1.0.1',
+    'version': '16.0.1.0.2',
     'category': 'VOIP',
     'author': 'ToDo',
     'website': 'https://it-artel.ua',

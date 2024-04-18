@@ -44,6 +44,10 @@
         <field name="model">ata.exchange.log</field>
         <field name="arch" type="xml">
             <tree>
+                <header>
+                    <button name="action_delete_all" string="Delete all"
+                            type="object" confirm="Do you want to delete all entries from the exchange log?"/>
+                </header>
                 <field name="name"/>
                 <field name="server_address"/>
                 <field name="server_port"/>
@@ -161,7 +165,7 @@
             name="Exchange log"
             parent="ata_integration_menu_external_connection_general"
             action="ata_exchange_log_action"
-            sequence="10"
+            sequence="30"
     />
 
 </odoo>

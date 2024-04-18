@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="ata_external_connection_domain_view_form" model="ir.ui.view">
+        <field name="name">Domain for ext. system form view</field>
+        <field name="model">ata.external.connection.domain</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="method"/>
+                        <field name="model_name" invisible="1" />
+                        <field name="model_id" readonly="1"
+                            attrs="{'invisible': [('model_id', '=', False)]}"/>
+                        <field name="domain" widget="domain"
+                            options="{'model': 'model_name', 'in_dialog': True}"
+                            attrs="{'invisible': [('model_id', '=', False)]}"/>
+                        <field name="ext_system"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_external_connection_domain_view_tree" model="ir.ui.view">
+        <field name="name">Domain for ext. system list view</field>
+        <field name="model">ata.external.connection.domain</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!--<field name="model_name"/>-->
+                <field name="method" required="1"/>
+                <field name="domain"/>
+                <field name="ext_system"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ata_external_connection_domain_action" model="ir.actions.act_window">
+        <field name="name">Domain for ext. system</field>
+        <field name="res_model">ata.external.connection.domain</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="ata_external_connection_domain"
+            name="Domain for ext. systems"
+            parent="ata_integration_menu_external_connection_config"
+            action="ata_external_connection_domain_action"
+            sequence="30"
+    />
+</odoo>

@@ -16,7 +16,7 @@ def timesheet_to_gsheet(row, values, service, spreadsheet_id, page_name):
         body={
             "valueInputOption": "USER_ENTERED",
             "data": [
-                {"range": f"{page_name}!A{row}:H",
+                {"range": f"{page_name}!A{row}:I",
                  "majorDimension": "ROWS",
                  "values": values}]}).execute()
 
@@ -64,7 +64,10 @@ class GsheetTimesheetSyncWizard(models.TransientModel):
                 range=f'{page_name}!A1:A',
                 majorDimension='COLUMNS'
             ).execute()
-            values = values['values'][0]
+            if 'values' in values:
+                values = values['values'][0]
+            else:
+                values = []
 
             _logger.info(f"got ids from google sheet")
 
@@ -95,13 +98,14 @@ class GsheetTimesheetSyncWizard(models.TransientModel):
                     datetime.datetime.strftime(
                         line_id.date,
                         '%d.%m.%Y'
-                    ),
-                    line_id.project_id.name,
-                    line_id.task_id.name,
+                    ) if line_id.date else '',
+                    line_id.project_id.name if line_id.project_id else '',
+                    line_id.task_id.name if line_id.task_id else '',
                     section if section else '',
                     line_id.name,
                     line_id.unit_amount,
-                    line_id.employee_id.name
+                    line_id.employee_id.name if line_id.employee_id else '',
+                    line_id.partner_id.name if line_id.partner_id else '',
                 ])
 
                 if len(values) >= 100:

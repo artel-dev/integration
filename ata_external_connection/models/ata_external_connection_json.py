@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 import json
 from dateutil.parser import parse
 
@@ -7,13 +7,13 @@ from odoo import models
 
 class AtaCustomFieldEncoderJSON(json.JSONEncoder):
     def default(self, obj):
-        if isinstance(obj, datetime):
+        if isinstance(obj, datetime) or isinstance(obj, date):
             return obj.strftime("%Y-%m-%dT%H:%M:%S")
         return super().default(obj)
 
 
 class AtaJson(models.AbstractModel):
-    _name = 'ata_external_connection.ata_json'
+    _name = 'ata.external.connection.json'
     _description = 'Convert json functions (ATA)'
 
     @staticmethod

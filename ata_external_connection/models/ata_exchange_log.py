@@ -8,6 +8,7 @@ class ExchangeLog(models.Model):
     """
     _name = 'ata.exchange.log'
     _description = 'Exchange log'
+    _order = 'start_date desc'
 
     name = fields.Char()
     exchange_id = fields.Char()
@@ -49,4 +50,8 @@ class ExchangeLog(models.Model):
     @api.depends('start_date')
     def _compute_day_delta(self):
         for obj in self:
-            obj.day_delta = (datetime.today() - obj.start_date).days
+            obj.day_delta = (datetime.today() -
+                             (obj.start_date if isinstance(obj.start_date, datetime) else datetime.today())).days
+
+    def action_delete_all(self):
+        self.sudo().search([]).unlink()
