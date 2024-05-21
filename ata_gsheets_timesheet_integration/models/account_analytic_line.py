@@ -54,7 +54,7 @@ class AccountAnalyticLine(models.Model):
             body={
                 "valueInputOption": "USER_ENTERED",
                 "data": [
-                    {"range": f"{ata_page_name}!A{row}:I",
+                    {"range": f"{ata_page_name}!A{row}:J",
                      "majorDimension": "ROWS",
                      "values": [[
                          vals['id'] if action != 'unlink' else '',
@@ -66,6 +66,7 @@ class AccountAnalyticLine(models.Model):
                          vals['unit_amount'] if action != 'unlink' else '',
                          vals['employee'] if action != 'unlink' else '',
                          vals['partner'] if action != 'unlink' else '',
+                         vals['ata_user_id'] if action != 'unlink' else '',
                      ]]}]}).execute()
 
     def write(self, vals):
@@ -84,6 +85,7 @@ class AccountAnalyticLine(models.Model):
             'unit_amount',
             'task_id',
             'project_id'
+            'ata_user_id'
         ]
         if any(x in vals for x in field_list):
             section = dict(self.task_id._fields['ata_section'].selection).get(
@@ -102,6 +104,7 @@ class AccountAnalyticLine(models.Model):
                 'unit_amount': self.unit_amount,
                 'employee': self.employee_id.name if self.employee_id else '',
                 'partner': self.partner_id.name if self.partner_id else '',
+                'ata_user_id': self.task_id.ata_user_id.name if self.task_id and self.task_id.ata_user_id else '',
             }
             try:
                 self.write_timesheet_to_google_sheet(
@@ -138,6 +141,7 @@ class AccountAnalyticLine(models.Model):
                 'unit_amount': row.unit_amount,
                 'employee': row.employee_id.name if row.employee_id else '',
                 'partner': row.partner_id.name if row.partner_id else '',
+                'ata_user_id': row.task_id.ata_user_id.name if row.task_id and row.task_id.ata_user_id else '',
             }
             try:
                 self.write_timesheet_to_google_sheet(

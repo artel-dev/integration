@@ -1,0 +1,197 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ata_gsheets_lead_integration
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-05-21 09:18+0000\n"
+"PO-Revision-Date: 2024-05-21 09:18+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_res_config_settings__ata_lead_active
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Active"
+msgstr "Активний"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model,name:ata_gsheets_lead_integration.model_mail_activity
+msgid "Activity"
+msgstr "Дія"
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.lead_sync_gsheet_wizard_form
+msgid "Cancel"
+msgstr "Відмінити"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model,name:ata_gsheets_lead_integration.model_res_config_settings
+msgid "Config Settings"
+msgstr "Параметри конфігурації"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_gsheet_lead_sync_wizard__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_gsheet_lead_sync_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_res_config_settings__ata_lead_credentials
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Credentials"
+msgstr "Облікові данні"
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Credentials json"
+msgstr "Облікові данні"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_gsheet_lead_sync_wizard__ata_date_form
+msgid "Date form"
+msgstr "Дата з"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_gsheet_lead_sync_wizard__ata_date_to
+msgid "Date to"
+msgstr "Дата до"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_gsheet_lead_sync_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Google Sheet page action name"
+msgstr "Назва стрінки для Дій"
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Google Sheet page lead name"
+msgstr "Назва стрінки для Лідів"
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Google Sheet page opportunity name"
+msgstr "Назва стрінки для Нагод"
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Google sheet lead"
+msgstr "Google sheet CRM"
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Google sheet lead integration"
+msgstr "Google sheet CRM integration"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_gsheet_lead_sync_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Is integration active"
+msgstr "Чи інтеграція активна"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_gsheet_lead_sync_wizard____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_gsheet_lead_sync_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_gsheet_lead_sync_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_lead_integration.selection__gsheet_lead_sync_wizard__ata_type__lead
+msgid "Lead"
+msgstr "Лід"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model,name:ata_gsheets_lead_integration.model_crm_lead
+msgid "Lead/Opportunity"
+msgstr "Лід/Нагода"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields.selection,name:ata_gsheets_lead_integration.selection__gsheet_lead_sync_wizard__ata_type__opportunity
+msgid "Opportunity"
+msgstr "Нагода"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_res_config_settings__ata_lead_page_action_name
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Page action name"
+msgstr "Сторінка для Дій"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_res_config_settings__ata_lead_page_lead_name
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Page lead name"
+msgstr "Сторінка для Лідів"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_res_config_settings__ata_lead_page_opportunity_name
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Page opportunity name"
+msgstr "Сторінка для Нагод"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.actions.act_window,name:ata_gsheets_lead_integration.pbx_config_settings_google_sheet_lead_action
+msgid "Settings"
+msgstr "Налаштування"
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Spreadsheet ID"
+msgstr "Ідентифікатор електронної таблиці"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_res_config_settings__ata_lead_spreadsheet_id
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Spreadsheet id"
+msgstr "Ідентифікатор електронної таблиці"
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.lead_sync_gsheet_wizard_form
+msgid "Sync"
+msgstr "Синхронізувати"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.actions.act_window,name:ata_gsheets_lead_integration.lead_sync_gsheet_wizard_action
+msgid "Sync lead with Google sheet"
+msgstr "Синхронізувати ліді"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model,name:ata_gsheets_lead_integration.model_gsheet_lead_sync_wizard
+msgid "Sync lead with google sheet"
+msgstr "Синхронізувати ліді"
+
+#. module: ata_gsheets_lead_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_lead_integration.res_config_settings_view_form_inherit_google_lead
+msgid "Synchronize"
+msgstr "Синхронізувати"
+
+#. module: ata_gsheets_lead_integration
+#: model:ir.model.fields,field_description:ata_gsheets_lead_integration.field_gsheet_lead_sync_wizard__ata_type
+msgid "Type"
+msgstr "Тип"
