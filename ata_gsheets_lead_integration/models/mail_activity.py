@@ -65,9 +65,7 @@ class MailActivity(models.Model):
 
     def _action_done(self, feedback=False, attachment_ids=None):
         import_dict = {
-            'id': self.id,
             'activity_type_id': self.activity_type_id.name if self.activity_type_id else '',
-            'user_id': self.user_id.name if self.user_id else '',
             'date': datetime.datetime.strftime(fields.datetime.now(),
                                                '%d.%m.%Y') if fields.datetime.now() else '',
         }
@@ -80,6 +78,14 @@ class MailActivity(models.Model):
 
         with_user = self.env['ir.config_parameter'].sudo()
         ata_active = with_user.get_param('ata_gsheets_lead_integration.ata_lead_active')
+
+        if isinstance(res, tuple):
+            if res[0] and res[0]._name == 'mail.message':
+                import_dict['id'] = res[0].id
+                import_dict['user_id'] = res[0].author_id.name if res[0].author_id else ''
+        else:
+            _logger.error(f"res don't contain 'mail.message'")
+            return res
 
         if ata_active:
             try:

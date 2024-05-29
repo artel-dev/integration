@@ -60,4 +60,10 @@
         <field name="target">inline</field>
         <field name="context">{'module' : 'ata_gsheets_lead_integration'}</field>
     </record>
+
+    <menuitem id="menu_gsheet_sync"
+        name="Gsheet sync"
+        sequence="20"
+        parent="crm.crm_menu_config"
+        action="lead_sync_gsheet_wizard_action"/>
 </odoo>
