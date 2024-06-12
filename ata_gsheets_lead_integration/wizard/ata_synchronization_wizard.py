@@ -59,7 +59,7 @@ class GsheetLeadSyncWizard(models.TransientModel):
         if self.ata_type == 'lead':
             ata_column_max = 'K'
         elif self.ata_type == 'opportunity':
-            ata_column_max = 'M'
+            ata_column_max = 'O'
         else:
             ata_column_max = 'D'
 
@@ -171,6 +171,7 @@ class GsheetLeadSyncWizard(models.TransientModel):
                 ata_targeted = dict(
                     line_id._fields['ata_targeted'].selection).get(
                     line_id.ata_targeted)
+                lost = line_id.probability > 0 or line_id.active
 
                 old_stage = False
                 old_stage_date = False
@@ -198,6 +199,8 @@ class GsheetLeadSyncWizard(models.TransientModel):
                     ata_targeted if ata_targeted else '',
                     line_id.medium_id.name if line_id.medium_id else '',
                     line_id.source_id.name if line_id.source_id else '',
+                    not lost,
+                    line_id.lost_reason_id.name if line_id.lost_reason_id else '',
                 ])
 
                 if len(values) >= 100:
