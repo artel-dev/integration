@@ -16,7 +16,7 @@ def timesheet_to_gsheet(row, values, service, spreadsheet_id, page_name):
         body={
             "valueInputOption": "USER_ENTERED",
             "data": [
-                {"range": f"{page_name}!A{row}:J",
+                {"range": f"{page_name}!A{row}:K",
                  "majorDimension": "ROWS",
                  "values": values}]}).execute()
 
@@ -107,6 +107,7 @@ class GsheetTimesheetSyncWizard(models.TransientModel):
                     line_id.employee_id.name if line_id.employee_id else '',
                     line_id.partner_id.name if line_id.partner_id else '',
                     line_id.task_id.ata_user_id.name if line_id.task_id and line_id.task_id.ata_user_id else '',
+                    line_id.task_id.milestone_id.name if line_id.task_id and line_id.task_id.milestone_id else '',
                 ])
 
                 if len(values) >= 100:
