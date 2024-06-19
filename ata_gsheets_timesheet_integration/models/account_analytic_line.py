@@ -1,4 +1,4 @@
-from odoo import models
+from odoo import models, SUPERUSER_ID
 import datetime
 import logging
 import json
@@ -89,6 +89,7 @@ class AccountAnalyticLine(models.Model):
             'ata_user_id'
         ]
         if any(x in vals for x in field_list):
+            self = self.with_user(SUPERUSER_ID)
             section = dict(self.task_id._fields['ata_section'].selection).get(
                 self.task_id.ata_section)
 
@@ -127,6 +128,7 @@ class AccountAnalyticLine(models.Model):
             return res
 
         for row in res:
+            row = row.with_user(SUPERUSER_ID)
             section = dict(row.task_id._fields['ata_section'].selection).get(
                 row.task_id.ata_section)
 
