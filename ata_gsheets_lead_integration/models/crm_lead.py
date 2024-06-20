@@ -13,6 +13,39 @@ _logger = logging.getLogger('google_sheet')
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
+    def create_opportunity(self, row):
+        ata_targeted = dict(row._fields['ata_targeted'].selection).get(
+            row.ata_targeted)
+        lost = row.probability > 0 or row.active
+
+        import_dict = {
+            'id': row.id,
+            'create_date': datetime.datetime.strftime(row.create_date,
+                                                      '%d.%m.%Y') if row.create_date else '',
+            'date_conversion': datetime.datetime.strftime(row.date_conversion,
+                                                          '%d.%m.%Y') if row.date_conversion else '',
+            'last_change_stage': '',
+            'name_stage_before': '',
+            'company_id': row.company_id.name if row.company_id else '',
+            'team_id': row.team_id.name if row.team_id else '',
+            'user_id': row.user_id.name if row.user_id else '',
+            'ata_leadgen_id': row.ata_leadgen_id.name if row.ata_leadgen_id else '',
+            'stage_id': row.stage_id.name if row.stage_id else '',
+            'ata_targeted': ata_targeted if ata_targeted else '',
+            'medium_id': row.medium_id.name if row.medium_id else '',
+            'source_id': row.source_id.name if row.source_id else '',
+            'lost': not lost,
+            'lost_reason_id': row.lost_reason_id.name if row.lost_reason_id else '',
+        }
+        try:
+            self.write_lead_to_google_sheet(
+                import_dict,
+                row.type,
+                action='create'
+            )
+        except Exception as exc:
+            _logger.error(f"create error: {exc}")
+
     def write_lead_to_google_sheet(self, vals, page, action='create',):
         with_user = self.env['ir.config_parameter'].sudo()
         ata_spreadsheet_id = with_user.get_param(
@@ -106,10 +139,21 @@ class CrmLead(models.Model):
             old_stage = self.stage_id.name
 
         res = super().write(vals)
+
         if not ata_active:
             return res
 
-        if self.type == 'lead':
+        if 'type' in vals:
+            self.create_opportunity(self)
+
+        lead_and_opportunity = False
+        for message in self.message_ids:
+            if message.tracking_value_ids:
+                for value_id in message.tracking_value_ids:
+                    if value_id.field.name == 'type':
+                        lead_and_opportunity = True
+
+        if self.type == 'lead' or lead_and_opportunity:
             field_list = [
                 'create_date',
                 'user_id',
@@ -144,12 +188,12 @@ class CrmLead(models.Model):
                 try:
                     self.write_lead_to_google_sheet(
                         import_dict,
-                        self.type,
+                        'lead',
                         action='write'
                     )
                 except Exception as exc:
                     _logger.error(f"write error: {exc}")
-        else:
+        if self.type == 'opportunity' or lead_and_opportunity:
             field_list = [
                 'create_date',
                 'date_conversion',
@@ -192,7 +236,7 @@ class CrmLead(models.Model):
                 try:
                     self.write_lead_to_google_sheet(
                         import_dict,
-                        self.type,
+                        'opportunity',
                         action='write'
                     )
                 except Exception as exc:
@@ -236,37 +280,7 @@ class CrmLead(models.Model):
                 except Exception as exc:
                     _logger.error(f"create error: {exc}")
             else:
-                ata_targeted = dict(row._fields['ata_targeted'].selection).get(
-                    row.ata_targeted)
-                lost = row.probability > 0 or row.active
-
-                import_dict = {
-                    'id': row.id,
-                    'create_date': datetime.datetime.strftime(row.create_date,
-                                                              '%d.%m.%Y') if row.create_date else '',
-                    'date_conversion': datetime.datetime.strftime(row.date_conversion,
-                                                              '%d.%m.%Y') if row.date_conversion else '',
-                    'last_change_stage': '',
-                    'name_stage_before': '',
-                    'company_id': row.company_id.name if row.company_id else '',
-                    'team_id': row.team_id.name if row.team_id else '',
-                    'user_id': row.user_id.name if row.user_id else '',
-                    'ata_leadgen_id': row.ata_leadgen_id.name if row.ata_leadgen_id else '',
-                    'stage_id': row.stage_id.name if row.stage_id else '',
-                    'ata_targeted': ata_targeted if ata_targeted else '',
-                    'medium_id': row.medium_id.name if row.medium_id else '',
-                    'source_id': row.source_id.name if row.source_id else '',
-                    'lost': not lost,
-                    'lost_reason_id': row.lost_reason_id.name if row.lost_reason_id else '',
-                }
-                try:
-                    self.write_lead_to_google_sheet(
-                        import_dict,
-                        row.type,
-                        action='create'
-                    )
-                except Exception as exc:
-                    _logger.error(f"create error: {exc}")
+                self.create_opportunity(row)
 
         return res
 
