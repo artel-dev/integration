@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class AccountAnalyticLine(models.Model):
@@ -27,3 +27,27 @@ class AccountAnalyticLine(models.Model):
             ('calendar', 'Календар'),
         ]
     )
+    ata_user_id = fields.Many2one(
+        comodel_name='res.users',
+        string='Project Manager'
+    )
+
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'project_id' in res:
+            if res['project_id']:
+                project_id = self.env['project.project'].browse(res['project_id'])
+                project_manager = project_id.user_id
+                res['ata_user_id'] = project_manager.id if project_manager else False
+        return res
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'project_id' in vals and 'ata_user_id' not in vals:
+                if vals['project_id']:
+                    project_id = self.env['project.project'].browse(vals['project_id'])
+                    project_manager = project_id.user_id
+                    vals['ata_user_id'] = project_manager.id if project_manager else False
+        res = super().create(vals_list)
+        return res
