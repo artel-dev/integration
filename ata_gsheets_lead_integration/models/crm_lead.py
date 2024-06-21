@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, SUPERUSER_ID
 import datetime
 import logging
 import json
@@ -147,7 +147,8 @@ class CrmLead(models.Model):
             self.create_opportunity(self)
 
         lead_and_opportunity = False
-        for message in self.message_ids:
+        super_self = self.with_user(SUPERUSER_ID)
+        for message in super_self.message_ids:
             if message.tracking_value_ids:
                 for value_id in message.tracking_value_ids:
                     if value_id.field.name == 'type':
