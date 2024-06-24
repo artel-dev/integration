@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, SUPERUSER_ID
 import logging
 import datetime
 import json
@@ -77,6 +77,8 @@ class GsheetLeadSyncWizard(models.TransientModel):
 
     def google_lead_sync(self):
         spreadsheet_id, page_name, service, column_max = self.google_authorization()
+
+        self = self.with_user(SUPERUSER_ID)
 
         values = service.spreadsheets().values().get(
             spreadsheetId=spreadsheet_id,
