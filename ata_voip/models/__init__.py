@@ -1,3 +1,3 @@
-from . import ata_voip_phonecall
+from . import ata_voip_call
 
-AtaVoipPhoneCall = ata_voip_phonecall.AtaVoipPhoneCall
+AtaVoipCall = ata_voip_call.AtaVoipCall

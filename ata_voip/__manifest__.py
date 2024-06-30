@@ -1,12 +1,12 @@
 {
     'name': 'VOIP customization',
     'summary': 'VOIP customization',
-    'version': '16.0.1.0.2',
+    'version': '17.0.1.0.0',
     'category': 'VOIP',
     'author': 'ToDo',
     'website': 'https://it-artel.ua',
     'license': 'OPL-1',
-    'depends': ['base', 'voip', 'mail', 'web', 'web_mobile'],
+    'depends': ['voip', 'crm'],
     'installable': True,
     'application': True,
     'assets': {
