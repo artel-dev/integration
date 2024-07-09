@@ -5,6 +5,8 @@ import { patch } from "@web/core/utils/patch";
 
 patch(Registerer.prototype, {
 
+    static EXPIRATION_INTERVAL = 180;
+
     constructor(voip, sipJsUserAgent) {
         this.voip = voip;
         this.__sipJsRegisterer = new SIP.Registerer(sipJsUserAgent, {
