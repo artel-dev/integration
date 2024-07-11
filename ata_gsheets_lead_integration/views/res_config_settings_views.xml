@@ -6,47 +6,85 @@
         <field name="priority" eval="5"/>
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('settings')]" position="inside">
-                <div class="app_settings_block" data-string="ata_gsheets_lead_integration" string="Google sheet lead" data-key="ata_gsheets_lead_integration">
-                    <h2>Google sheet lead integration</h2>
-                    <div class="col-xs-12 row o_settings_container" id="website_info_settings">
-                        <div class="col-xs-12 col-md-6 o_setting_box">
-                            <div class="o_setting_right_pane border-start-0">
-                                <div class="content-group">
-                                    <div class="row mt8">
-                                        <label class="col-lg-3" string="Active" for="ata_lead_active"/>
-                                        <field name="ata_lead_active" widget="boolean_toggle" title="Is integration active"/>
-                                    </div>
-                                    <div class="row mt8">
-                                        <label class="col-lg-3" string="Spreadsheet id" for="ata_lead_spreadsheet_id"/>
-                                        <field name="ata_lead_spreadsheet_id" title="Spreadsheet ID"/>
-                                    </div>
-                                    <div class="row mt8">
-                                        <label class="col-lg-3" string="Credentials" for="ata_lead_credentials"/>
-                                        <field name="ata_lead_credentials" title="Credentials json"/>
-                                    </div>
-                                    <div class="row mt8">
-                                        <label class="col-lg-3" string="Page action name" for="ata_lead_page_action_name"/>
-                                        <field name="ata_lead_page_action_name" title="Google Sheet page action name"/>
-                                    </div>
-                                    <div class="row mt8">
-                                        <label class="col-lg-3" string="Page lead name" for="ata_lead_page_lead_name"/>
-                                        <field name="ata_lead_page_lead_name" title="Google Sheet page lead name"/>
-                                    </div>
-                                    <div class="row mt8">
-                                        <label class="col-lg-3" string="Page opportunity name" for="ata_lead_page_opportunity_name"/>
-                                        <field name="ata_lead_page_opportunity_name" title="Google Sheet page opportunity name"/>
-                                    </div>
-                                    <div class="mt16">
-                                        <button name="%(lead_sync_gsheet_wizard_action)d" type="action"
-                                            string="Synchronize"
-                                            class="btn-primary"/>
-                                    </div>
-                                </div>
+            <xpath expr="//form" position="inside">
+                <app data-string="Google sheet lead"
+                     string="Google sheet lead"
+                     name="ata_gsheets_lead_integration">
+                    <block title="Google sheet lead integration"
+                           name="ata_gsheets_lead_integration_settings">
+                        <setting id="ata_gsheets_lead_integration_setting"
+                                 string="Integration active"
+                                 help="Set integration parameters">
+                            <field name="ata_lead_active"/>
+                            <div class="row mt8">
+                                <label class="col-lg-3" string="Spreadsheet id" for="ata_lead_spreadsheet_id"/>
+                                <field name="ata_lead_spreadsheet_id" title="Spreadsheet ID"/>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                            <div class="row mt8">
+                                <label class="col-lg-3" string="Credentials" for="ata_lead_credentials"/>
+                                <field name="ata_lead_credentials" title="Credentials json"/>
+                            </div>
+                            <div class="row mt8">
+                                <label class="col-lg-3" string="Page action name" for="ata_lead_page_action_name"/>
+                                <field name="ata_lead_page_action_name" title="Google Sheet page action name"/>
+                            </div>
+                            <div class="row mt8">
+                                <label class="col-lg-3" string="Page lead name" for="ata_lead_page_lead_name"/>
+                                <field name="ata_lead_page_lead_name" title="Google Sheet page lead name"/>
+                            </div>
+                            <div class="row mt8">
+                                <label class="col-lg-3" string="Page opportunity name" for="ata_lead_page_opportunity_name"/>
+                                <field name="ata_lead_page_opportunity_name" title="Google Sheet page opportunity name"/>
+                            </div>
+                            <div class="mt16">
+                                <button name="%(lead_sync_gsheet_wizard_action)d" type="action"
+                                    string="Synchronize"
+                                    class="btn-primary"/>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+
+<!--                <div class="app_settings_block" data-string="ata_gsheets_lead_integration" string="Google sheet lead" data-key="ata_gsheets_lead_integration">-->
+<!--                    <h2>Google sheet lead integration</h2>-->
+<!--                    <div class="col-xs-12 row o_settings_container" id="website_info_settings">-->
+<!--                        <div class="col-xs-12 col-md-6 o_setting_box">-->
+<!--                            <div class="o_setting_right_pane border-start-0">-->
+<!--                                <div class="content-group">-->
+<!--                                    <div class="row mt8">-->
+<!--                                        <label class="col-lg-3" string="Active" for="ata_lead_active"/>-->
+<!--                                        <field name="ata_lead_active" widget="boolean_toggle" title="Is integration active"/>-->
+<!--                                    </div>-->
+<!--                                    <div class="row mt8">-->
+<!--                                        <label class="col-lg-3" string="Spreadsheet id" for="ata_lead_spreadsheet_id"/>-->
+<!--                                        <field name="ata_lead_spreadsheet_id" title="Spreadsheet ID"/>-->
+<!--                                    </div>-->
+<!--                                    <div class="row mt8">-->
+<!--                                        <label class="col-lg-3" string="Credentials" for="ata_lead_credentials"/>-->
+<!--                                        <field name="ata_lead_credentials" title="Credentials json"/>-->
+<!--                                    </div>-->
+<!--                                    <div class="row mt8">-->
+<!--                                        <label class="col-lg-3" string="Page action name" for="ata_lead_page_action_name"/>-->
+<!--                                        <field name="ata_lead_page_action_name" title="Google Sheet page action name"/>-->
+<!--                                    </div>-->
+<!--                                    <div class="row mt8">-->
+<!--                                        <label class="col-lg-3" string="Page lead name" for="ata_lead_page_lead_name"/>-->
+<!--                                        <field name="ata_lead_page_lead_name" title="Google Sheet page lead name"/>-->
+<!--                                    </div>-->
+<!--                                    <div class="row mt8">-->
+<!--                                        <label class="col-lg-3" string="Page opportunity name" for="ata_lead_page_opportunity_name"/>-->
+<!--                                        <field name="ata_lead_page_opportunity_name" title="Google Sheet page opportunity name"/>-->
+<!--                                    </div>-->
+<!--                                    <div class="mt16">-->
+<!--                                        <button name="%(lead_sync_gsheet_wizard_action)d" type="action"-->
+<!--                                            string="Synchronize"-->
+<!--                                            class="btn-primary"/>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </xpath>
         </field>
     </record>
