@@ -1,9 +1,9 @@
 {
     'name': 'Google sheets timesheet integration',
     'summary': 'Google sheets timesheet integration',
-    'version': '16.0.1.0.0',
+    'version': '17.0.1.0.0',
     'author': 'ToDo',
-    'website': 'https://it-artel.ua/',
+    'website': 'https://todo.ltd',
     'license': 'OPL-1',
     'category': 'Other',
     'images': [
