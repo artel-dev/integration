@@ -59,12 +59,11 @@ class AtaVoipCall(models.Model):
                 found_leads_count = lead_manager.search_count(domain)
                 if found_leads_count == 1:
                     found_lead = lead_manager.search(domain)
-                    found_lead.message_post(body=body, phone=sanitized_phone)
+                    found_lead.message_post(body=body)
                     if found_lead.partner_id:
                         found_lead.partner_id.message_post(body=body)
                 elif found_leads_count == 0 and record.partner_id:
-                    record.partner_id.message_post(
-                        body=body, phone=sanitized_phone)
+                    record.partner_id.message_post(body=body)
                 else:
                     found_partner = partner_manager.search(partner_domain)
                     if found_partner and len(found_partner) == 1:
