@@ -11,7 +11,8 @@ class AtaVoipCall(models.Model):
             body = ''
             if (vals.get("state") is None and
                     vals.get("start_date") is not None):
-                timestamp = dt.fromtimestamp(vals["start_date"])
+                # timestamp = dt.fromtimestamp(vals["start_date"])
+                timestamp = vals["start_date"]
                 body = ('<div class ="o-mail-Activity-voip-landline-number">'
                         '<span>{} {} {} start time: {}</span>'
                         '<a href="#">{}</a>'
@@ -24,8 +25,10 @@ class AtaVoipCall(models.Model):
 
             elif (vals.get("state") == 'done' and
                   vals.get("end_date") is not None):
-                start_time = dt.fromtimestamp(vals["start_date"])
-                end_time = dt.fromtimestamp(vals["end_date"])
+                # start_time = dt.fromtimestamp(vals["start_date"])
+                # end_time = dt.fromtimestamp(vals["end_date"])
+                start_time = vals["start_date"]
+                end_time = vals["end_date"]
                 delta = end_time - start_time
                 duration_seconds = round(delta.total_seconds())
                 minutes = round(duration_seconds/60)
