@@ -1,5 +1,5 @@
-from odoo import models
 import datetime
+from odoo import models
 
 
 class AtaVoipCall(models.Model):
@@ -46,10 +46,16 @@ class AtaVoipCall(models.Model):
 
             if body:
                 partner_manager = self.env['res.partner']
-                sanitized_phone = partner_manager._voip_sanitization(
-                    record.phone_number)
                 lead_manager = self.env['crm.lead']
+                sanitized_phone = lead_manager._phone_format(
+                    number=record.phone_number)
                 domain = [('phone_mobile_search', 'like', sanitized_phone)]
+                partner_domain = domain
+                if 'phone_mobile_search' not in partner_manager._fields:
+                    partner_domain = ['|',
+                                      ('phone', 'like', sanitized_phone),
+                                      ('mobile', 'like', sanitized_phone)
+                                      ]
                 found_leads_count = lead_manager.search_count(domain)
                 if found_leads_count == 1:
                     found_lead = lead_manager.search(domain)
@@ -60,7 +66,7 @@ class AtaVoipCall(models.Model):
                     record.partner_id.message_post(
                         body=body, phone=sanitized_phone)
                 else:
-                    found_partner = partner_manager.search(domain)
+                    found_partner = partner_manager.search(partner_domain)
                     if found_partner and len(found_partner) == 1:
                         found_partner.message_post(body=body)
 
