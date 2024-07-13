@@ -22,14 +22,25 @@ patch(CorrespondenceDetails.prototype, {
 
         if (!this.partner) {
             let domain = [];
-            if (this.phoneNumber) {
+            if (this.landlineNumber && this.mobileNumber) {
                 domain = ['|',
-                    ['phone', '=', this.phoneNumber],
-                    ['mobile', '=', this.phoneNumber]];
+                    ['phone', '=', this.landlineNumber],
+                    ['mobile', '=', this.mobileNumber]];
+            }
+            else if (this.landlineNumber) {
+                domain = ['|',
+                    ['phone', '=', this.landlineNumber],
+                    ['mobile', '=', this.landlineNumber]];
+            }
+            else if (this.mobileNumber) {
+                domain = ['|',
+                    ['phone', '=', this.mobileNumber],
+                    ['mobile', '=', this.mobileNumber]];
             }
             const ids = this.orm.call(
                 "res.partner",
                 'search_read',
+                [],
                 {
                 domain: domain,
                 fields: ['id'],
