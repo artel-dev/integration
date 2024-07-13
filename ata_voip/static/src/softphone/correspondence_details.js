@@ -37,7 +37,7 @@ patch(CorrespondenceDetails.prototype, {
                     ['phone', '=', this.mobileNumber],
                     ['mobile', '=', this.mobileNumber]];
             }
-            const ids = this.orm.call(
+            const ids = await this.orm.call(
                 "res.partner",
                 'search_read',
                 [],
@@ -53,11 +53,11 @@ patch(CorrespondenceDetails.prototype, {
         }
         if (action.res_id === undefined) {
             const context = {};
-            if (this.phoneNumber) {
-                context.phoneNumber = this.phoneNumber;
+            if (this.landlineNumber) {
+                context.phoneNumber = this.landlineNumber;
             }
-            context['default_phone'] = this.phoneNumber
-            context['default_mobile'] = this.phoneNumber
+            context['default_phone'] = this.landlineNumber
+            context['default_mobile'] = this.mobileNumber
             action.context = context;
         }
 
