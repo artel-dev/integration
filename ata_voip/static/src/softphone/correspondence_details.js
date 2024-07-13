@@ -27,7 +27,7 @@ patch(CorrespondenceDetails.prototype, {
                     ['phone', '=', this.phoneNumber],
                     ['mobile', '=', this.phoneNumber]];
             }
-            const ids = await this.orm.call(
+            const ids = this.orm.call(
                 "res.partner",
                 'search_read',
                 [{
