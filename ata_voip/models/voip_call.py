@@ -1,4 +1,5 @@
 import datetime
+from markupsafe import Markup
 from odoo import models
 
 
@@ -45,6 +46,7 @@ class AtaVoipCall(models.Model):
                     record.phone_number)
 
             if body:
+                body = Markup(body)
                 partner_manager = self.env['res.partner']
                 lead_manager = self.env['crm.lead']
                 sanitized_phone = lead_manager._phone_format(
@@ -59,15 +61,19 @@ class AtaVoipCall(models.Model):
                 found_leads_count = lead_manager.search_count(domain)
                 if found_leads_count == 1:
                     found_lead = lead_manager.search(domain)
-                    found_lead.message_post(body=body)
+                    found_lead.message_post(
+                        body=body)
                     if found_lead.partner_id:
-                        found_lead.partner_id.message_post(body=body)
+                        found_lead.partner_id.message_post(
+                            body=body)
                 elif found_leads_count == 0 and record.partner_id:
-                    record.partner_id.message_post(body=body)
+                    record.partner_id.message_post(
+                        body=body)
                 else:
                     found_partner = partner_manager.search(partner_domain)
                     if found_partner and len(found_partner) == 1:
-                        found_partner.message_post(body=body)
+                        found_partner.message_post(
+                            body=body)
 
         return super().write(vals)
 
