@@ -34,8 +34,7 @@ patch(CorrespondenceDetails.prototype, {
                 domain: domain,
                 fields: ['id'],
                 limit: 1,
-                }]
-            });
+                }]);
             if (ids.length) {
                 action.res_id = ids[0].id;
             }
