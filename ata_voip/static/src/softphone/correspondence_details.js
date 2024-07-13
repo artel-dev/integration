@@ -30,11 +30,12 @@ patch(CorrespondenceDetails.prototype, {
             const ids = this.orm.call(
                 "res.partner",
                 'search_read',
-                [{
+                {
                 domain: domain,
                 fields: ['id'],
                 limit: 1,
-                }]);
+                }
+                );
             if (ids.length) {
                 action.res_id = ids[0].id;
             }
