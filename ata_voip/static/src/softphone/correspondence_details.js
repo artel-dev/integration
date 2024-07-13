@@ -20,37 +20,37 @@ patch(CorrespondenceDetails.prototype, {
         // TODO: Missing features from the previous code:
         // ─ if no partner but activity: prefill form with data from activity
 
-        if (!this.partner) {
-            let domain = [];
-            if (this.landlineNumber && this.mobileNumber) {
-                domain = ['|',
-                    ['phone', '=', this.landlineNumber],
-                    ['mobile', '=', this.mobileNumber]];
-            }
-            else if (this.landlineNumber) {
-                domain = ['|',
-                    ['phone', '=', this.landlineNumber],
-                    ['mobile', '=', this.landlineNumber]];
-            }
-            else if (this.mobileNumber) {
-                domain = ['|',
-                    ['phone', '=', this.mobileNumber],
-                    ['mobile', '=', this.mobileNumber]];
-            }
-            const ids = this.orm.call(
-                "res.partner",
-                'search_read',
-                [],
-                {
-                domain: domain,
-                fields: ['id'],
-                limit: 1,
-                }
-                );
-            if (ids.length) {
-                action.res_id = ids[0].id;
-            }
-        }
+//        if (!this.partner) {
+//            let domain = [];
+//            if (this.landlineNumber && this.mobileNumber) {
+//                domain = ['|',
+//                    ['phone', '=', this.landlineNumber],
+//                    ['mobile', '=', this.mobileNumber]];
+//            }
+//            else if (this.landlineNumber) {
+//                domain = ['|',
+//                    ['phone', '=', this.landlineNumber],
+//                    ['mobile', '=', this.landlineNumber]];
+//            }
+//            else if (this.mobileNumber) {
+//                domain = ['|',
+//                    ['phone', '=', this.mobileNumber],
+//                    ['mobile', '=', this.mobileNumber]];
+//            }
+//            const ids = this.orm.call(
+//                "res.partner",
+//                'search_read',
+//                [],
+//                {
+//                domain: domain,
+//                fields: ['id'],
+//                limit: 1,
+//                }
+//                );
+//            if (ids.length) {
+//                action.res_id = ids[0].id;
+//            }
+//        }
         if (action.res_id === undefined) {
             const context = {};
             if (this.landlineNumber) {
