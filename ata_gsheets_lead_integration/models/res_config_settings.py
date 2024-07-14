@@ -23,7 +23,7 @@ class ResConfigSettings(models.TransientModel):
         config_parameter='ata_gsheets_lead_integration.ata_lead_page_opportunity_name',
     )
     ata_lead_active = fields.Boolean(
-        string='Active'
+        string='Active Google Sheets - CRM Lead integration'
     )
 
     def set_values(self):

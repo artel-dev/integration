@@ -14,7 +14,7 @@ class ResConfigSettings(models.TransientModel):
         string='Page name'
     )
     ata_active = fields.Boolean(
-        string='Active'
+        string='Active Google Sheets - Timesheet integration'
     )
 
     def set_values(self):

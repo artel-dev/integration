@@ -8,7 +8,8 @@
     'license': 'OPL-1',
     'depends': [
         'voip',
-        'web'
+        'web',
+        'crm',
     ],
     'installable': True,
     'application': True,
