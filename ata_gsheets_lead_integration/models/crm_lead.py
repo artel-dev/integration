@@ -151,7 +151,7 @@ class CrmLead(models.Model):
         for message in super_self.message_ids:
             if message.tracking_value_ids:
                 for value_id in message.tracking_value_ids:
-                    if value_id.field.name == 'type':
+                    if value_id.field_id.name == 'type':
                         lead_and_opportunity = True
 
         if self.type == 'lead' or lead_and_opportunity:
