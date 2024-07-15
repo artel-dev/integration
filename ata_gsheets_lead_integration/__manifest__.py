@@ -1,7 +1,7 @@
 {
     'name': 'Google sheets lead integration',
     'summary': 'Google sheets lead integration',
-    'version': '17.0.1.0.0',
+    'version': '17.0.1.0.1',
     'author': 'ToDo',
     'website': 'https://todo.ltd',
     'license': 'OPL-1',
