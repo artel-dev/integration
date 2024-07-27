@@ -302,6 +302,6 @@ class ExternalSystem(models.Model):
                 'title': 'Result test connection',
                 'type': 'info',
                 'message': answers,
-                'sticky': True
+                'sticky': False
             }
         }
