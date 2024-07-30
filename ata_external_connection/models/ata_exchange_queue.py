@@ -1,8 +1,5 @@
 from odoo import api, fields, models
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
-import logging
-
-_logger = logging.getLogger(__name__)
 
 
 class AtaExchangeQueue(models.Model):
