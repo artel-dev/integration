@@ -39,10 +39,10 @@ class AtaExchangeQueue(models.Model):
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):
         records = super(AtaExchangeQueue, self).search(args, offset, limit, order, count)
+        if count:
+            return records
         for record in records:
             self._update_ref_object(record)
-        if count:
-            return len(records)
         return records
 
     def _update_ref_object(self, record):
