@@ -2,6 +2,7 @@ from odoo import api, fields, models
 from odoo.tools import safe_eval
 
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
+from .ata_external_system import ExternalSystem as ExtSystem
 
 
 class AtaExternalConnectionDomain(models.Model):
@@ -13,7 +14,7 @@ class AtaExternalConnectionDomain(models.Model):
     ext_system = fields.Many2one(comodel_name="ata.external.system", string="External system")
 
     @api.model
-    def get_ext_systems(self, record, method: ExtMethod):
+    def get_ext_systems(self, record, method: ExtMethod) -> list[ExtSystem]:
         ext_systems = []
         # 1. check availability domain record
         # 2. if there are no domain records, then get all external system
