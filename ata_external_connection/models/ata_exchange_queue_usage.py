@@ -18,14 +18,14 @@ class AtaExchangeQueueUsage(models.Model):
             record.immediate = min(record.immediate, bool(record.method))
 
     @api.model
-    def use_exchange_queue(self, method: ExtMethod):
+    def use_exchange_queue(self, method: ExtMethod) -> bool:
         return bool(self.search([
             ('method', 'in', (method.id, False)),
             ('usage', "=", True)
         ]))
 
     @api.model
-    def use_immediate_exchange(self, method: ExtMethod):
+    def use_immediate_exchange(self, method: ExtMethod) -> bool:
         return bool(self.search([
             ('method', '=', method.id),
             ('usage', "=", True),

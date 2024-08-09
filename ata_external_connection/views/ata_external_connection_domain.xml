@@ -10,10 +10,10 @@
                         <field name="method"/>
                         <field name="model_name" invisible="1" />
                         <field name="model_id" readonly="1"
-                            attrs="{'invisible': [('model_id', '=', False)]}"/>
+                            invisible="[('model_id', '=', False)]"/>
                         <field name="domain" widget="domain"
                             options="{'model': 'model_name', 'in_dialog': True}"
-                            attrs="{'invisible': [('model_id', '=', False)]}"/>
+                            invisible="[('model_id', '=', False)]"/>
                         <field name="ext_system"/>
                     </group>
                 </sheet>
@@ -41,10 +41,10 @@
     </record>
 
     <menuitem
-            id="ata_external_connection_domain"
-            name="Domain for ext. systems"
-            parent="ata_integration_menu_external_connection_config"
-            action="ata_external_connection_domain_action"
-            sequence="30"
-    />
+        id="ata_external_connection_domain"
+        name="Domain for ext. systems"
+        parent="ata_integration_menu_external_connection_config"
+        action="ata_external_connection_domain_action"
+        sequence="30"/>
+        
 </odoo>

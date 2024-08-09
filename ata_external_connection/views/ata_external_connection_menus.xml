@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
-    <menuitem
-            id="ata_integration_menu_root"
-            name="Integration"
-            web_icon="ata_external_connection,static/description/icon.png"
-            sequence="10"
-    />
+        <menuitem
+                id="ata_integration_menu_root"
+                name="Integration"
+                web_icon="ata_external_connection,static/description/icon.png"
+                sequence="10"/>
 
-    <menuitem
-            id="ata_integration_menu_external_connection_general"
-            name="Exchange information"
-            parent="ata_integration_menu_root"
-            sequence="10"
-    />
+        <menuitem
+                id="ata_integration_menu_external_connection_general"
+                name="Exchange information"
+                parent="ata_integration_menu_root"
+                sequence="10"/>
 
-    <menuitem
-            id="ata_integration_menu_external_connection_config"
-            name="Configuration"
-            parent="ata_integration_menu_root"
-            sequence="20"
-    />
+        <menuitem
+                id="ata_integration_menu_external_connection_config"
+                name="Configuration"
+                parent="ata_integration_menu_root"
+                sequence="20"/>
 
 </odoo>

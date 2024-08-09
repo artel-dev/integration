@@ -44,11 +44,10 @@
     </record>
 
     <menuitem
-            id="ata_exchange_queue_menu"
-            name="Exchange queue"
-            parent="ata_integration_menu_external_connection_general"
-            action="ata_exchange_queue_action"
-            sequence="20"
-    />
+        id="ata_exchange_queue_menu"
+        name="Exchange queue"
+        parent="ata_integration_menu_external_connection_general"
+        action="ata_exchange_queue_action"
+        sequence="20"/>
 
 </odoo>
