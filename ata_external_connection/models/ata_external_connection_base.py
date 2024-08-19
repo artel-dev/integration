@@ -29,7 +29,10 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
     # --- outgoing exchange ---
     @api.model
-    def start_exchange(self, record, method_name: str, immediately=False):
+    def start_exchange(self, record, method_name: str, immediately=False) -> bool:
+        if isinstance(record.id, models.NewId):
+            return False
+
         method = self._get_method_for_name(method_name)
         if method and self.need_exchange(method) and not self._record_in_re_exchanged(record):
             # checking the need to add for exchange queue
@@ -57,12 +60,12 @@ class AtaExternalConnectionBase(models.AbstractModel):
             self._re_exchanged.remove(ref)
 
     @api.model
-    def need_exchange(self, method: ExtMethod):
+    def need_exchange(self, method: ExtMethod) -> bool:
         # checking the need for an exchange on the basis of a one-time exchange
         return True
 
     @api.model
-    def add_exchange_queue(self, record, method: ExtMethod):
+    def add_exchange_queue(self, record, method: ExtMethod) -> None:
         self.env["ata.exchange.queue"].add(record, method)
 
     @api.model
@@ -170,7 +173,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
     # --- incoming request ---
     @api.model
-    def handle_request(self, request_data, method_name: str):
+    def handle_request(self, request_data, method_name: str) -> dict:
         method = self._get_method_for_name(method_name)
         if method:
             result = self._handle_request_data_model(request_data, method)
@@ -189,14 +192,14 @@ class AtaExternalConnectionBase(models.AbstractModel):
             else False
 
     @api.model
-    def _formation_response(self, method: ExtMethod, result) -> str:
+    def _formation_response(self, method: ExtMethod, result) -> dict:
         func_post_processing_name = f'ata_formation_response_{method.name.lower()}'
         return getattr(self.env[method.model_name], func_post_processing_name)(result) \
             if hasattr(self.env[method.model_name], func_post_processing_name)\
             else self.response_form(result)
 
     @classmethod
-    def response_form(cls, result):
+    def response_form(cls, result) -> dict:
         if isinstance(result, dict) or isinstance(result, str):
             _response = {"Error": result}
         elif result:

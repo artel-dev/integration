@@ -104,7 +104,7 @@ class GsheetLeadSyncWizard(models.TransientModel):
         if self.ata_type == 'lead':
             domain = [
                 ('model', '=', 'crm.lead'),
-                ('tracking_value_ids.field.name', '=', 'type'),
+                ('tracking_value_ids.field_id.name', '=', 'type'),
             ]
             opportunity_from_lead_ids = self.env['mail.message'].search(domain).ids
             res |= crm_lead.search([('message_ids', 'in', opportunity_from_lead_ids)])
@@ -188,7 +188,7 @@ class GsheetLeadSyncWizard(models.TransientModel):
                 for message in line_id.message_ids:
                     if message.tracking_value_ids:
                         for tracking_value in message.tracking_value_ids:
-                            if tracking_value.field.name == 'stage_id':
+                            if tracking_value.field_id.name == 'stage_id':
                                 old_stage = tracking_value.old_value_char
                                 old_stage_date = message.create_date
 

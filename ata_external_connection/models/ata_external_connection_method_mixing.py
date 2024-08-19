@@ -18,7 +18,7 @@ class AtaExternalConnectionMethodMixing(models.AbstractModel):
         for record in self:
             record.model_id, record.model_name, record.model_desc = record._get_model_data()
 
-    def _get_model_data(self):
+    def _get_model_data(self) -> tuple[int, str, str]:
         method_model_name = self.method.model_name if self.method else False
         model_id = self.env['ir.model'].sudo().search([('model', '=', method_model_name)]) if method_model_name else False
         model_name = model_id.model if model_id else False
@@ -31,5 +31,5 @@ class AtaExternalConnectionMethodMixing(models.AbstractModel):
         return self.env['ata.external.connection.method'].sudo().search([('name', '=', method_name)])
 
     @api.model
-    def _get_ref_from_record(self, record):
+    def _get_ref_from_record(self, record) -> str|None:
         return "%s,%s" % (record._name, record.id) if record else None
