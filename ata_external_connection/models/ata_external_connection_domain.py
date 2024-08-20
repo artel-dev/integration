@@ -2,7 +2,9 @@ from odoo import api, fields, models
 from odoo.tools import safe_eval
 
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
+from .ata_external_connection_base import AtaExternalConnectionClass as ExtClass
 from .ata_external_system import ExternalSystem as ExtSystem
+
 
 
 class AtaExternalConnectionDomain(models.Model):
@@ -10,36 +12,32 @@ class AtaExternalConnectionDomain(models.Model):
     _description = "Domain for search external system"
     _inherit = ['ata.external.connection.method.mixing']
 
-    domain = fields.Char(string="Domain")
-    ext_system = fields.Many2one(comodel_name="ata.external.system", string="External system")
-
+    domain = fields.Char(
+        string="Domain",)
+    ext_system = fields.Many2one(
+        comodel_name="ata.external.system",
+        string="External system",
+        required=True,)
+    
     @api.model
-    def get_ext_systems(self, record, method: ExtMethod) -> list[ExtSystem]:
+    def get_ext_systems(self, record:ExtClass, method: ExtMethod) -> list[ExtSystem]:
         ext_systems = []
-        # 1. check availability domain record
-        # 2. if there are no domain records, then get all external system
-        # 3. if there is only one ext. system - use it, else - nothing (why only 1 ???)
-
         self_sudo = self.sudo()
-        if not self_sudo.search([]):
-            all_ext_systems = self.env['ata.external.system'].get_all_ext_system()
-            if len(all_ext_systems) == 1:
-                ext_systems = all_ext_systems
-        else:
-            # 1a. check ext. system without analysis record data
-            records_domain = self_sudo.search([
-                ('method', '=', method.id),
-                ('ext_system.disabled', '=', False)
-            ])
+        
+        # 1. check ext. system without analysis record data
+        records_domain = self_sudo.search([
+            ('method', '=', method.id),
+            ('ext_system.disabled', '=', False)
+        ])
 
-            # 1b. check record data for compliance with the domain
-            for record_domain in records_domain:
-                if record_domain.domain:
-                    _domain = safe_eval.safe_eval(record_domain.domain, self._get_eval_context())
-                    if record.filtered_domain(_domain).with_env(record.env):
-                        ext_systems.append(record_domain.ext_system)
-                else:
+        # 2. check record data for compliance with the domain
+        for record_domain in records_domain:
+            if record_domain.domain:
+                _domain = safe_eval.safe_eval(record_domain.domain, self._get_eval_context())
+                if record.filtered_domain(_domain).with_env(record.env):
                     ext_systems.append(record_domain.ext_system)
+            else:
+                ext_systems.append(record_domain.ext_system)
 
         return ext_systems
 

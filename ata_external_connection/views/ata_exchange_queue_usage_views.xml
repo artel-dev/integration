@@ -10,11 +10,10 @@
                     <notebook>
                         <page string="General">
                             <group>
-                                <field name="method" placeholder="All methods"/>
-                                <field name="model_id" placeholder="All models" readonly="1"
-                                    invisible="[('model_id', '=', False)]"/>
+                                <field name="method" placeholder="All methods" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="model_name" invisible="not method" readonly="True" no_label="1"/>
                                 <field name="usage"/>
-                                <field name="immediate" readonly="[('model_id', '=', False)]"/>
+                                <field name="immediate" readonly="not method"/>
                             </group>
                         </page>
                     </notebook>
