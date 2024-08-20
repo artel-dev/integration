@@ -7,14 +7,14 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="method"/>
+                        <field name="ext_system" options="{'no_create': True}" required="1"/>
+                        <field name="method" options="{'no_open': True, 'no_create': True}" required="1"/>
                         <field name="model_name" invisible="1" />
                         <field name="model_id" readonly="1"
-                            invisible="[('model_id', '=', False)]"/>
+                            invisible="not model_id"/>
                         <field name="domain" widget="domain"
                             options="{'model': 'model_name', 'in_dialog': True}"
-                            invisible="[('model_id', '=', False)]"/>
-                        <field name="ext_system"/>
+                            invisible="not model_id"/>                        
                     </group>
                 </sheet>
             </form>

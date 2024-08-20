@@ -1,18 +1,60 @@
-from odoo import api, models
-from typing import Tuple
+from odoo import api, models, fields, Command
 from odoo.tools.misc import get_lang
+from abc import abstractmethod
 
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
 
 
-# predefined function in modules:
-# ata_prepare_exchange_{method.lower()}() - prepare record after exchange.
-#   return continue_exchange, delete_from_queue
-# ata_get_data_exchange_{method.lower()}() - get dict() data for send to ext. system for (model, method)
-# ata_get_data_exchange_1c() - get dict() data for subordinates objects
-# ata_request_body_exchange_{method.lower()}() - request body customization
-# ata_parse_response_exchange_{method.lower()} - parsing response body
-# ata_post_processing_exchange_{method.lower()} - processing after receipt response
+class AtaExternalConnectionClass(models.AbstractModel):
+    _name = "ata.external.connection.class"
+    _description = "External connection class extension"
+
+    ata_exchange_method_ids = fields.Many2many(
+        comodel_name="ata.external.connection.method",
+        compute="ata_exchange_compute_methods",
+    )
+
+    def ata_exchange_compute_methods(self, methods: list[ExtMethod] = []):
+        for record in self:
+            record.ata_exchange_method_ids |=\
+                self.env['ata.external.connection.method'].browse([m.id for m in methods])
+
+    def ata_exchange_add_to_queue(self):
+        for record in self:
+            self.env['ata.exchange.queue'].add_to_queue(record)
+
+    def ata_exchange_get_ref_from_record(self) -> str|None:
+        self.ensure_one()
+        return "%s,%s" % (self._name, self.id) if self else None
+
+    def ata_exchange_get_request_data(self, method: ExtMethod) -> dict:
+        return data if (data:=self.ata_exchange_get_data_record(method)) else {}
+
+    @abstractmethod
+    def ata_exchange_get_data_record(self, method: ExtMethod|None) -> dict:
+        pass
+
+    @api.model
+    def ata_exchange_get_request_body(self, method: ExtMethod, request_data: dict) -> dict:
+        return {
+            "meta": {},
+            "data": request_data,
+        }
+
+    @api.model
+    def ata_exchange_response_body_parse(self, method: ExtMethod, response_body: dict) -> tuple[dict, bool]:
+        # typical parse response
+        response_data: dict = response_body.get("data", {})
+        result = response_data.get("status", False)
+
+        return response_data, result
+
+    def ata_exchange_response_post_processing(self, method: ExtMethod, response_data: dict) -> bool:
+        return True
+
+    @staticmethod
+    def _str_empty(value):
+        return str(value) if value else ''
 
 
 class AtaExternalConnectionBase(models.AbstractModel):
@@ -21,155 +63,69 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
     _inherit = ['ata.external.connection.method.mixing']
 
-    _re_exchanged = []
-
     @api.model
     def get_default_lang(self):
         return 'en_US'
 
-    # --- outgoing exchange ---
-    @api.model
-    def start_exchange(self, record, method_name: str, immediately=False) -> bool:
-        if isinstance(record.id, models.NewId):
-            return False
-
-        method = self._get_method_for_name(method_name)
-        if method and self.need_exchange(method) and not self._record_in_re_exchanged(record):
-            # checking the need to add for exchange queue
-            if immediately is False and self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
-                if self._prepare_record(record, method)[0]:
-                    self.add_exchange_queue(record, method)
-            else:
-                self.exchange(record, method)
-
-    # check for recursive re-exchange
-    @api.model
-    def _record_in_re_exchanged(self, record) -> bool:
-        ref = self._get_ref_from_record(record)
-        return ref in self._re_exchanged
+    # --- re-exchanged ---
+    _re_exchanged = set()
 
     @api.model
-    def _add_re_exchanged(self, record) -> None:
-        ref = self._get_ref_from_record(record)
-        self._re_exchanged.append(ref)
+    def _re_exchanged_in(self, record:AtaExternalConnectionClass) -> bool:
+        return record.ata_exchange_get_ref_from_record() in self._re_exchanged
 
     @api.model
-    def _delete_re_exchanged(self, record) -> None:
-        ref = self._get_ref_from_record(record)
-        if ref in self._re_exchanged:
-            self._re_exchanged.remove(ref)
+    def _re_exchanged_add(self, record:AtaExternalConnectionClass) -> None:
+        self._re_exchanged.add(record.ata_exchange_get_ref_from_record())
 
     @api.model
-    def need_exchange(self, method: ExtMethod) -> bool:
-        # checking the need for an exchange on the basis of a one-time exchange
-        return True
+    def _re_exchanged_delete(self, record:AtaExternalConnectionClass) -> None:
+        self._re_exchanged.discard(record.ata_exchange_get_ref_from_record())
 
+    # --- main function exchange ---
     @api.model
-    def add_exchange_queue(self, record, method: ExtMethod) -> None:
-        self.env["ata.exchange.queue"].add(record, method)
+    def exchange(self, record:AtaExternalConnectionClass, method: ExtMethod) -> bool:
+        # by default the exchange is successful
+        result_main = True
 
-    @api.model
-    def exchange(self, record, method: ExtMethod) -> bool:
-        result = False
         self = self.with_context(lang=self.get_default_lang())
 
-        self._add_re_exchanged(record)
+        # сhecking the record for the exchange method at the moment
+        # it may be that the record no longer needs to be exchanged
+        for method in record.ata_exchange_method_ids:
+            ext_systems = self.env["ata.external.connection.domain"].get_ext_systems(record, method)
+            for ext_system in ext_systems:
+                result = False
+                
+                request_data = record.ata_exchange_get_request_data(method)
+                # request_data may be empty
+                if request_data:
+                    record_name = record.name if "name" in record.fields_get("name") else ""
+                    ext_service = {
+                        'exchange_id': f'{record._name} ({record.id}), {record_name}' if record else '',
+                        'name': f'{method.description}',
+                        'description': f'{method.description}',
+                        'method_name': f'{method.name}',
+                        'http_method': 'POST',
+                        'params': dict(),
+                        'request_body': record.ata_exchange_get_request_body(method, request_data)
+                    }
 
-        ext_systems = self.env["ata.external.connection.domain"].get_ext_systems(record, method)
-        if ext_systems:
-            # prepare record after exchange
-            continue_exchange, delete_from_queue = self._prepare_record(record, method)
-            if continue_exchange:
-                for ext_system in ext_systems:
-                    request_data = self._get_request_data(record, method)
-                    # request_data may be empty
-                    if request_data:
-                        ext_service = {
-                            'exchange_id': f'Model: {record._name}, Id: {record.id}' if record else '',
-                            'name': f'{method.description}',
-                            'description': f'{method.description}',
-                            'method_name': f'{method.name}',
-                            'http_method': 'POST',
-                            'params': dict(),
-                            'request_body': self._get_request_body(record, method, request_data)
-                        }
-
-                        response_body = ext_system.execute(ext_service)
-                        if response_body:
-                            error = response_body.get("Error", False)
-                            if not error:
-                                # parse response body
-                                response_data, result = self._parse_response_body(record, method, response_body)
+                    response_body = ext_system.execute(ext_service)
+                    if response_body:
+                        error = response_body.get("error", False)
+                        if not error:
+                            # parse response body
+                            response_data, result_response_body_parse = record.ata_exchange_response_body_parse(method, response_body)
+                            if result_response_body_parse:
                                 # post-processing response data
-                                result = result and self._post_processing_response(record, method, response_data)
-                    else:
-                        # for delete from queue
-                        result = True
-            elif delete_from_queue:
-                result = True
-        else:
-            # for delete from queue, if nothing ext. systems
-            result = True
+                                self._re_exchanged_add(record)
+                                result = record.ata_exchange_response_post_processing(method, response_data)
+                                self._re_exchanged_delete(record)
 
-        self._delete_re_exchanged(record)
-
-        return result
-
-    @staticmethod
-    # return [continue_exchange, delete_from_queue]
-    def _prepare_record(record, method: ExtMethod) -> Tuple[bool, bool]:
-        func_prepare_name = f'ata_prepare_exchange_{method.name.lower()}'
-        return getattr(record, func_prepare_name)() \
-            if hasattr(record, func_prepare_name)\
-            else (True, False)
-
-    @api.model
-    def _get_request_data(self, record, method: ExtMethod) -> dict:
-        func_get_data_name = f'ata_get_data_exchange_{method.name.lower()}'
-        record_model = record.with_context(lang=self.env.lang) \
-            if record \
-            else self.env[method.model_name].with_context(lang=self.env.lang)
-
-        return getattr(record_model, func_get_data_name)() \
-            if hasattr(record_model, func_get_data_name) \
-            else {}
-
-    @staticmethod
-    def _get_request_body(record, method: ExtMethod, request_data: dict) -> dict:
-        func_request_body_name = f'ata_request_body_exchange_{method.name.lower()}'
-        return getattr(record, func_request_body_name)(request_data) \
-            if hasattr(record, func_request_body_name) \
-            else {"Data": request_data}
-
-    @staticmethod
-    def _parse_response_body(record, method: ExtMethod, response_body: dict) -> Tuple[dict, bool]:
-        func_parse_response_name = f'ata_parse_response_exchange_{method.name.lower()}'
-        if hasattr(record, func_parse_response_name):
-            response_data, result = getattr(record, func_parse_response_name)(response_body)
-        else:
-            # typical parse response
-            response_data = response_body.get("Data", {})
-            result = response_data.get("Status", False)
-
-        return response_data, result
-
-    @staticmethod
-    def _post_processing_response(record, method: ExtMethod, response_data: dict) -> bool:
-        func_post_processing_name = f'ata_post_processing_exchange_{method.name.lower()}'
-        return getattr(record, func_post_processing_name)(response_data) \
-            if hasattr(record, func_post_processing_name) else True
-
-    @staticmethod
-    def get_record_data_exchange(record, type_exchange: str = "", **kwargs) -> dict:
-        if record and type_exchange:
-            func_get_data_name = f'ata_get_data_exchange_{type_exchange}'
-            return getattr(record, func_get_data_name)(**kwargs) if hasattr(record, func_get_data_name) else {}
-        else:
-            return {}
-
-    @api.model
-    def get_record_data_exchange_1c(self, record, **kwargs) -> dict:
-        return self.get_record_data_exchange(record, "1c", **kwargs)
+                result_main = result_main and result
+        
+        return result_main
 
     # --- incoming request ---
     @api.model
@@ -232,3 +188,4 @@ class AtaExternalConnectionBase(models.AbstractModel):
                 'datas': save_data["file_data"],
                 'mimetype': save_data["mimetype"]
             })
+

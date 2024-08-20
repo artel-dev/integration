@@ -49,7 +49,7 @@ class ExternalSystem(models.Model):
     def get_all_ext_system(self):
         return self.sudo().search([('disabled', '=', False)])
 
-    def execute(self, ext_service):
+    def execute(self, ext_service) -> dict|bool:
         result = False
         ext_request = self.create_request(ext_service)
         if self.execute_request(ext_request):
@@ -231,8 +231,8 @@ class ExternalSystem(models.Model):
         exchange_log_manager = self.env['ata.exchange.log']
 
         log_vals = {
-            'name': f'Exchange id: {exchange_id}, service: {ext_request["name"]}',
-            'exchange_id': exchange_id,
+            'name': f'{exchange_id}',
+            # 'exchange_id': exchange_id,
             'system_id': self["id"],
             'server_address': self.server_address,
             'server_port': self.server_port,
