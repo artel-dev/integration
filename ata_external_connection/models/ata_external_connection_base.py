@@ -14,7 +14,7 @@ class AtaExternalConnectionClass(models.AbstractModel):
         compute="ata_exchange_compute_methods",
     )
 
-    def ata_exchange_compute_methods(self, methods: list[ExtMethod] = []):
+    def ata_exchange_compute_methods(self, methods: list[ExtMethod] = []) -> list[ExtMethod]:
         for record in self:
             record.ata_exchange_method_ids |=\
                 self.env['ata.external.connection.method'].browse([m.id for m in methods])
