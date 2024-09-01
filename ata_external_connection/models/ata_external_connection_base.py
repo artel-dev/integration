@@ -28,10 +28,10 @@ class AtaExternalConnectionClass(models.AbstractModel):
         return "%s,%s" % (self._name, self.id) if self else None
 
     def ata_exchange_get_request_data(self, method: ExtMethod) -> dict:
-        return data if (data:=self.ata_exchange_get_data_record(method)) else {}
+        return data if (data:=self.ata_exchange_get_data_record(method, True)) else {}
 
     @abstractmethod
-    def ata_exchange_get_data_record(self, method: ExtMethod|None) -> dict:
+    def ata_exchange_get_data_record(self, method: ExtMethod|None, as_node = False) -> dict:
         pass
 
     @api.model
