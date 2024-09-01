@@ -34,6 +34,14 @@ class AtaExternalConnectionClass(models.AbstractModel):
     def ata_exchange_get_data_record(self, method: ExtMethod|None, as_node = False) -> dict:
         pass
 
+    def ata_exchange_get_data_record_multi(self, data: list[dict]) -> list[dict]|dict|str:
+        if len(data) == 0:
+            return ""
+        elif len(data) == 1:
+            return data[0]
+        else:
+            return data
+
     @api.model
     def ata_exchange_get_request_body(self, method: ExtMethod, request_data: dict) -> dict:
         return {
