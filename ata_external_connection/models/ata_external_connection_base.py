@@ -9,12 +9,14 @@ class AtaExternalConnectionClass(models.AbstractModel):
     _name = "ata.external.connection.class"
     _description = "External connection class extension"
 
+    ATA_EXCHANGE_NODE_NAME = ""
+
     ata_exchange_method_ids = fields.Many2many(
         comodel_name="ata.external.connection.method",
         compute="ata_exchange_compute_methods",
     )
 
-    def ata_exchange_compute_methods(self, methods: list[ExtMethod] = []) -> list[ExtMethod]:
+    def ata_exchange_compute_methods(self, methods: list[ExtMethod] = []):
         for record in self:
             record.ata_exchange_method_ids |=\
                 self.env['ata.external.connection.method'].browse([m.id for m in methods])
@@ -31,16 +33,23 @@ class AtaExternalConnectionClass(models.AbstractModel):
         return data if (data:=self.ata_exchange_get_data_record(method, True)) else {}
 
     @abstractmethod
-    def ata_exchange_get_data_record(self, method: ExtMethod|None, as_node = False) -> dict:
+    def ata_exchange_get_data_record(self, method: ExtMethod|None, as_node = False) -> list[dict]|dict|str:
         pass
 
-    def ata_exchange_get_data_record_multi(self, data: list[dict]) -> list[dict]|dict|str:
+    def ata_exchange_get_data_record_multi(self, data: list[dict], as_node = False) -> list[dict]|dict|str:
         if len(data) == 0:
-            return ""
+            out = ""
         elif len(data) == 1:
-            return data[0]
+            out = data[0]
         else:
-            return data
+            out = data
+
+        if as_node and self.ATA_EXCHANGE_NODE_NAME:
+            out = {
+                self.ATA_EXCHANGE_NODE_NAME: out
+            }
+
+        return out
 
     @api.model
     def ata_exchange_get_request_body(self, method: ExtMethod, request_data: dict) -> dict:
