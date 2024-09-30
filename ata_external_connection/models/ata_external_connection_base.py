@@ -16,15 +16,31 @@ class AtaExternalConnectionClass(models.AbstractModel):
         compute="ata_exchange_compute_methods",
     )
 
+    # +++ enqueue event +++
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        if records and self.ATA_EXCHANGE_NODE_NAME:
+            records.ata_exchange_add_to_queue()
+        return records
+
+    def write(self, vals):
+        over_write = super().write(vals)
+        if over_write and self.ATA_EXCHANGE_NODE_NAME:
+            self.ata_exchange_add_to_queue()
+        return over_write
+
+    def ata_exchange_add_to_queue(self):
+        for record in self:
+            self.env['ata.exchange.queue'].add_to_queue(record)
+    # --- enqueue event ---
+
     def ata_exchange_compute_methods(self, methods: list[ExtMethod] = []) -> None:
         for record in self:
             record.ata_exchange_method_ids |=\
                 self.env['ata.external.connection.method'].browse([m.id for m in methods])
 
-    def ata_exchange_add_to_queue(self):
-        for record in self:
-            self.env['ata.exchange.queue'].add_to_queue(record)
-
+    
     def ata_exchange_get_ref_from_record(self) -> str|None:
         self.ensure_one()
         return "%s,%s" % (self._name, self.id) if self else None
@@ -36,13 +52,16 @@ class AtaExternalConnectionClass(models.AbstractModel):
     def ata_exchange_get_data_record(self, method: ExtMethod|None, as_node = False) -> list[dict]|dict|str:
         pass
 
-    def ata_exchange_get_data_record_multi(self, data: list[dict], as_node = False) -> list[dict]|dict|str:
-        if len(data) == 0:
-            out = ""
-        elif len(data) == 1:
-            out = data[0]
-        else:
+    def ata_exchange_get_data_record_multi(self, data: list[dict], as_node = False,always_list=False) -> list[dict]|dict|str:
+        if always_list:
             out = data
+        else:
+            if len(data) == 0:
+                out = ""
+            elif len(data) == 1:
+                out = data[0]
+            else:
+                out = data
 
         if as_node and self.ATA_EXCHANGE_NODE_NAME:
             out = {
