@@ -1,6 +1,7 @@
 from odoo import api, models, fields, Command
 from odoo.tools.misc import get_lang
 from abc import abstractmethod
+from datetime import date
 
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
 
@@ -91,6 +92,10 @@ class AtaExternalConnectionClass(models.AbstractModel):
     @staticmethod
     def _str_empty(value):
         return str(value) if value else ''
+
+    @api.model
+    def _date_to_datetime(self, value):
+        return fields.Datetime.from_string(f"{value} 00:00:00") if isinstance(value, date) else False
 
 
 class AtaExternalConnectionBase(models.AbstractModel):
