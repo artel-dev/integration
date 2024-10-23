@@ -7,20 +7,11 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='user_ids']" position="after">
                 <field name="ata_section"
-                       invisible="not ata_section or ata_section_name"/>
-                <field name="ata_section_name"/>
+                       invisible="not ata_section or ata_section_id"/>
+                <field name="ata_section_id"/>
                 <field name="ata_user_id"/>
             </xpath>
         </field>
     </record>
 
-    <record id="action_open_section_wizard" model="ir.actions.server">
-        <field name="name">Open Section Wizard</field>
-        <field name="model_id" ref="project.model_project_task"/>
-        <field name="binding_model_id" ref="project.model_project_task"/>
-        <field name="state">code</field>
-        <field name="code">
-            action = model.open_section_wizard()
-        </field>
-    </record>
 </odoo>

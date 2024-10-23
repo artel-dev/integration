@@ -1,10 +1,24 @@
 <odoo>
     <data>
-        <record id="action_section_wizard" model="ir.actions.act_window">
-            <field name="name">Section Wizard</field>
+        <record id="action_gsheet_timesheet_section_wizard" model="ir.actions.act_window">
+            <field name="name">Timesheet Section Wizard</field>
             <field name="res_model">gsheet.timesheet.section.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
+        </record>
+
+        <record id="view_project_task_tree_inherit" model="ir.ui.view">
+            <field name="name">project.task.tree.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_tree2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <header>
+                        <button name="%(action_gsheet_timesheet_section_wizard)d"
+                            type="action" string="Complete Section" icon="fa-address-book-o"/>
+                    </header>
+                </xpath>
+            </field>
         </record>
 
         <record id="gsheet_timesheet_section_wizard_form" model="ir.ui.view">
@@ -12,12 +26,20 @@
             <field name="model">gsheet.timesheet.section.wizard</field>
             <field name="arch" type="xml">
                 <form string="Section Wizard">
+                    <header>
+                        <button string="Confirm" name="create_or_search_record" type="object"
+                                class="oe_highlight" icon="fa-address-book-o"/>
+                        <button string="Cancel" special="cancel" icon="fa-times-circle"/>
+                    </header>
                     <div>
                         <field name="message" readonly="1"/>
                     </div>
-                    <footer>
-                        <button string="Confirm" name="create_or_select_record" type="object" class="oe_highlight"/>
-                    </footer>
+                    <notebook>
+                        <page string="Active Tasks">
+                            <field name="active_ids" widget="many2many_list"/>
+                        </page>
+                    </notebook>
+                    <footer/>
                 </form>
             </field>
         </record>

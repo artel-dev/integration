@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-21 08:11+0000\n"
-"PO-Revision-Date: 2024-10-21 08:11+0000\n"
+"POT-Creation-Date: 2024-10-23 12:15+0000\n"
+"PO-Revision-Date: 2024-10-23 12:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,12 @@ msgid "Active Google Sheets - Timesheet integration"
 msgstr "Активний"
 
 #. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_section_wizard__active_ids
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.gsheet_timesheet_section_wizard_form
+msgid "Active Tasks"
+msgstr "Вибране"
+
+#. module: ata_gsheets_timesheet_integration
 #: model:ir.model,name:ata_gsheets_timesheet_integration.model_account_analytic_line
 msgid "Analytic Line"
 msgstr "Рядок аналітики"
@@ -32,8 +38,14 @@ msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.account_sync_gsheet_wizard_form
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.gsheet_timesheet_section_wizard_form
 msgid "Cancel"
 msgstr "Скасувати"
+
+#. module: ata_gsheets_timesheet_integration
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.view_project_task_tree_inherit
+msgid "Complete Section"
+msgstr "Заповнити Розділ"
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model,name:ata_gsheets_timesheet_integration.model_res_config_settings
@@ -43,19 +55,19 @@ msgstr "Налаштування"
 #. module: ata_gsheets_timesheet_integration
 #: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.gsheet_timesheet_section_wizard_form
 msgid "Confirm"
-msgstr ""
+msgstr "Підтвердити"
 
 #. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_ata_section__create_uid
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_section_wizard__create_uid
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__create_uid
-#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_section_name__create_uid
 msgid "Created by"
 msgstr "Підтвердити"
 
 #. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_ata_section__create_date
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_section_wizard__create_date
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__create_date
-#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_section_name__create_date
 msgid "Created on"
 msgstr ""
 
@@ -81,18 +93,18 @@ msgid "Date to"
 msgstr "Дата до"
 
 #. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_ata_section__display_name
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_section_wizard__display_name
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__display_name
-#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_section_name__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #. odoo-python
-#: code:addons/ata_gsheets_timesheet_integration/models/project_task.py:0
+#: code:addons/ata_gsheets_timesheet_integration/wizard/ata_record_to_section_wizard.py:0
 #, python-format
-msgid "Do you want to transfer data from a Section to a Section Name?"
-msgstr "Чи бажаєте ви перенести дані з Розділу до Імені Розділу?"
+msgid "Do you want to transfer data from a Section (Selection) to a Section?"
+msgstr "Чи бажаєте ви перенести дані з Розділу (Вибірки) до Розділу?"
 
 #. module: ata_gsheets_timesheet_integration
 #: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
@@ -110,9 +122,9 @@ msgid "Google sheet timesheet integration"
 msgstr "Інтеграція табелів Google sheet"
 
 #. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_ata_section__id
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_section_wizard__id
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__id
-#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_section_name__id
 msgid "ID"
 msgstr ""
 
@@ -127,16 +139,16 @@ msgid "LMS"
 msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_ata_section__write_uid
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_section_wizard__write_uid
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__write_uid
-#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_section_name__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_ata_section__write_date
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_section_wizard__write_date
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__write_date
-#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_section_name__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -144,11 +156,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_section_wizard__message
 msgid "Message"
 msgstr "Повідомлення"
-
-#. module: ata_gsheets_timesheet_integration
-#: model:ir.actions.server,name:ata_gsheets_timesheet_integration.action_open_section_wizard
-msgid "Open Section Wizard"
-msgstr "Майстер Розділів"
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_res_config_settings__ata_page_name
@@ -162,21 +169,20 @@ msgid "Project Manager"
 msgstr "Керівник проекту"
 
 #. module: ata_gsheets_timesheet_integration
-#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_project_task__ata_section
-#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_section_name__name
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_ata_section__name
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_project_task__ata_section_id
 msgid "Section"
 msgstr "Розділ"
 
 #. module: ata_gsheets_timesheet_integration
-#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_project_task__ata_section_name
-msgid "Section Name"
-msgstr "Ім'я Розділу"
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_project_task__ata_section
+msgid "Section (Selection)"
+msgstr "Розділ (Вибірка)"
 
 #. module: ata_gsheets_timesheet_integration
-#: model:ir.actions.act_window,name:ata_gsheets_timesheet_integration.action_section_wizard
 #: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.gsheet_timesheet_section_wizard_form
 msgid "Section Wizard"
-msgstr "Майстер Розділів"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.res_config_settings_view_form_inherit_google_timesheet
@@ -225,91 +231,96 @@ msgid "Task"
 msgstr "Завдання"
 
 #. module: ata_gsheets_timesheet_integration
+#: model:ir.actions.act_window,name:ata_gsheets_timesheet_integration.action_gsheet_timesheet_section_wizard
+msgid "Timesheet Section Wizard"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
+#: model:ir.model,name:ata_gsheets_timesheet_integration.model_ata_section
+msgid "ata.section"
+msgstr ""
+
+#. module: ata_gsheets_timesheet_integration
 #: model:ir.model,name:ata_gsheets_timesheet_integration.model_gsheet_timesheet_section_wizard
 msgid "gsheet.timesheet.section.wizard"
 msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
-#: model:ir.model,name:ata_gsheets_timesheet_integration.model_section_name
-msgid "section.name"
-msgstr ""
-
-#. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__accounting
 msgid "Бухгалтерський облік"
-msgstr "Бухгалтерський облік"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__website
 msgid "Веб-сайт"
-msgstr "Веб-сайт"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__production
 msgid "Виробництво"
-msgstr "Виробництво"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__all_sections
 msgid "Всі розділи"
-msgstr "Всі розділи"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__procurement
 msgid "Закупівлі"
-msgstr "Закупівлі"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__salary
 msgid "Заробітна плата"
-msgstr "Заробітна плата"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__personnel
 msgid "Кадри"
-msgstr "Кадри"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__calendar
 msgid "Календар"
-msgstr "Календар"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__logistics
 msgid "Логістика"
-msgstr "Логістика"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__marketing
 msgid "Маркетинг"
-msgstr "Маркетинг"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__sales
 msgid "Продажі"
-msgstr "Продажі"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__projects
 msgid "Проекти"
-msgstr "Проекти"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__recruiting
 msgid "Рекрутинг"
-msgstr "Рекрутинг"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__repairs
 msgid "Ремонти"
-msgstr "Ремонти"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__storage
 msgid "Склад"
-msgstr "Склад"
+msgstr ""
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields.selection,name:ata_gsheets_timesheet_integration.selection__project_task__ata_section__managerial_accounting
 msgid "Управлінський облік"
-msgstr "Управлінський облік"
+msgstr ""

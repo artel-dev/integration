@@ -1,11 +1,11 @@
 from odoo import _, api, fields, models
 
 
-class AccountAnalyticLine(models.Model):
+class AtaProjectTask(models.Model):
     _inherit = 'project.task'
 
     ata_section = fields.Selection(
-        string='Section',
+        string='Section (Selection)',
         selection=[
             ('all_sections', 'Всі розділи'),
             ('crm', 'CRM'),
@@ -31,9 +31,9 @@ class AccountAnalyticLine(models.Model):
         comodel_name='res.users',
         string='Project Manager'
     )
-    ata_section_name = fields.Many2one(
-        comodel_name='section.name',
-        string='Section Name'
+    ata_section_id = fields.Many2one(
+        comodel_name='ata.section',
+        string='Section'
     )
 
     def default_get(self, fields_list):
@@ -55,17 +55,3 @@ class AccountAnalyticLine(models.Model):
                     vals['ata_user_id'] = project_manager.id if project_manager else False
         res = super().create(vals_list)
         return res
-
-    @staticmethod
-    def open_section_wizard():
-        message = _("Do you want to transfer data from a Section to a Section Name?")
-        return {
-            'name': 'Section Wizard',
-            'type': 'ir.actions.act_window',
-            'res_model': 'gsheet.timesheet.section.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {
-                'message': message,
-            },
-        }

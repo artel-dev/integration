@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 
 
-class SectionName(models.Model):
-    _name = 'section.name'
+class AtaSection(models.Model):
+    _name = 'ata.section'
 
     name = fields.Char(string='Section')

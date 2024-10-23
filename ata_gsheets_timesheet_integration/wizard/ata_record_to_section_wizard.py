@@ -1,37 +1,45 @@
-from odoo import models, fields, api
+from odoo import _, api, fields, models
 
 
 class GsheetTimesheetSectionWizard(models.TransientModel):
     _name = 'gsheet.timesheet.section.wizard'
 
     message = fields.Text(string='Message', readonly=True)
+    active_ids = fields.Many2many(
+        comodel_name='project.task',
+        string='Active Tasks',
+        default=lambda self: self.env.context.get('active_ids')
+    )
 
     @api.model
     def default_get(self, fields_list):
         res = super(GsheetTimesheetSectionWizard, self).default_get(fields_list)
-        res['message'] = self._context.get('message', '')
+        res['message'] = _("Do you want to transfer data from a Section (Selection) to a Section?")
         return res
 
-    def create_or_select_record(self):
-        active_ids = self._context.get('active_ids')
-        if active_ids:
-            for active_id in active_ids:
-                current_record = self.env['project.task'].browse(active_id)
-                if current_record and current_record.ata_section:
-                    ata_section_value = dict(current_record._fields['ata_section'].selection).get(
-                        current_record.ata_section)
-                    if ata_section_value:
-                        existing_record = self.env['section.name'].search([('name', '=', ata_section_value)],
-                                                                          limit=1)
-                        if existing_record:
-                            current_record.ata_section_name = existing_record.id
-                        else:
-                            new_record = self.env['section.name'].create({'name': ata_section_value})
-                            current_record.ata_section_name = new_record.id
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        records = super(GsheetTimesheetSectionWizard, self).create(vals_list)
-        for record in records:
-            record.create_or_select_record()
-        return records
+    def create_or_search_record(self):
+        if not self.active_ids:
+            return
+        as_mng = self.env['ata.section']
+        pt_mng = self.env['project.task']
+        for active_id in self.active_ids.ids:
+            current_record = pt_mng.browse(active_id)
+            if not current_record or not current_record.ata_section:
+                continue
+            ata_section_value = dict(current_record._fields['ata_section'].selection).get(
+                current_record.ata_section
+            )
+            if not ata_section_value:
+                continue
+            dmn = [
+                ('name', '=', ata_section_value)
+            ]
+            existing_record = as_mng.search(dmn, limit=1)
+            if existing_record:
+                current_record.ata_section_id = existing_record.id
+            else:
+                vals = {
+                    'name': ata_section_value
+                }
+                new_record = as_mng.create(vals)
+                current_record.ata_section_id = new_record.id
