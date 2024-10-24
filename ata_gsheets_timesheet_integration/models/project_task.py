@@ -4,6 +4,15 @@ from odoo import _, api, fields, models
 class AtaProjectTask(models.Model):
     _inherit = 'project.task'
 
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'project_id' in res:
+            if res['project_id']:
+                project_id = self.env['project.project'].browse(res['project_id'])
+                project_manager = project_id.user_id
+                res['ata_user_id'] = project_manager.id if project_manager else False
+        return res
+
     ata_section = fields.Selection(
         string='Section (Selection)',
         selection=[
@@ -35,15 +44,6 @@ class AtaProjectTask(models.Model):
         comodel_name='ata.section',
         string='Section'
     )
-
-    def default_get(self, fields_list):
-        res = super().default_get(fields_list)
-        if 'project_id' in res:
-            if res['project_id']:
-                project_id = self.env['project.project'].browse(res['project_id'])
-                project_manager = project_id.user_id
-                res['ata_user_id'] = project_manager.id if project_manager else False
-        return res
 
     @api.model_create_multi
     def create(self, vals_list):

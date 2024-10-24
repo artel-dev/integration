@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_gsheet_timesheet_sync_wizard_user,gsheet.timesheet.sync.wizard,model_gsheet_timesheet_sync_wizard,base.group_user,1,1,1,1
 access_gsheet_timesheet_sync_wizard_admin,gsheet.timesheet.sync.wizard,model_gsheet_timesheet_sync_wizard,base.group_system,1,1,1,1
-access_gsheet_timesheet_section_wizard_user,gsheet.timesheet.section.wizard,model_gsheet_timesheet_section_wizard,base.group_user,1,1,1,1
-access_gsheet_timesheet_section_wizard_admin,gsheet.timesheet.section.wizard,model_gsheet_timesheet_section_wizard,base.group_system,1,1,1,1
+access_ata_record_section_wizard_user,ata.record.section.wizard,model_ata_record_section_wizard,base.group_user,1,1,1,1
+access_ata_record_section_wizard_admin,ata.record.section.wizard,model_ata_record_section_wizard,base.group_system,1,1,1,1
 access_gsheet_timesheet_ata_section_user,access_gsheet_timesheet_ata_section_user,model_ata_section,base.group_user,1,1,1,1
