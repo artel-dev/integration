@@ -10,9 +10,9 @@
                     <notebook>
                         <page string="General">
                             <group>
-                                <field name="ref_object"/>
-                                <field name="state_exchange"/>
-                                <field name="method"/>
+                                <field name="ref_object" options="{'no_create': True}" required="1"/>
+                                <field name="state_exchange" readonly="not id"/>
+                                <field name="method" options="{'no_open': True, 'no_create': True}"  required="1"/>
                             </group>
                         </page>
                     </notebook>

@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
+from .ata_external_connection_base import AtaExternalConnectionClass as ExtClass
 
 
 class AtaExchangeQueue(models.Model):
@@ -37,22 +38,35 @@ class AtaExchangeQueue(models.Model):
             self.ref_object = self.env[self.method.model_name].sudo().search([], limit=1)
 
     @api.model
-    def search(self, args, offset=0, limit=None, order=None, count=False):
-        records = super(AtaExchangeQueue, self).search(args, offset, limit, order, count)
-        if count:
+    def search(self, args, offset=0, limit=None, order=None):
+        records = super(AtaExchangeQueue, self).search(args, offset, limit, order)
+        if limit:
             return records
         for record in records:
-            self._update_ref_object(record)
+            record._update_ref_object()
         return records
 
-    def _update_ref_object(self, record):
-        if record.ref_object:
-            ref_model, ref_id = record.ref_object._name, record.ref_object.id
+    def _update_ref_object(self):
+        if self.ref_object:
+            ref_model, ref_id = self.ref_object._name, self.ref_object.id
             if not self.env[ref_model].sudo().search([('id', '=', ref_id)], limit=1):
-                record.ref_object = False
+                self.ref_object = False
 
     @api.model
-    def add(self, records, method: ExtMethod):
+    def add_to_queue(self, record:ExtClass) -> bool:
+        ExtConnection = self.env["ata.external.connection.base"]
+        if isinstance(record.id, models.NewId):
+            return False
+
+        for method in record.ata_exchange_method_ids:
+            if not ExtConnection._re_exchanged_in(record):
+                if self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
+                    self._add(record, method)
+                else:
+                    ExtConnection.exchange(record, method)
+
+    @api.model
+    def _add(self, records: list[ExtClass], method: ExtMethod):
         for record in records:
             ref_record = self._fields['ref_object'].convert_to_cache(record, self)
             if ref_record is not None:
@@ -83,6 +97,7 @@ class AtaExchangeQueue(models.Model):
 
         self._check_ref_object(records)
 
+    @api.model
     def _check_ref_object(self, records):
         # записи можуть бути видалені з БД, тому перед обміном перевіряємо, щоб вони ще були в БД
         for record in records:
@@ -90,15 +105,14 @@ class AtaExchangeQueue(models.Model):
                 record.unlink()
                 records -= record
 
-        return records
-
+    @api.model
     def exchange(self, records=None):
         if not records:
             records = self.sudo().search([
                 ('state_exchange', 'in', ('new', 'idle'))
             ], limit=11)
 
-        records = self._check_ref_object(records)
+        self._check_ref_object(records)
 
         records.write({'state_exchange': 'in_exchange'})
 
@@ -112,7 +126,7 @@ class AtaExchangeQueue(models.Model):
     def exchange_immediately(self):
         records = self.sudo().search([
             ('state_exchange', '=', 'new')
-        ], limit=100)
+        ], limit=10)
         records.write({'state_exchange': 'idle'})
         self.exchange(records)
 

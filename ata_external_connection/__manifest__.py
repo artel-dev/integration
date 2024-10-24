@@ -1,15 +1,16 @@
 {
     'name': 'External connection',
     'summary': 'External connection',
-    'version': '17.0.1.0.0',
+    'version': '17.0.1.3.3',
     'author': 'ToDo',
     'website': 'todo.ltd',
     'license': 'OPL-1',
-    'category': 'Integration',
+    'category': 'Integration/Base',
     'depends': [
         'base',
     ],
     'data': [
+        'data/ata_exchange_category.xml',
         'security/ir.model.access.csv',
         'views/ata_external_connection_menus.xml',
         'views/ata_external_connection_domain.xml',
@@ -17,7 +18,8 @@
         'views/ata_exchange_log_views.xml',
         'views/ata_exchange_queue_views.xml',
         'views/ata_exchange_queue_usage_views.xml',
-        'data/ata_exchange_queue_cron.xml',
+        'data/ata_exchange_queue_cron.xml',        
     ],
-    'installable': 'True',
+    'installable': True,
+    'application': True,
 }

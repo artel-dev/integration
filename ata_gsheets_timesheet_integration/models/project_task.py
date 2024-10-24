@@ -1,11 +1,20 @@
-from odoo import fields, models, api
+from odoo import _, api, fields, models
 
 
-class AccountAnalyticLine(models.Model):
+class AtaProjectTask(models.Model):
     _inherit = 'project.task'
 
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'project_id' in res:
+            if res['project_id']:
+                project_id = self.env['project.project'].browse(res['project_id'])
+                project_manager = project_id.user_id
+                res['ata_user_id'] = project_manager.id if project_manager else False
+        return res
+
     ata_section = fields.Selection(
-        string='Section',
+        string='Section (Selection)',
         selection=[
             ('all_sections', 'Всі розділи'),
             ('crm', 'CRM'),
@@ -31,15 +40,10 @@ class AccountAnalyticLine(models.Model):
         comodel_name='res.users',
         string='Project Manager'
     )
-
-    def default_get(self, fields_list):
-        res = super().default_get(fields_list)
-        if 'project_id' in res:
-            if res['project_id']:
-                project_id = self.env['project.project'].browse(res['project_id'])
-                project_manager = project_id.user_id
-                res['ata_user_id'] = project_manager.id if project_manager else False
-        return res
+    ata_section_id = fields.Many2one(
+        comodel_name='ata.section',
+        string='Section'
+    )
 
     @api.model_create_multi
     def create(self, vals_list):

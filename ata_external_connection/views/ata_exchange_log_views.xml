@@ -11,6 +11,7 @@
                         <page string="General">
                             <group>
                                 <field name="name"/>
+                                <field name="system_id"/>
                                 <field name="server_address"/>
                                 <field name="server_port"/>
                                 <field name="method_name"/>
@@ -46,11 +47,12 @@
             <tree>
                 <header>
                     <button name="action_delete_all" string="Delete all"
-                            type="object" confirm="Do you want to delete all entries from the exchange log?"/>
+                        type="object" confirm="Do you want to delete all entries from the exchange log?"/>
                 </header>
                 <field name="name"/>
-                <field name="server_address"/>
-                <field name="server_port"/>
+                <field name="system_id" optional="show"/>
+                <field name="server_address" optional="hide"/>
+                <field name="server_port" optional="hide"/>
                 <field name="method_name"/>
                 <field name="parameters" optional="show"/>
                 <field name="request" optional="hide"/>
@@ -87,8 +89,8 @@
                         <div t-attf-class="oe_kanban_global_click o_exchange_log_kanban #{!selection_mode ? kanban_color(record.color.raw_value) : ''}">
                             <div class="o_dropdown_kanban dropdown">
                                 <a class="dropdown-toggle btn" role="button"
-                                   data-toggle="dropdown"
-                                   href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    data-toggle="dropdown"
+                                    href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v" aria-hidden="true"/>
                                 </a>
                                 <div class="o_kanban_card_manage_setting row mt16">
