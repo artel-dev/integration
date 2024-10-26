@@ -27,15 +27,24 @@ class AtaJson(models.AbstractModel):
         return obj
 
     @staticmethod
-    def parse_json_with_dates(json_str_in):
+    def parse_json_with_dates(json_str_in: str):
         json_str = json_str_in.decode() if isinstance(json_str_in, bytes) else json_str_in
         parsed_json = json.loads(json_str.lstrip('\ufeff'), object_hook=AtaJson.parse_datetime)
         return parsed_json
 
     @staticmethod
-    def loads(json_str):
+    def loads(json_str: str):
         return AtaJson.parse_json_with_dates(json_str)
 
     @staticmethod
     def dumps(data):
         return json.dumps(data, cls=AtaCustomFieldEncoderJSON)
+
+    @staticmethod
+    def convert_view(json_str: str):
+        try:
+            json_object = json.loads(json_str.lstrip('\ufeff'), object_hook=AtaJson.parse_datetime)
+            return json.dumps(json_object, indent=4, ensure_ascii=False)
+        except ValueError:
+            return json_str
+

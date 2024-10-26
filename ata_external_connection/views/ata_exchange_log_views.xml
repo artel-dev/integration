@@ -5,7 +5,7 @@
         <field name="name">Exchange log form view</field>
         <field name="model">ata.exchange.log</field>
         <field name="arch" type="xml">
-            <form>
+            <form edit="0">
                 <sheet>
                     <notebook>
                         <page string="General">
@@ -16,7 +16,6 @@
                                 <field name="server_port"/>
                                 <field name="method_name"/>
                                 <field name="parameters"/>
-                                <field name="request_body"/>
                                 <field name="request"/>
                                 <field name="headers"/>
                                 <field name="status_code"/>
@@ -30,6 +29,9 @@
                                 <field name="finish_date"/>
                                 <field name="execution_time"/>
                             </group>
+                        </page>
+                        <page string="Request">
+                            <field name="request_body"/>
                         </page>
                         <page string="Response">
                             <field name="response"/>

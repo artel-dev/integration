@@ -41,7 +41,6 @@ class AtaExternalConnectionClass(models.AbstractModel):
             record.ata_exchange_method_ids |=\
                 self.env['ata.external.connection.method'].browse([m.id for m in methods])
 
-    
     def ata_exchange_get_ref_from_record(self) -> str|None:
         self.ensure_one()
         return "%s,%s" % (self._name, self.id) if self else None
@@ -82,7 +81,7 @@ class AtaExternalConnectionClass(models.AbstractModel):
     def ata_exchange_response_body_parse(self, method: ExtMethod, response_body: dict) -> tuple[dict, bool]:
         # typical parse response
         response_data: dict = response_body.get("data", {})
-        result = response_data.get("status", False)
+        result = response_body.get("status", False) or response_data.get("status", False)
 
         return response_data, result
 
