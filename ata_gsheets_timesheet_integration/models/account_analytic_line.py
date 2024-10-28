@@ -54,20 +54,23 @@ class AccountAnalyticLine(models.Model):
             body={
                 "valueInputOption": "USER_ENTERED",
                 "data": [
-                    {"range": f"{ata_page_name}!A{row}:K",
+                    {"range": f"{ata_page_name}!A{row}:O",
                      "majorDimension": "ROWS",
                      "values": [[
                          vals['id'] if action != 'unlink' else '',
                          vals['date'] if action != 'unlink' else '',
                          vals['project'] if action != 'unlink' else '',
                          vals['task'] if action != 'unlink' else '',
-                         vals['section'] if action != 'unlink' else '',
+                         vals['ata_section_id'] if action != 'unlink' else '',
                          vals['description'] if action != 'unlink' else '',
                          vals['unit_amount'] if action != 'unlink' else '',
                          vals['employee'] if action != 'unlink' else '',
                          vals['partner'] if action != 'unlink' else '',
                          vals['ata_user_id'] if action != 'unlink' else '',
                          vals['milestone_id'] if action != 'unlink' else '',
+                         vals['allocated_hours'] if action != 'unlink' else '',
+                         vals['td_actual_hours_total'] if action != 'unlink' else '',
+                         vals['parent_id'] if action != 'unlink' else '',
                      ]]}]}).execute()
 
     def write(self, vals):
@@ -90,8 +93,6 @@ class AccountAnalyticLine(models.Model):
         ]
         if any(x in vals for x in field_list):
             self = self.with_user(SUPERUSER_ID)
-            section = dict(self.task_id._fields['ata_section'].selection).get(
-                self.task_id.ata_section)
 
             import_dict = {
                 'id': self.id,
@@ -101,13 +102,28 @@ class AccountAnalyticLine(models.Model):
                 ) if self.date else '',
                 'project': self.project_id.name if self.project_id else '',
                 'task': self.task_id.name if self.task_id else '',
-                'section': section if section else '',
+                'ata_section_id': (
+                    self.task_id.ata_section_id.name
+                    if self.task_id and self.task_id.ata_section_id else ''
+                ),
                 'description': self.name,
                 'unit_amount': self.unit_amount,
                 'employee': self.employee_id.name if self.employee_id else '',
                 'partner': self.partner_id.name if self.partner_id else '',
                 'ata_user_id': self.task_id.ata_user_id.name if self.task_id and self.task_id.ata_user_id else '',
                 'milestone_id': self.task_id.milestone_id.name if self.task_id and self.task_id.milestone_id else '',
+                'allocated_hours': (
+                    self.task_id.allocated_hours
+                    if self.task_id and self.task_id.allocated_hours else ''
+                ),
+                'td_actual_hours_total': (
+                    self.task_id.td_actual_hours_total
+                    if self.task_id and self.task_id.td_actual_hours_total else ''
+                ),
+                'parent_id': (
+                    self.task_id.parent_id.name
+                    if self.task_id and self.task_id.parent_id else ''
+                ),
             }
             try:
                 self.write_timesheet_to_google_sheet(
@@ -129,8 +145,6 @@ class AccountAnalyticLine(models.Model):
 
         for row in res:
             row = row.with_user(SUPERUSER_ID)
-            section = dict(row.task_id._fields['ata_section'].selection).get(
-                row.task_id.ata_section)
 
             import_dict = {
                 'id': row.id,
@@ -140,13 +154,29 @@ class AccountAnalyticLine(models.Model):
                 ) if row.date else '',
                 'project': row.project_id.name if row.project_id else '',
                 'task': row.task_id.name if row.task_id else '',
-                'section': section if section else '',
+                'ata_section_id': (
+                    row.task_id.ata_section_id.name
+                    if row.task_id and row.task_id.ata_section_id else ''
+                ),
                 'description': row.name,
                 'unit_amount': row.unit_amount,
                 'employee': row.employee_id.name if row.employee_id else '',
                 'partner': row.partner_id.name if row.partner_id else '',
                 'ata_user_id': row.task_id.ata_user_id.name if row.task_id and row.task_id.ata_user_id else '',
                 'milestone_id': row.task_id.milestone_id.name if row.task_id and row.task_id.milestone_id else '',
+                'allocated_hours': (
+                    row.task_id.allocated_hours
+                    if row.task_id and row.task_id.allocated_hours else ''
+                ),
+                'td_actual_hours_total': (
+                    row.task_id.td_actual_hours_total
+                    if row.task_id and row.task_id.td_actual_hours_total else ''
+                ),
+                'parent_id': (
+                    row.task_id.parent_id.name
+                    if row.task_id and row.task_id.parent_id else ''
+                ),
+
             }
             try:
                 self.write_timesheet_to_google_sheet(

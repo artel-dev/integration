@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <record id="action_ata_record_section_wizard" model="ir.actions.act_window">
+            <field name="name">Timesheet Section Wizard</field>
+            <field name="res_model">ata.record.section.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_project_task_tree_inherit" model="ir.ui.view">
+            <field name="name">project.task.tree.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_tree2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <header>
+                        <button name="%(action_ata_record_section_wizard)d"
+                            type="action" string="Complete Section" icon="fa-address-book-o"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="ata_record_section_wizard_form" model="ir.ui.view">
+            <field name="name">ata.record.section.wizard.form</field>
+            <field name="model">ata.record.section.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Section Wizard">
+                    <header>
+                        <button string="Confirm" name="create_or_search_record" type="object"
+                                class="oe_highlight" icon="fa-address-book-o"/>
+                        <button string="Cancel" special="cancel" icon="fa-times-circle"/>
+                    </header>
+                    <div>
+                        <field name="message" readonly="1"/>
+                    </div>
+                    <notebook>
+                        <page string="Tasks">
+                            <field name="tasks_ids" widget="many2many_list"/>
+                        </page>v
+                    </notebook>
+                    <footer/>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
