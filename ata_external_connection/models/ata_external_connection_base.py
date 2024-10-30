@@ -228,4 +228,3 @@ class AtaExternalConnectionBase(models.AbstractModel):
                 'datas': save_data["file_data"],
                 'mimetype': save_data["mimetype"]
             })
-
