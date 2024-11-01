@@ -21,6 +21,12 @@ msgid "Active Google Sheets - Timesheet integration"
 msgstr "Активний"
 
 #. module: ata_gsheets_timesheet_integration
+#: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_section_wizard__active_ids
+#: model_terms:ir.ui.view,arch_db:ata_gsheets_timesheet_integration.gsheet_timesheet_section_wizard_form
+msgid "Active Tasks"
+msgstr "Вибране"
+
+#. module: ata_gsheets_timesheet_integration
 #: model:ir.model,name:ata_gsheets_timesheet_integration.model_account_analytic_line
 msgid "Analytic Line"
 msgstr "Рядок аналітики"
@@ -56,7 +62,7 @@ msgstr "Підтвердити"
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_ata_section__create_uid
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_gsheet_timesheet_sync_wizard__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Підтвердити"
 
 #. module: ata_gsheets_timesheet_integration
 #: model:ir.model.fields,field_description:ata_gsheets_timesheet_integration.field_ata_record_section_wizard__create_date
