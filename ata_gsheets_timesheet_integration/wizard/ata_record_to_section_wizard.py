@@ -24,24 +24,32 @@ class AtaRecordSectionWizard(models.TransientModel):
             return
         as_mng = self.env['ata.section']
         pt_mng = self.env['project.task']
+
         for task_id in self.tasks_ids.ids:
             current_record = pt_mng.browse(task_id)
-            if not current_record or not current_record.ata_section:
-                continue
-            ata_section_value = dict(current_record._fields['ata_section'].selection).get(
-                current_record.ata_section
-            )
-            if not ata_section_value:
-                continue
-            dmn = [
-                ('name', '=', ata_section_value)
-            ]
-            existing_record = as_mng.search(dmn, limit=1)
-            if existing_record:
-                current_record.ata_section_id = existing_record.id
-            else:
-                vals = {
-                    'name': ata_section_value
-                }
-                new_record = as_mng.create(vals)
-                current_record.ata_section_id = new_record.id
+            if current_record and current_record.ata_section:
+                ata_section_value = dict(current_record._fields['ata_section'].selection).get(
+                    current_record.ata_section
+                )
+                if ata_section_value:
+                    self._update_section(as_mng, current_record, ata_section_value)
+            for subtask in current_record.child_ids:
+                if subtask.ata_section:
+                    ata_section_value = dict(subtask._fields['ata_section'].selection).get(
+                        subtask.ata_section
+                    )
+                    if ata_section_value:
+                        self._update_section(as_mng, subtask, ata_section_value)
+
+    @staticmethod
+    def _update_section(as_mng, task_record, ata_section_value):
+        dmn = [('name', '=', ata_section_value)]
+        existing_record = as_mng.search(dmn, limit=1)
+        if existing_record:
+            task_record.ata_section_id = existing_record.id
+        else:
+            vals = {
+                'name': ata_section_value
+            }
+            new_record = as_mng.create(vals)
+            task_record.ata_section_id = new_record.id
