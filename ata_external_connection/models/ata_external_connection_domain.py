@@ -6,7 +6,6 @@ from .ata_external_connection_base import AtaExternalConnectionClass as ExtClass
 from .ata_external_system import ExternalSystem as ExtSystem
 
 
-
 class AtaExternalConnectionDomain(models.Model):
     _name = "ata.external.connection.domain"
     _description = "Domain for search external system"
@@ -52,3 +51,8 @@ class AtaExternalConnectionDomain(models.Model):
             'uid': self.env.uid,
             'user': self.env.user,
         }
+
+    def action_add_to_queue(self):
+        _domain = safe_eval.safe_eval(self.domain, self._get_eval_context())
+        records: ExtClass = self.env[self.model_name].sudo().search(_domain)
+        records.ata_exchange_add_to_queue()

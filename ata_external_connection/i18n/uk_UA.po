@@ -28,6 +28,11 @@ msgid "ATA : Exchange queue with external systems (immediately start)"
 msgstr "Обмін об'єктами с зовнішними системами (миттєво)"
 
 #. module: ata_external_connection
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_external_connection_domain_view_form
+msgid "Add filtering records to exchange queue"
+msgstr "Додати фільтровані записи в чергу обміну"
+
+#. module: ata_external_connection
 #: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_queue_usage_view_form
 msgid "All methods"
 msgstr "Всі методи обміну"
@@ -36,6 +41,11 @@ msgstr "Всі методи обміну"
 #: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_queue_usage_view_form
 msgid "All models"
 msgstr "Всі моделі"
+
+#. module: ata_external_connection
+#: model:ir.model.fields,field_description:ata_external_connection.field_ata_external_connection_class__ata_exchange_method_ids
+msgid "Ata Exchange Method"
+msgstr "Метод обміну"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__color
@@ -56,6 +66,11 @@ msgstr "Тип обміну"
 #: model:ir.model,name:ata_external_connection.model_ata_external_connection_json
 msgid "Convert json functions (ATA)"
 msgstr "Функції конвертації json (ATA)"
+
+#. module: ata_external_connection
+#: model:ir.module.category,description:ata_external_connection.module_category_integration_base
+msgid "Core of integration"
+msgstr "Ядро інтеграції"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__create_date
@@ -205,6 +220,11 @@ msgstr "Дата виконання"
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__execution_time
 msgid "Execution Time"
 msgstr "Час виконання"
+
+#. module: ata_external_connection
+#: model:ir.module.category,description:ata_external_connection.module_category_integration_extension
+msgid "Extension of integration"
+msgstr "Розширення інтеграції"
 
 #. module: ata_external_connection
 #: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_kanban

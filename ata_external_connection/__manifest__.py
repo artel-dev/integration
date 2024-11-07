@@ -1,7 +1,7 @@
 {
     'name': 'External connection',
     'summary': 'External connection',
-    'version': '17.0.1.3.6',
+    'version': '17.0.1.3.7',
     'author': 'ToDo',
     'website': 'todo.ltd',
     'license': 'OPL-1',

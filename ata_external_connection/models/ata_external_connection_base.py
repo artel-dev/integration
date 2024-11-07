@@ -2,6 +2,7 @@ from odoo import api, models, fields, Command
 from odoo.tools.misc import get_lang
 from abc import abstractmethod
 from datetime import date, datetime
+from functools import wraps
 
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
 
@@ -52,7 +53,8 @@ class AtaExternalConnectionClass(models.AbstractModel):
     def ata_exchange_get_data_record(self, method: ExtMethod|None, as_node = False) -> list[dict]|dict|str:
         pass
 
-    def ata_exchange_get_data_record_multi(self, data: list[dict], as_node = False,always_list=False) -> list[dict]|dict|str:
+    @api.model
+    def ata_exchange_get_data_record_multi(self, data: list[dict], as_node = False, always_list=False) -> list[dict]|dict|str:
         if always_list:
             out = data
         else:
@@ -69,6 +71,20 @@ class AtaExternalConnectionClass(models.AbstractModel):
             }
 
         return out
+
+    @classmethod
+    def ata_exchange_get_data_record_multi_dec(cls, always_list=False):
+        def decorator(func):
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                return cls.ata_exchange_get_data_record_multi(cls,
+                    func(*args, **kwargs),
+                    kwargs.get('as_node', False),
+                    always_list)
+
+            return wrapper
+        return decorator
+
 
     @api.model
     def ata_exchange_get_request_body(self, method: ExtMethod, request_data: dict) -> dict:

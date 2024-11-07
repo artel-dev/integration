@@ -14,7 +14,11 @@
                             invisible="not model_id"/>
                         <field name="domain" widget="domain"
                             options="{'model': 'model_name', 'in_dialog': True}"
-                            invisible="not model_id"/>                        
+                            invisible="not model_id"/>
+                        <div colspan="2">
+                            <button name="action_add_to_queue" string="Add filtering records to exchange queue" class="oe_highlight"
+                                type="object"/>
+                        </div>
                     </group>
                 </sheet>
             </form>
