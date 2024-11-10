@@ -53,6 +53,7 @@ class AtaExternalConnectionDomain(models.Model):
         }
 
     def action_add_to_queue(self):
-        _domain = safe_eval.safe_eval(self.domain, self._get_eval_context())
+        _domain = safe_eval.safe_eval(self.domain, self._get_eval_context()) \
+            if self.domain else []
         records: ExtClass = self.env[self.model_name].sudo().search(_domain)
         records.ata_exchange_add_to_queue()

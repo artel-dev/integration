@@ -58,7 +58,7 @@ class AtaExchangeQueue(models.Model):
         if isinstance(record.id, models.NewId):
             return False
 
-        for method in record.ata_exchange_method_ids:
+        for method in record.ata_exchange_compute_methods():
             if not ExtConnection._re_exchanged_in(record):
                 if self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
                     self._add(record, method)

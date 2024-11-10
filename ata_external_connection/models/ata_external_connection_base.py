@@ -13,11 +13,6 @@ class AtaExternalConnectionClass(models.AbstractModel):
 
     ATA_EXCHANGE_NODE_NAME = ""
 
-    ata_exchange_method_ids = fields.Many2many(
-        comodel_name="ata.external.connection.method",
-        compute="ata_exchange_compute_methods",
-    )
-
     # +++ enqueue event +++
     @api.model_create_multi
     def create(self, vals_list):
@@ -37,54 +32,44 @@ class AtaExternalConnectionClass(models.AbstractModel):
             self.env['ata.exchange.queue'].add_to_queue(record)
     # --- enqueue event ---
 
-    def ata_exchange_compute_methods(self, methods: list[ExtMethod] = []) -> None:
-        for record in self:
-            record.ata_exchange_method_ids |=\
-                self.env['ata.external.connection.method'].browse([m.id for m in methods])
+    # for override, but not abstract method
+    def ata_exchange_compute_methods(self) -> list[ExtMethod]:
+        return []
 
     def ata_exchange_get_ref_from_record(self) -> str|None:
         self.ensure_one()
         return "%s,%s" % (self._name, self.id) if self else None
 
     def ata_exchange_get_request_data(self, method: ExtMethod) -> dict:
-        return data if (data:=self.ata_exchange_get_data_record(method, True)) else {}
+        return data if (data:=self.ata_exchange_get_data_record(method = method, as_node = True)) else {}
 
     @abstractmethod
     def ata_exchange_get_data_record(self, method: ExtMethod|None, as_node = False) -> list[dict]|dict|str:
         pass
 
-    @api.model
-    def ata_exchange_get_data_record_multi(self, data: list[dict], as_node = False, always_list=False) -> list[dict]|dict|str:
-        if always_list:
-            out = data
-        else:
-            if len(data) == 0:
-                out = ""
-            elif len(data) == 1:
-                out = data[0]
-            else:
-                out = data
-
-        if as_node and self.ATA_EXCHANGE_NODE_NAME:
-            out = {
-                self.ATA_EXCHANGE_NODE_NAME: out
-            }
-
-        return out
-
-    @classmethod
-    def ata_exchange_get_data_record_multi_dec(cls, always_list=False):
+    def ata_exchange_get_data_record_format(always_list=False):
         def decorator(func):
             @wraps(func)
-            def wrapper(*args, **kwargs):
-                return cls.ata_exchange_get_data_record_multi(cls,
-                    func(*args, **kwargs),
-                    kwargs.get('as_node', False),
-                    always_list)
+            def wrapper(self: AtaExternalConnectionClass, *args, **kwargs):
+                data = func(self, *args, **kwargs)
+                if always_list:
+                    out = data
+                else:
+                    if len(data) == 0:
+                        out = ""
+                    elif len(data) == 1:
+                        out = data[0]
+                    else:
+                        out = data
 
+                if kwargs.get('as_node', False) and self.ATA_EXCHANGE_NODE_NAME:
+                    out = {
+                        self.ATA_EXCHANGE_NODE_NAME: out
+                    }
+
+                return out
             return wrapper
         return decorator
-
 
     @api.model
     def ata_exchange_get_request_body(self, method: ExtMethod, request_data: dict) -> dict:
@@ -152,7 +137,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
         # сhecking the record for the exchange method at the moment
         # it may be that the record no longer needs to be exchanged
-        for method in record.ata_exchange_method_ids:
+        for method in record.ata_exchange_compute_methods():
             ext_systems = self.env["ata.external.connection.domain"].get_ext_systems(record, method)
             for ext_system in ext_systems:
                 result = False
