@@ -9,6 +9,8 @@
                 <header>
                     <button name="action_test_connection" string="Test connection" class="oe_highlight"
                             type="object"/>
+                    <button name="action_synchronization" string="Synchronization" class="oe_highlight"
+                            type="object"/>
                 </header>
                 <sheet>
                     <notebook>
@@ -91,6 +93,23 @@
         <field name="state">code</field>
         <field name="code">
             action = records.action_test_connection()
+        </field>
+        <field name="binding_model_id" ref="ata_external_connection.model_ata_external_system"/>
+        <field name="binding_type">action</field>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+    <record id="ata_exchange_system_action_sync" model="ir.actions.server">
+        <field name="name">Synchronization</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_ata_external_system"/>
+        <field name="state">code</field>
+        <field name="help">
+            This action synchronizes the ID with an external system.
+            This is necessary if there is incoming traffic to Odoo, several exchange databases 
+            and binding of object IDs to an external database.</field>
+        <field name="code">
+            action = records.action_synchronization()
         </field>
         <field name="binding_model_id" ref="ata_external_connection.model_ata_external_system"/>
         <field name="binding_type">action</field>

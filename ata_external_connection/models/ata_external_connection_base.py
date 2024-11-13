@@ -1,8 +1,8 @@
 from odoo import api, models, fields, Command
-from odoo.tools.misc import get_lang
 from abc import abstractmethod
 from datetime import date, datetime
 from functools import wraps
+from odoo.tools import config
 
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
 
@@ -74,8 +74,16 @@ class AtaExternalConnectionClass(models.AbstractModel):
     @api.model
     def ata_exchange_get_request_body(self, method: ExtMethod, request_data: dict) -> dict:
         return {
-            "meta": {},
-            "data": request_data,
+            **self.get_response_body_meta(),
+            **{"data": request_data}
+        }
+
+    @classmethod
+    def get_response_body_meta(cls) -> dict:
+        return {
+            'meta': {
+                'db_name': config['db_name'],
+            },
         }
 
     @api.model
