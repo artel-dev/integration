@@ -1,6 +1,6 @@
 from odoo import api, models
 from typing import Tuple
-from odoo.tools.misc import get_lang
+from odoo.tools import config
 
 from .ata_external_connection_method import AtaExternalConnectionMethod as ExtMethod
 
@@ -68,12 +68,20 @@ class AtaExternalConnectionBase(models.AbstractModel):
     def add_exchange_queue(self, record, method: ExtMethod):
         self.env["ata.exchange.queue"].add(record, method)
 
+    @classmethod
+    def get_response_body_meta(cls) -> dict:
+        return {
+            'meta': {
+                'db_name': config['db_name'],
+            },
+        }
+
     @api.model
     def exchange(self, record, method: ExtMethod) -> bool:
-        result = False
-        self = self.with_context(lang=self.get_default_lang())
+        # by default the exchange is successful
+        result_main = True
 
-        self._add_re_exchanged(record)
+        self = self.with_context(lang=self.get_default_lang())
 
         ext_systems = self.env["ata.external.connection.domain"].get_ext_systems(record, method)
         if ext_systems:
@@ -81,6 +89,8 @@ class AtaExternalConnectionBase(models.AbstractModel):
             continue_exchange, delete_from_queue = self._prepare_record(record, method)
             if continue_exchange:
                 for ext_system in ext_systems:
+                    result = False
+
                     request_data = self._get_request_data(record, method)
                     # request_data may be empty
                     if request_data:
@@ -96,24 +106,21 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
                         response_body = ext_system.execute(ext_service)
                         if response_body:
-                            error = response_body.get("Error", False)
+                            error = response_body.get("error", False)
                             if not error:
                                 # parse response body
-                                response_data, result = self._parse_response_body(record, method, response_body)
-                                # post-processing response data
-                                result = result and self._post_processing_response(record, method, response_data)
-                    else:
-                        # for delete from queue
-                        result = True
-            elif delete_from_queue:
-                result = True
-        else:
-            # for delete from queue, if nothing ext. systems
-            result = True
-
-        self._delete_re_exchanged(record)
-
-        return result
+                                response_data, result_response_body_parse = self._parse_response_body(record, method, response_body)
+                                if result_response_body_parse:
+                                    # post-processing response data
+                                    self._add_re_exchanged(record)
+                                    result = self._post_processing_response(record, method, response_data)
+                                    self._delete_re_exchanged(record)
+                    
+                    result_main = result_main and result
+            else:
+                result_main = False
+        
+        return result_main
 
     @staticmethod
     # return [continue_exchange, delete_from_queue]
@@ -134,12 +141,17 @@ class AtaExternalConnectionBase(models.AbstractModel):
             if hasattr(record_model, func_get_data_name) \
             else {}
 
-    @staticmethod
-    def _get_request_body(record, method: ExtMethod, request_data: dict) -> dict:
+    @classmethod
+    def _get_request_body(cls, record, method: ExtMethod, request_data: dict) -> dict:
         func_request_body_name = f'ata_request_body_exchange_{method.name.lower()}'
-        return getattr(record, func_request_body_name)(request_data) \
+        request_body = getattr(record, func_request_body_name)(request_data) \
             if hasattr(record, func_request_body_name) \
-            else {"Data": request_data}
+            else {"data": request_data}
+
+        return {
+            **cls.get_response_body_meta(),
+            **request_body
+        }
 
     @staticmethod
     def _parse_response_body(record, method: ExtMethod, response_body: dict) -> Tuple[dict, bool]:
@@ -148,8 +160,8 @@ class AtaExternalConnectionBase(models.AbstractModel):
             response_data, result = getattr(record, func_parse_response_name)(response_body)
         else:
             # typical parse response
-            response_data = response_body.get("Data", {})
-            result = response_data.get("Status", False)
+            response_data: dict = response_body.get("data", {})
+            result = response_body.get("status", False) or response_data.get("status", False)
 
         return response_data, result
 

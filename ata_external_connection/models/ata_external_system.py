@@ -305,3 +305,46 @@ class ExternalSystem(models.Model):
                 'sticky': False
             }
         }
+
+    # --- synchronization ---
+    def action_synchronization(self):
+        exchange_id = f'Synchronization: {self.name}'
+        ext_service = {
+            'exchange_id': exchange_id,
+            'name': 'Test',
+            'description': 'Synchronization',
+            'method_name': '/sync',
+            'http_method': 'POST',
+            'params': dict(),
+            'request_body': {
+                **self.env['ata.external.connection.base'].get_response_body_meta(),
+                **{'data': {
+                    'id': self.id,
+                    'name': self.name,
+                }}
+            }
+        }
+
+        response_body = self.execute(ext_service)
+
+        result = False
+        if response_body:
+            error = response_body.get('error', '')
+            if not error:
+                if self.content_type == 'json':
+                    result = response_body.get("status", False)
+                else:
+                    result = (response_body == 'True')
+            else:
+                result = error
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Result synchronization',
+                'type': 'info',
+                'message': f'Synchronization: {str(result)}',
+                'sticky': False
+            }
+        }
