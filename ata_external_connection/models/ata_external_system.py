@@ -280,16 +280,15 @@ class ExternalSystem(models.Model):
                 error = f'Error undefined'
 
                 if response_body:
-                    error = response_body.get("Error", "")
+                    error = response_body.get("error", "")
                     if not error:
                         if record.content_type == 'json':
-                            data = response_body.get("Data", {})
-                            result = data.get("Status", False)
+                            result = response_body.get("status", False)
                         else:
                             result = True if response_body == 'True' else False
                     else:
                         answers.append(f'Test {method_http} method ext. system {record.name} is False\n'
-                                       f'Error: {str(error)}')
+                            f'Error: {str(error)}')
 
                 answers.append(f'Test {method_http} method "{record.name}" is {str(result)}')
                 if error:
