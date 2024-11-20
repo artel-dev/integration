@@ -68,11 +68,11 @@ class AtaExternalConnectionBase(models.AbstractModel):
     def add_exchange_queue(self, record, method: ExtMethod):
         self.env["ata.exchange.queue"].add(record, method)
 
-    @classmethod
-    def get_response_body_meta(cls) -> dict:
+    @api.model
+    def get_response_body_meta(self) -> dict:
         return {
             'meta': {
-                'db_name': config['db_name'],
+                'db_name': self._cr.dbname,
             },
         }
 
@@ -141,15 +141,15 @@ class AtaExternalConnectionBase(models.AbstractModel):
             if hasattr(record_model, func_get_data_name) \
             else {}
 
-    @classmethod
-    def _get_request_body(cls, record, method: ExtMethod, request_data: dict) -> dict:
+    @api.model
+    def _get_request_body(self, record, method: ExtMethod, request_data: dict) -> dict:
         func_request_body_name = f'ata_request_body_exchange_{method.name.lower()}'
         request_body = getattr(record, func_request_body_name)(request_data) \
             if hasattr(record, func_request_body_name) \
             else {"data": request_data}
 
         return {
-            **cls.get_response_body_meta(),
+            **self.get_response_body_meta(),
             **request_body
         }
 
