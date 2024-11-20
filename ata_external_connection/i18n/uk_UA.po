@@ -302,6 +302,21 @@ msgid "Integration"
 msgstr "Інтеграція"
 
 #. module: ata_external_connection
+#: model:ir.module.category,name:ata_external_connection.module_category_integration_base
+msgid "Integration (base)"
+msgstr "Інтеграція (ядро)"
+
+#. module: ata_external_connection
+#: model:ir.module.category,name:ata_external_connection.module_category_integration_extension
+msgid "Integration (extension)"
+msgstr "Інтеграція (розширення)"
+
+#. module: ata_external_connection
+#: model:ir.module.category,description:ata_external_connection.module_category_integration
+msgid "Integration with external systems"
+msgstr "Інтеграція з зовнішніми системами"
+
+#. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__is_executed
 msgid "Is Executed"
 msgstr "Виконано"
@@ -550,6 +565,12 @@ msgstr "Статус: Помилка"
 #: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_exchange_log_view_search
 msgid "Status: OK"
 msgstr "Статус: ОК"
+
+#. module: ata_external_connection
+#: model:ir.actions.server,name:ata_external_connection.ata_exchange_system_action_sync
+#: model_terms:ir.ui.view,arch_db:ata_external_connection.ata_external_system_view_form
+msgid "Synchronization"
+msgstr "Синхронізація"
 
 #. module: ata_external_connection
 #: model:ir.model.fields,field_description:ata_external_connection.field_ata_exchange_log__system_id

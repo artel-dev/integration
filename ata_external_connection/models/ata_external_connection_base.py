@@ -78,11 +78,11 @@ class AtaExternalConnectionClass(models.AbstractModel):
             **{"data": request_data}
         }
 
-    @classmethod
-    def get_response_body_meta(cls) -> dict:
+    @api.model
+    def get_response_body_meta(self) -> dict:
         return {
             'meta': {
-                'db_name': config['db_name'],
+                'db_name': self._cr.dbname,
             },
         }
 
