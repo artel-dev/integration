@@ -1,7 +1,7 @@
 {
     'name': 'VOIP customization',
     'summary': 'VOIP customization',
-    'version': '17.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'VOIP',
     'author': 'ToDo',
     'website': 'https://todo.ltd',
