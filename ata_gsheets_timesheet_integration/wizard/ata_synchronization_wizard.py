@@ -108,8 +108,7 @@ class GsheetTimesheetSyncWizard(models.TransientModel):
                     line_id.task_id.milestone_id.name if line_id.task_id and line_id.task_id.milestone_id else '',
                     (line_id.task_id.allocated_hours
                      if line_id.task_id and line_id.task_id.allocated_hours else ''),
-                    (line_id.task_id.td_actual_hours_total
-                     if line_id.task_id and line_id.task_id.td_actual_hours_total else ''),
+                    line_id.td_actual_hours_amount,
                     (line_id.task_id.parent_id.name
                      if line_id.task_id and line_id.task_id.parent_id else ''),
                 ])

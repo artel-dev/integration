@@ -69,7 +69,7 @@ class AccountAnalyticLine(models.Model):
                          vals['ata_user_id'] if action != 'unlink' else '',
                          vals['milestone_id'] if action != 'unlink' else '',
                          vals['allocated_hours'] if action != 'unlink' else '',
-                         vals['td_actual_hours_total'] if action != 'unlink' else '',
+                         vals['td_actual_hours_amount'] if action != 'unlink' else '',
                          vals['parent_id'] if action != 'unlink' else '',
                      ]]}]}).execute()
 
@@ -116,9 +116,9 @@ class AccountAnalyticLine(models.Model):
                     self.task_id.allocated_hours
                     if self.task_id and self.task_id.allocated_hours else ''
                 ),
-                'td_actual_hours_total': (
-                    self.task_id.td_actual_hours_total
-                    if self.task_id and self.task_id.td_actual_hours_total else ''
+                'td_actual_hours_amount': (
+                    self.td_actual_hours_amount
+                    if self.td_actual_hours_amount else ''
                 ),
                 'parent_id': (
                     self.task_id.parent_id.name
@@ -168,10 +168,7 @@ class AccountAnalyticLine(models.Model):
                     row.task_id.allocated_hours
                     if row.task_id and row.task_id.allocated_hours else ''
                 ),
-                'td_actual_hours_total': (
-                    row.task_id.td_actual_hours_total
-                    if row.task_id and row.task_id.td_actual_hours_total else ''
-                ),
+                'td_actual_hours_amount': row.td_actual_hours_amount,
                 'parent_id': (
                     row.task_id.parent_id.name
                     if row.task_id and row.task_id.parent_id else ''
