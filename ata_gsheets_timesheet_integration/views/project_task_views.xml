@@ -6,9 +6,12 @@
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='user_ids']" position="after">
-                <field name="ata_section"/>
+                <field name="ata_section"
+                       invisible="not ata_section or ata_section_id"/>
+                <field name="ata_section_id"/>
                 <field name="ata_user_id"/>
             </xpath>
         </field>
     </record>
+
 </odoo>

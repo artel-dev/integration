@@ -17,6 +17,7 @@
         'wizard/ata_synchronization_wizard_views.xml',
         'views/project_task_views.xml',
         'views/res_config_settings_views.xml',
+        'wizard/ata_record_to_section_wizard_views.xml',
     ],
     'installable': 'True',
     'application': False,

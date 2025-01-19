@@ -16,7 +16,7 @@ def timesheet_to_gsheet(row, values, service, spreadsheet_id, page_name):
         body={
             "valueInputOption": "USER_ENTERED",
             "data": [
-                {"range": f"{page_name}!A{row}:K",
+                {"range": f"{page_name}!A{row}:O",
                  "majorDimension": "ROWS",
                  "values": values}]}).execute()
 
@@ -89,9 +89,6 @@ class GsheetTimesheetSyncWizard(models.TransientModel):
 
             values = []
             for line_id in res:
-                section = dict(
-                    line_id.task_id._fields['ata_section'].selection).get(
-                    line_id.task_id.ata_section)
 
                 values.append([
                     line_id.id,
@@ -101,13 +98,19 @@ class GsheetTimesheetSyncWizard(models.TransientModel):
                     ) if line_id.date else '',
                     line_id.project_id.name if line_id.project_id else '',
                     line_id.task_id.name if line_id.task_id else '',
-                    section if section else '',
+                    (line_id.task_id.ata_section_id.name
+                     if line_id.task_id and line_id.task_id.ata_section_id else ''),
                     line_id.name,
                     line_id.unit_amount,
                     line_id.employee_id.name if line_id.employee_id else '',
                     line_id.partner_id.name if line_id.partner_id else '',
                     line_id.task_id.ata_user_id.name if line_id.task_id and line_id.task_id.ata_user_id else '',
                     line_id.task_id.milestone_id.name if line_id.task_id and line_id.task_id.milestone_id else '',
+                    (line_id.task_id.allocated_hours
+                     if line_id.task_id and line_id.task_id.allocated_hours else ''),
+                    line_id.td_actual_hours_amount,
+                    (line_id.task_id.parent_id.name
+                     if line_id.task_id and line_id.task_id.parent_id else ''),
                 ])
 
                 if len(values) >= 100:
