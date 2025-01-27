@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record  model="ir.module.category" id="module_category_integration">
+        <field name="name">Integration</field>
+        <field name="description">Integration with external systems</field>
+        <field name="visible">true</field>
+        <field name="sequence">100</field>
+    </record>
+
+    <record  model="ir.module.category" id="module_category_integration_base">
+        <field name="name">Integration (base)</field>
+        <field name="description">Core of integration</field>
+        <field name="parent_id" ref="module_category_integration"/>
+    </record>
+
+    <record  model="ir.module.category" id="module_category_integration_extension">
+        <field name="name">Integration (extension)</field>
+        <field name="description">Extension of integration</field>
+        <field name="parent_id" ref="module_category_integration"/>
+    </record>
+
+</odoo>
