@@ -1,0 +1,613 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ata_exchange_v3
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-11 06:39+0000\n"
+"PO-Revision-Date: 2024-10-11 06:39+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ata_exchange_v3
+#: model:ir.actions.server,name:ata_exchange_v3.ata_exchange_queue_cron_ir_actions_server
+#: model:ir.cron,cron_name:ata_exchange_v3.ata_exchange_queue_cron
+msgid "ATA : Exchange queue with external systems"
+msgstr "Обмен объектами с внешними системами"
+
+#. module: ata_exchange_v3
+#: model:ir.actions.server,name:ata_exchange_v3.ata_exchange_queue_cron_immediately_ir_actions_server
+#: model:ir.cron,cron_name:ata_exchange_v3.ata_exchange_queue_cron_immediately
+msgid "ATA : Exchange queue with external systems (immediately start)"
+msgstr "Обмен объектами с внешними системами (мгновенно)"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_queue_usage_view_form
+msgid "All methods"
+msgstr "Все методы обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_class__ata_exchange_method_ids
+msgid "Ata Exchange Method"
+msgstr "Метод обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__color
+msgid "Color"
+msgstr "Цвет"
+
+#. module: ata_exchange_v3
+#: model:ir.ui.menu,name:ata_exchange_v3.ata_exchange_menu_config
+msgid "Configuration"
+msgstr "Конфигурация"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__content_type
+msgid "Content Type"
+msgstr "Тип обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.model,name:ata_exchange_v3.model_ata_exchange_json
+msgid "Convert json functions (ATA)"
+msgstr "Функции конвертации json"
+
+#. module: ata_exchange_v3
+#: model:ir.module.category,description:ata_exchange_v3.module_category_integration_base
+msgid "Core of integration"
+msgstr "Ядро интеграции"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__create_date
+msgid "Create Date"
+msgstr "Дата создания"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__create_uid
+msgid "Created by"
+msgstr "Автор"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__create_date
+msgid "Created on"
+msgstr "Создано"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__day_delta
+msgid "Day Delta"
+msgstr "Количество дней"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_kanban
+msgid "Delete"
+msgstr "Удалить"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_tree
+msgid "Delete all"
+msgstr "Удалить все записи"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method__description
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__description
+msgid "Description"
+msgstr "Описание"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__disabled
+msgid "Disabled"
+msgstr "Отключено"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__display_name
+msgid "Display Name"
+msgstr "Представление"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_tree
+msgid "Do you want to delete all entries from the exchange log?"
+msgstr "Вы хотите удалить все записи из журнала обмена?"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__domain
+msgid "Domain"
+msgstr "Фильтр"
+
+#. module: ata_exchange_v3
+#: model:ir.actions.act_window,name:ata_exchange_v3.ata_exchange_domain_action
+msgid "Method for ext. system"
+msgstr "Метод обмена с внешней системой"
+
+#. module: ata_exchange_v3
+#: model:ir.ui.menu,name:ata_exchange_v3.ata_exchange_domain
+msgid "Methods (use, domain)"
+msgstr "Методы обмена (использование, мягкие фильтры)"
+
+#. module: ata_exchange_v3
+#: model:ir.model,name:ata_exchange_v3.model_ata_exchange_domain
+msgid "Domain for search external system"
+msgstr "Фильтр для поиска внешних систем"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_kanban
+msgid "Dropdown menu"
+msgstr "Выпадающее меню"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_kanban
+msgid "Edit"
+msgstr "Редактировать"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__exchange_id
+msgid "Exchange"
+msgstr "Обмен"
+
+#. module: ata_exchange_v3
+#: model:ir.model,name:ata_exchange_v3.model_ata_exchange_base
+msgid "Exchange base model"
+msgstr "Базовая модель обработки внешних соединений"
+
+#. module: ata_exchange_v3
+#: model:ir.model,name:ata_exchange_v3.model_ata_exchange_class
+msgid "Exchange class extension"
+msgstr "Классы расширения внешних соединений"
+
+#. module: ata_exchange_v3
+#: model:ir.model,name:ata_exchange_v3.model_ata_exchange_method_mixing
+msgid "Exchange http methods"
+msgstr "Методы http обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.ui.menu,name:ata_exchange_v3.ata_exchange_menu_general
+msgid "Exchange information"
+msgstr "Данные обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.actions.act_window,name:ata_exchange_v3.ata_exchange_log_action
+#: model:ir.model,name:ata_exchange_v3.model_ata_exchange_log
+#: model:ir.ui.menu,name:ata_exchange_v3.ata_exchange_log_menu
+msgid "Exchange log"
+msgstr "Журнал обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.actions.act_window,name:ata_exchange_v3.ata_exchange_queue_action
+#: model:ir.ui.menu,name:ata_exchange_v3.ata_exchange_queue_menu
+msgid "Exchange queue"
+msgstr "Очередь обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.model,name:ata_exchange_v3.model_ata_exchange_queue
+msgid "Exchange queue objects with external systems"
+msgstr "Объекты, которые обмениваются с внешними системами"
+
+#. module: ata_exchange_v3
+#: model:ir.actions.act_window,name:ata_exchange_v3.ata_exchange_queue_usage_action
+#: model:ir.ui.menu,name:ata_exchange_v3.ata_exchange_queue_usage_menu
+msgid "Exchange queue usage"
+msgstr "Использование очереди обмена"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_kanban
+msgid "Exchange:"
+msgstr "Обмен:"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__execution_date
+msgid "Execution Date"
+msgstr "Дата выполнения"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__execution_time
+msgid "Execution Time"
+msgstr "Время выполнения"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_kanban
+msgid "Execution time:"
+msgstr "Время выполнения:"
+
+#. module: ata_exchange_v3
+#: model:ir.module.category,description:ata_exchange_v3.module_category_integration_extension
+msgid "Extension of integration"
+msgstr "Расширение интеграции"
+
+#. module: ata_exchange_v3
+#: model:ir.model,name:ata_exchange_v3.model_ata_exchange_system
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__ext_system
+msgid "External system"
+msgstr "Внешняя система"
+
+#. module: ata_exchange_v3
+#: model:ir.actions.act_window,name:ata_exchange_v3.ata_exchange_system_action
+#: model:ir.ui.menu,name:ata_exchange_v3.ata_exchange_system_menu
+msgid "External systems"
+msgstr "Внешняя система"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__finish_date
+msgid "Finish Date"
+msgstr "Дата окончания"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_form
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_queue_usage_view_form
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_queue_view_form
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_system_view_form
+msgid "General"
+msgstr "Общие"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields.selection,name:ata_exchange_v3.selection__ata_exchange_system__content_type__html
+msgid "HTML"
+msgstr ""
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__headers
+msgid "Headers"
+msgstr "Заголовки"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__id
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__id
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method__id
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__id
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__id
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__id
+msgid "ID"
+msgstr ""
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields.selection,name:ata_exchange_v3.selection__ata_exchange_queue__state_exchange__idle
+msgid "Idle"
+msgstr "Ожидание"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__immediate
+msgid "Immediate"
+msgstr "Мгновенно"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields.selection,name:ata_exchange_v3.selection__ata_exchange_queue__state_exchange__in_exchange
+msgid "In exchange"
+msgstr "Обменивается"
+
+#. module: ata_exchange_v3
+#: model:ir.module.category,name:ata_exchange_v3.module_category_integration
+#: model:ir.ui.menu,name:ata_exchange_v3.ata_exchange_menu_root
+msgid "Integration"
+msgstr "Интеграция"
+
+#. module: ata_exchange_v3
+#: model:ir.module.category,name:ata_exchange_v3.module_category_integration_base
+msgid "Integration (base)"
+msgstr "Интеграция (базовая модель)"
+
+#. module: ata_exchange_v3
+#: model:ir.module.category,name:ata_exchange_v3.module_category_integration_extension
+msgid "Integration (extension)"
+msgstr "Интеграция (расширение)"
+
+#. module: ata_exchange_v3
+#: model:ir.module.category,description:ata_exchange_v3.module_category_integration
+msgid "Integration with external systems"
+msgstr "Интеграция с внешними системами"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__is_executed
+msgid "Is Executed"
+msgstr "Выполнено"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__is_processed
+msgid "Is Processed"
+msgstr "Обработано"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__is_secure_connection
+msgid "Is Secure Connection"
+msgstr "Это защищенное соединение"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__is_token_authentication
+msgid "Is Token Authentication"
+msgstr "Аутентификация через токен"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields.selection,name:ata_exchange_v3.selection__ata_exchange_system__content_type__json
+msgid "JSON"
+msgstr ""
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain____last_update
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log____last_update
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method____last_update
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue____last_update
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage____last_update
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system____last_update
+msgid "Last Modified on"
+msgstr "Последнее изменение"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__write_uid
+msgid "Last Updated by"
+msgstr "Автор последнего изменения"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__write_date
+msgid "Last Updated on"
+msgstr "Последнее обновление"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__login
+msgid "Login"
+msgstr "Логин"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__method_name
+msgid "Method Name"
+msgstr "Имя метода"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_base__method
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__method
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method_mixing__method
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__method
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__method
+msgid "Method of exchange"
+msgstr "Метод обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.model,name:ata_exchange_v3.model_ata_exchange_method
+msgid "Methods of exchange with external systems"
+msgstr "Методы обмена с внешними системами"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_base__model_id
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__model_id
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method_mixing__model_id
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__model_id
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__model_id
+msgid "Model"
+msgstr "Модель"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_base__model_name
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__model_name
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method_mixing__model_name
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__model_name
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__model_name
+msgid "Model Name"
+msgstr "Имя модели"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_base__model_desc
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_domain__model_desc
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method_mixing__model_desc
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__model_desc
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__model_desc
+msgid "Model description"
+msgstr "Описание модели"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method__model_name
+msgid "Model name"
+msgstr "Имя модели"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__name
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__name
+msgid "Name"
+msgstr "Имя"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_method__name
+msgid "Name method"
+msgstr "Имя метода"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields.selection,name:ata_exchange_v3.selection__ata_exchange_queue__state_exchange__new
+msgid "New"
+msgstr "Новый"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_system_view_search
+msgid "Not secure connection"
+msgstr "Не защищенное соединение"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_system_view_search
+msgid "Not token authentication"
+msgstr "Аутентификацыя без токена"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__number_of_attempts
+msgid "Number Of Attempts"
+msgstr "Количество попыток"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__ref_object
+msgid "Object exchange"
+msgstr "Объект обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__parameters
+msgid "Parameters"
+msgstr "Параметры"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__password
+msgid "Password"
+msgstr "Пароль"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__processing_date
+msgid "Processing Date"
+msgstr "Дата выполнения"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__proxy_login
+msgid "Proxy Login"
+msgstr "Логин прокси"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__proxy_password
+msgid "Proxy Password"
+msgstr "Пароль прокси"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__request
+msgid "Request"
+msgstr "Запрос"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__request_body
+msgid "Request Body"
+msgstr "Тело запроса"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__resource_address
+msgid "Resource Address"
+msgstr "Адрес ресурса"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__response
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_form
+msgid "Response"
+msgstr "Ответ"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_system_view_search
+msgid "Secure connection"
+msgstr "Защищенное соединение"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__server_address
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__server_address
+msgid "Server Address"
+msgstr "Адрес сервера"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__server_port
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__server_port
+msgid "Server Port"
+msgstr "Порт сервера"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__start_date
+msgid "Start Date"
+msgstr "Дата начала"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_kanban
+msgid "Start date:"
+msgstr "Дата начала:"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_queue_view_tree
+msgid "Start exchange"
+msgstr "Начало обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue__state_exchange
+msgid "State exchange objects"
+msgstr "Состояние обмена объекта"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__status_code
+msgid "Status Code"
+msgstr "Код статуса"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_kanban
+msgid "Status code:"
+msgstr "Код статуса:"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_search
+msgid "Status: Error"
+msgstr "Статус: Ошибка"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_log_view_search
+msgid "Status: OK"
+msgstr "Статус: ОК"
+
+#. module: ata_exchange_v3
+#: model:ir.actions.server,name:ata_exchange_v3.ata_exchange_system_action_sync
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_system_view_form
+msgid "Synchronization"
+msgstr "Синхронизация"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_log__system_id
+msgid "System"
+msgstr "Система"
+
+#. module: ata_exchange_v3
+#: model:ir.actions.server,name:ata_exchange_v3.ata_exchange_system_action_test_connection
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_system_view_form
+msgid "Test connection"
+msgstr "Тестовое соединение"
+
+#. module: ata_exchange_v3
+#: model:ir.actions.server,name:ata_exchange_v3.ata_exchange_queue_usage_action_test_queue
+msgid "Test queue"
+msgstr "Тест очереди"
+
+#. module: ata_exchange_v3
+#: model_terms:ir.actions.server,help:ata_exchange_v3.ata_exchange_system_action_sync
+msgid ""
+"This action synchronizes the ID with an external system.\n"
+"            This is necessary if there is incoming traffic to Odoo, several exchange databases \n"
+"            and binding of object IDs to an external database."
+msgstr ""
+
+#. module: ata_exchange_v3
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v3.ata_exchange_system_view_search
+msgid "Token authentication"
+msgstr "Токен аутентификации"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_system__use_proxy
+msgid "Use Proxy"
+msgstr "Использовать прокси"
+
+#. module: ata_exchange_v3
+#: model:ir.model.fields,field_description:ata_exchange_v3.field_ata_exchange_queue_usage__usage
+msgid "Use exchange queue"
+msgstr "Использовать очередь обмена"
+
+#. module: ata_exchange_v3
+#: model:ir.model,name:ata_exchange_v3.model_ata_exchange_queue_usage
+msgid "Using exchange queue objects with external system"
+msgstr "Использование очереди омбена с внешними системами"
