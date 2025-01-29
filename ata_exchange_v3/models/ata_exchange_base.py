@@ -40,7 +40,9 @@ class AtaExchangeClass(models.AbstractModel):
         return "%s,%s" % (self._name, self.id) if self else None
 
     def ata_exchange_get_request_data(self, method: ExMethod) -> Union[List[Dict], Dict, str]:
-        return data if (data:=self.ata_exchange_get_data_record(method = method, as_node = False)) else {}
+        # as_node - якщо запитуємо дані для кореневої ноди, то в залежності від статусу об'єкта
+        # пакет даних може бути пустим. Це робиться для зменшення розміру пакетів обміну
+        return data if (data:=self.ata_exchange_get_data_record(method = method, as_node = True)) else {}
 
     @abstractmethod
     def ata_exchange_get_data_record(self, method: ExMethod, as_node = False) -> Union[List[Dict], Dict, str]:
