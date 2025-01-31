@@ -11,7 +11,11 @@ class AtaExchangeClass(models.AbstractModel):
     _name = "ata.exchange.class"
     _description = "Exchange class extension"
 
+    # потрібно для визначення чи модель потрібно направляти на додавання в чергу або обмін
+    # також використувується для формування структури пакету даних
     ATA_EXCHANGE_NODE_NAME = ""
+    # чи потрібні нотифікації в моделі при add/unlink з черги обміну
+    ATA_EXCHANGE_NEED_NOTIFICATION_QUEUE = False
 
     # region [enqueue event] fold
     @api.model_create_multi
@@ -36,8 +40,13 @@ class AtaExchangeClass(models.AbstractModel):
         return []
     
     def ata_exchange_get_ref_from_record(self) -> Union[str, None]:
+                
         self.ensure_one()
         return "%s,%s" % (self._name, self.id) if self else None
+
+    def ata_exchange_validate(self) -> bool:
+        # перевірка заповненості полів в екземплярі моделі
+        return True
 
     def ata_exchange_get_request_data(self, method: ExMethod) -> Union[List[Dict], Dict, str]:
         # as_node - якщо запитуємо дані для кореневої ноди, то в залежності від статусу об'єкта
@@ -146,43 +155,53 @@ class AtaExchangeBase(models.AbstractModel):
 
     @api.model
     def exchange(self, record:AtaExchangeClass, method: ExMethod) -> bool:
-        # by default the exchange is successful
+        # якщо не було несподіванок, то рахуємо що все пройшло вдало
         result_main = True
 
         self = self.with_context(lang=self.get_default_lang())
 
-        # сhecking the record for the exchange method at the moment
-        # it may be that the record no longer needs to be exchanged
+        # 1. отримуємо методи обміну перед самим обміном
+        # (з часу постановки в чергу він міг змінитися)
+        # якщо методів немає - вважаємо, то обмін не потрібно робити, запис - видаляєтсья з черги
         for method in record.ata_exchange_compute_methods():
+            # 2. отримуємо зовніші системи для обміну з урахуванням фільтрів, що в них є.
+            # Для кожної зовнішньої системи запускаємо окремий обмін
             ext_systems = self.env["ata.exchange.domain"].get_ext_systems(record, method)
             for ext_system in ext_systems:
                 result = False
                 
-                request_data = record.ata_exchange_get_request_data(method)
-                # request_data may be empty
-                if request_data:
-                    ext_service = {
-                        'exchange_id': record.ata_exchange_get_name(),
-                        'name': f'{method.description}',
-                        'description': f'{method.description}',
-                        'method_name': f'{method.name}',
-                        'http_method': 'POST',
-                        'params': dict(),
-                        'request_body': record.ata_exchange_get_request_body(method, request_data)
-                    }
+                # 3. Необхідно перевірити заповненість полів
+                # якщо валідація негативна - видаляємо з черги,
+                # нотифікації по полям описуємо в модулі прикладної моделі
+                if not record.ata_exchange_validate():
+                    result = True
+                else:
+                    request_data = record.ata_exchange_get_request_data(method)
+                    # request_data may be empty
+                    if request_data:
+                        ext_service = {
+                            'exchange_id': record.ata_exchange_get_name(),
+                            'name': f'{method.description}',
+                            'description': f'{method.description}',
+                            'method_name': f'{method.name}',
+                            'http_method': 'POST',
+                            'params': dict(),
+                            'request_body': record.ata_exchange_get_request_body(method, request_data)
+                        }
 
-                    response_body = ext_system.execute(ext_service)
-                    if response_body:
-                        error = response_body.get("error", False)
-                        if not error:
-                            # parse response body
-                            response_data, result_response_body_parse = record.ata_exchange_response_body_parse(method, response_body)
-                            if result_response_body_parse:
-                                # post-processing response data
-                                self._re_exchanged_add(record)
-                                result = record.ata_exchange_response_post_processing(method, response_data)
-                                self._re_exchanged_delete(record)
+                        response_body = ext_system.execute(ext_service)
+                        if response_body:
+                            error = response_body.get("error", False)
+                            if not error:
+                                # parse response body
+                                response_data, result_response_body_parse = record.ata_exchange_response_body_parse(method, response_body)
+                                if result_response_body_parse:
+                                    # post-processing response data
+                                    self._re_exchanged_add(record)
+                                    result = record.ata_exchange_response_post_processing(method, response_data)
+                                    self._re_exchanged_delete(record)
 
+                # якщо хоча б один обмін не відбувся, то з черги не видаляємо
                 result_main = result_main and result
         
         return result_main

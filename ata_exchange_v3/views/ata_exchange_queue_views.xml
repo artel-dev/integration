@@ -10,9 +10,10 @@
                     <notebook>
                         <page string="General">
                             <group>
+                                <field name="method" options="{'no_open': True, 'no_create': True}"  required="1"/>
                                 <field name="ref_object" options="{'no_create': True}" required="1"/>
                                 <field name="state_exchange" attrs="{'readonly': [('id', '=', False)]}"/>
-                                <field name="method" options="{'no_open': True, 'no_create': True}"  required="1"/>
+                                <field name="attempt_number" readonly="1"/>
                             </group>
                         </page>
                     </notebook>
@@ -32,6 +33,7 @@
                 </header>
                 <field name="ref_object"/>
                 <field name="state_exchange"/>
+                <field name="attempt_number"/>
                 <field name="method"/>
             </tree>
         </field>
