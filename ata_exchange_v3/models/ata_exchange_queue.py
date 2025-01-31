@@ -2,7 +2,6 @@ from odoo import api, fields, models
 
 from .ata_exchange_method import AtaExchangeMethod as ExMethod
 from .ata_exchange_base   import AtaExchangeClass  as ExClass
-from typing import List
 
 
 class AtaExchangeQueue(models.Model):
@@ -33,6 +32,9 @@ class AtaExchangeQueue(models.Model):
             ('in_exchange', 'In exchange')],
         string='State exchange objects',
         default='new')
+    attempt_number = fields.Integer(
+        string='Attempt number',
+        default=0)
 
     @api.onchange('method')
     def _compute_ref_object(self):
@@ -63,12 +65,12 @@ class AtaExchangeQueue(models.Model):
         for method in record.ata_exchange_compute_methods():
             if not ExBase._re_exchanged_in(record):
                 if self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
-                    self._add(record, method)
+                    self._add_to_queue(record, method)
                 else:
                     ExBase.exchange(record, method)
 
     @api.model
-    def _add(self, records: List[ExClass], method: ExMethod):
+    def _add_to_queue(self, records: ExClass, method: ExMethod):
         for record in records:
             ref_record = self._fields['ref_object'].convert_to_cache(record, self)
             if ref_record is not None:
@@ -80,14 +82,17 @@ class AtaExchangeQueue(models.Model):
                 if not record_exist:
                     # check the need over domain
                     ext_systems = self.env["ata.exchange.domain"].get_ext_systems(record, method)
-                    if ext_systems:
-                        # add new record to DB
+                    if ext_systems and record.ata_exchange_validate():
+                        # add new record to DB                        
                         vals = {
                             'ref_object': ref_record,
                             'state_exchange': 'new',
                             'method': method.id
                         }
                         self.create(vals)
+                        # notification "add to queue"
+                        if record.ATA_EXCHANGE_NEED_NOTIFICATION_QUEUE and isinstance(record, models.Model):
+                            pass #record.action_no
                         # start manual exchange over cron
                         if self.env["ata.exchange.queue.usage"].use_immediate_exchange(method):
                             self.env.ref('ata_exchange_v3.ata_exchange_queue_cron_immediately')._trigger()
@@ -112,7 +117,7 @@ class AtaExchangeQueue(models.Model):
         if not records:
             records = self.sudo().search([
                 ('state_exchange', 'in', ('new', 'idle'))
-            ], limit=11)
+            ], order="state_exchange DESC, attempt_number", limit=10)
 
         self._check_ref_object(records)
 
@@ -134,3 +139,13 @@ class AtaExchangeQueue(models.Model):
 
     def action_start_exchange(self):
         self.exchange(self)
+
+    def write(self, vals):
+        for record in self:
+            super(AtaExchangeQueue, record).write({
+                **vals,
+                # increase attempt number
+                **({"attempt_number": record.attempt_number + 1}
+                    if "state_exchange" in vals and vals.get("state_exchange", False) == 'in_exchange'
+                    else {})
+            })
