@@ -56,8 +56,8 @@ patch(CorrespondenceDetails.prototype, {
             if (this.landlineNumber) {
                 context.phoneNumber = this.landlineNumber;
             }
-            context['default_phone'] = this.landlineNumber
-            context['default_mobile'] = this.mobileNumber
+            context['default_phone'] = this.landlineNumber;
+            context['default_mobile'] = this.mobileNumber;
             action.context = context;
         }
 
