@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="ata_exchange_domain_view_form" model="ir.ui.view">
-        <field name="name">Methods for ext. system form</field>
+        <field name="name">Exchange direction and custom filtering</field>
         <field name="model">ata.exchange.domain</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
                     <group>
-                        <field name="ext_system" options="{'no_create': True}" required="1"/>
                         <field name="method" options="{'no_open': True, 'no_create': True}" required="1"/>
+                        <field name="ext_system" options="{'no_create': True}" required="1"/>                        
                         <field name="model_name" attrs="{'invisible': True}" />
                         <field name="model_id" readonly="1"
                             attrs="{'invisible': [('model_id', '=', False)]}"/>
@@ -26,11 +26,10 @@
     </record>
 
     <record id="ata_exchange_domain_view_tree" model="ir.ui.view">
-        <field name="name">Methods for ext. system list</field>
+        <field name="name">Exchange directions and custom filtering</field>
         <field name="model">ata.exchange.domain</field>
         <field name="arch" type="xml">
             <tree>
-                <!--<field name="model_name"/>-->
                 <field name="method" required="1"/>
                 <field name="domain"/>
                 <field name="ext_system"/>
@@ -39,14 +38,14 @@
     </record>
 
     <record id="ata_exchange_domain_action" model="ir.actions.act_window">
-        <field name="name">Method for ext. system</field>
+        <field name="name">Exchange directions and custom filtering</field>
         <field name="res_model">ata.exchange.domain</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <menuitem
         id="ata_exchange_domain"
-        name="Methods (use, domain)"
+        name="Exchange directions and custom filtering"
         parent="ata_exchange_menu_config"
         action="ata_exchange_domain_action"
         sequence="30"/>
