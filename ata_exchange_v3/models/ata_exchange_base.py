@@ -1,10 +1,14 @@
 from odoo import api, models, fields, Command
 from abc import abstractmethod
 from typing import Tuple, List, Union, Dict
+from collections import namedtuple
 from functools import wraps
 from datetime import date, datetime
 
 from .ata_exchange_method import AtaExchangeMethod as ExMethod
+from odoo.addons.mail.models.mail_thread import MailThread
+
+ExchangeResult = namedtuple('ExchangeResult', ['success', 'delete_queue'])
 
 
 class AtaExchangeClass(models.AbstractModel):
@@ -14,27 +18,40 @@ class AtaExchangeClass(models.AbstractModel):
     # потрібно для визначення чи модель потрібно направляти на додавання в чергу або обмін
     # також використувується для формування структури пакету даних
     ATA_EXCHANGE_NODE_NAME = ""
-    # чи потрібні нотифікації в моделі при add/unlink з черги обміну
-    ATA_EXCHANGE_NEED_NOTIFICATION_QUEUE = False
 
     # region [enqueue event] fold
     @api.model_create_multi
     def create(self, vals_list):
-        records = super().create(vals_list)
-        if records and self.ATA_EXCHANGE_NODE_NAME:
-            records.ata_exchange_add_to_queue()
+        records = self.env[self._name]
+        for vals in vals_list:
+            record = super().create(vals)
+            records |= record
+            if record.ata_exchange_check_add_to_queue(vals):
+                record.ata_exchange_add_to_queue()
+
         return records
 
     def write(self, vals):
         over_write = super().write(vals)
-        if over_write and self.ATA_EXCHANGE_NODE_NAME:
-            self.ata_exchange_add_to_queue()
+        for record in self:
+            if record.ata_exchange_check_add_to_queue(vals):
+                record.ata_exchange_add_to_queue()
         return over_write
 
+    def ata_exchange_check_add_to_queue(self, vals: Dict) -> bool:
+        return bool(self.ATA_EXCHANGE_NODE_NAME)
+            
     def ata_exchange_add_to_queue(self):
         for record in self:
             self.env['ata.exchange.queue'].add_to_queue(record)
     # endregion
+
+    def ata_exchange_notification(self, message: str, type: str = "mail.mt_note"):
+        for record in self:
+            if isinstance(record, MailThread):
+                record.message_post(
+                    body = message,
+                    subtype_xmlid = type)
 
     def ata_exchange_compute_methods(self) -> List[ExMethod]:
         return []
@@ -44,9 +61,18 @@ class AtaExchangeClass(models.AbstractModel):
         self.ensure_one()
         return "%s,%s" % (self._name, self.id) if self else None
 
-    def ata_exchange_validate(self) -> bool:
+    def ata_exchange_validate(self, method: ExMethod) -> List[str]:
+        return []
+
+    def ata_exchange_validate_main(self, method: ExMethod) -> bool:
         # перевірка заповненості полів в екземплярі моделі
-        return True
+        result = self.ata_exchange_validate(method)
+        if result:
+            self.ata_exchange_notification(
+                "Validation error when queuing exchange:<br/><ul><li>%s</li></ul>"
+                % "</li><br/><li>".join(result))
+                
+        return not result
 
     def ata_exchange_get_request_data(self, method: ExMethod) -> Union[List[Dict], Dict, str]:
         # as_node - якщо запитуємо дані для кореневої ноди, то в залежності від статусу об'єкта
@@ -154,28 +180,35 @@ class AtaExchangeBase(models.AbstractModel):
     # endregion
 
     @api.model
-    def exchange(self, record:AtaExchangeClass, method: ExMethod) -> bool:
-        # якщо не було несподіванок, то рахуємо що все пройшло вдало
-        result_main = True
+    def exchange(self, record:AtaExchangeClass, method: ExMethod) -> ExchangeResult:
+        # повертаємо 2 статуси:
+        # 1 - що обмін пройшов вдало (для подальших нотифікацій)
+        #    - коли запис пройшов валідацію
+        #    - коли є хоча б одна зовнішня система для обміну
+        #    - коли обмін на всі зовнішні системи пройшов вдало
+        # 2 - чи потрібно видаляти запис з черги
+        #    - коли запис не пройшов валідацію
+        #    - коли немає зовнішних систем для обміну
+        #    - коли обмін на всі зовнішні системи пройшов вдало
+        result_exchange = False
+        results_ext_systems = []
+        result_delete = True
 
         self = self.with_context(lang=self.get_default_lang())
 
         # 1. отримуємо методи обміну перед самим обміном
         # (з часу постановки в чергу він міг змінитися)
-        # якщо методів немає - вважаємо, то обмін не потрібно робити, запис - видаляєтсья з черги
+        # якщо методів немає - вважаємо, то обмін не потрібно робити, запис - видаляється з черги
         for method in record.ata_exchange_compute_methods():
-            # 2. отримуємо зовніші системи для обміну з урахуванням фільтрів, що в них є.
-            # Для кожної зовнішньої системи запускаємо окремий обмін
-            ext_systems = self.env["ata.exchange.domain"].get_ext_systems(record, method)
-            for ext_system in ext_systems:
-                result = False
-                
-                # 3. Необхідно перевірити заповненість полів
-                # якщо валідація негативна - видаляємо з черги,
-                # нотифікації по полям описуємо в модулі прикладної моделі
-                if not record.ata_exchange_validate():
-                    result = True
-                else:
+            # 2. Необхідно перевірити заповненість полів
+            # якщо валідація негативна - видаляємо з черги,
+            # нотифікації по результатам валідації описуємо в модулі прикладної моделі
+            if record.ata_exchange_validate_main(method):
+                # 3. отримуємо зовніші системи для обміну з урахуванням фільтрів, що в них є.
+                # Для кожної зовнішньої системи запускаємо окремий обмін
+                ext_systems = self.env["ata.exchange.domain"].get_ext_systems(record, method)
+                for ext_system in ext_systems:
+                    result = False
                     request_data = record.ata_exchange_get_request_data(method)
                     # request_data may be empty
                     if request_data:
@@ -201,7 +234,9 @@ class AtaExchangeBase(models.AbstractModel):
                                     result = record.ata_exchange_response_post_processing(method, response_data)
                                     self._re_exchanged_delete(record)
 
-                # якщо хоча б один обмін не відбувся, то з черги не видаляємо
-                result_main = result_main and result
+                    results_ext_systems.append(result)
+
+            result_exchange = bool(results_ext_systems) and all(results_ext_systems)
+            result_delete = all(results_ext_systems)
         
-        return result_main
+        return ExchangeResult(success=result_exchange, delete_queue=result_delete)

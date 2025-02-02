@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ata_exchange_method_view_form" model="ir.ui.view">
+        <field name="name">Methods form</field>
+        <field name="model">ata.exchange.method</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1" />
+                        <field name="model_name" readonly="1" />
+                        <field name="description" />
+                    </group>
+                    <notebook>
+                        <page string="Notifications" name="notifications">
+                            <group>
+                                <field name="notification_queue_add" />
+                                <field name="notification_queue_remove" />
+                                <field name="notification_validation" />
+                                <field name="notification_first_failed" />
+                                <field name="notification_successful" />
+                            </group>
+                        </page>
+                    </notebook>                        
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_exchange_method_view_tree" model="ir.ui.view">
+        <field name="name">Methods</field>
+        <field name="model">ata.exchange.method</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false">
+                <field name="name" required="1"/>
+                <field name="description"/>                
+            </tree>
+        </field>
+    </record>
+
+    <record id="ata_exchange_method_action" model="ir.actions.act_window">
+        <field name="name">Methods (notification)</field>
+        <field name="res_model">ata.exchange.method</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="ata_exchange_method"
+        name="Methods (notification)"
+        parent="ata_exchange_menu_config"
+        action="ata_exchange_method_action"
+        sequence="15"/>
+
+</odoo>

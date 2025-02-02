@@ -1,4 +1,6 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+
+from typing import Tuple, List, Union, Dict, cast
 
 from .ata_exchange_method import AtaExchangeMethod as ExMethod
 from .ata_exchange_base   import AtaExchangeClass  as ExClass
@@ -56,6 +58,16 @@ class AtaExchangeQueue(models.Model):
             if not self.env[ref_model].sudo().search([('id', '=', ref_id)], limit=1):
                 self.ref_object = False
 
+    def get_ref_object_as_exclass(self) -> Union[ExClass, None]:
+        self.ensure_one()
+        if self.ref_object:
+            model_name, record_id = self.ref_object._name, self.ref_object.id
+            record = self.env[model_name].browse(record_id)
+            
+            if isinstance(record, ExClass):
+                return cast(ExClass, record)
+        return None
+
     @api.model
     def add_to_queue(self, record: ExClass):
         ExBase = self.env["ata.exchange.base"]
@@ -82,17 +94,13 @@ class AtaExchangeQueue(models.Model):
                 if not record_exist:
                     # check the need over domain
                     ext_systems = self.env["ata.exchange.domain"].get_ext_systems(record, method)
-                    if ext_systems and record.ata_exchange_validate():
+                    if ext_systems and record.ata_exchange_validate_main(method):
                         # add new record to DB                        
-                        vals = {
+                        self.create({
                             'ref_object': ref_record,
                             'state_exchange': 'new',
                             'method': method.id
-                        }
-                        self.create(vals)
-                        # notification "add to queue"
-                        if record.ATA_EXCHANGE_NEED_NOTIFICATION_QUEUE and isinstance(record, models.Model):
-                            pass #record.action_no
+                        })
                         # start manual exchange over cron
                         if self.env["ata.exchange.queue.usage"].use_immediate_exchange(method):
                             self.env.ref('ata_exchange_v3.ata_exchange_queue_cron_immediately')._trigger()
@@ -124,11 +132,15 @@ class AtaExchangeQueue(models.Model):
         records.write({'state_exchange': 'in_exchange'})
 
         for record in records:
-            result_update = self.env["ata.exchange.base"].exchange(record.ref_object, record.method)
-            if result_update:
-                record.unlink()
-            else:
-                record.write({'state_exchange': 'idle'})
+            if (ref_object_exclass := record.get_ref_object_as_exclass()):
+                result_update = self.env["ata.exchange.base"].exchange(ref_object_exclass, record.method)
+                if result_update.success:
+                    if record.method.notification_successful and (ref_object := record.get_ref_object_as_exclass()):
+                        ref_object.ata_exchange_notification(_("Exchange successful"))
+                if result_update.delete_queue:
+                    record.unlink()
+                else:
+                    record.write({'state_exchange': 'idle'})
 
     def exchange_immediately(self):
         records = self.sudo().search([
@@ -140,12 +152,35 @@ class AtaExchangeQueue(models.Model):
     def action_start_exchange(self):
         self.exchange(self)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for record in records:
+            if record.method.notification_queue_add and (ref_object:=record.get_ref_object_as_exclass()):
+                ref_object.ata_exchange_notification(_("Added to the exchange queue"))
+
+        return records
+
     def write(self, vals):
         for record in self:
+            # при додаванні на обмін збільшуємо лічильник спроб
             super(AtaExchangeQueue, record).write({
                 **vals,
-                # increase attempt number
                 **({"attempt_number": record.attempt_number + 1}
                     if "state_exchange" in vals and vals.get("state_exchange", False) == 'in_exchange'
                     else {})
             })
+
+            # при першій невдалій спробі обміну відправляємо повідомлення
+            if record.method.notification_first_failed and \
+                record.state_exchange == 'idle' and \
+                record.attempt_number == 1 and \
+                (ref_object := record.get_ref_object_as_exclass()):
+                    ref_object.ata_exchange_notification(_("Failed to exchange."))
+
+    def unlink(self):
+        for record in self:
+            if record.method.notification_queue_remove and (ref_object := record.get_ref_object_as_exclass()):
+                ref_object.ata_exchange_notification(_("Removed from the exchange queue"))
+
+        return super().unlink()
