@@ -8,7 +8,7 @@ from datetime import date, datetime
 from .ata_exchange_method import AtaExchangeMethod as ExMethod
 from odoo.addons.mail.models.mail_thread import MailThread
 
-ExchangeResult = namedtuple('ExchangeResult', ['success', 'delete_queue'])
+ExchangeResult = namedtuple('ExchangeResult', ['success', 'delete_queue', 'error'])
 
 
 class AtaExchangeClass(models.AbstractModel):
@@ -67,7 +67,7 @@ class AtaExchangeClass(models.AbstractModel):
     def ata_exchange_validate_main(self, method: ExMethod) -> bool:
         # перевірка заповненості полів в екземплярі моделі
         result = self.ata_exchange_validate(method)
-        if result:
+        if method.notification_validation and result:
             self.ata_exchange_notification(
                 "Validation error when queuing exchange:<br/><ul><li>%s</li></ul>"
                 % "</li><br/><li>".join(result))
@@ -193,13 +193,14 @@ class AtaExchangeBase(models.AbstractModel):
         result_exchange = False
         results_ext_systems = []
         result_delete = True
+        error = ""
 
         self = self.with_context(lang=self.get_default_lang())
 
-        # 1. отримуємо методи обміну перед самим обміном
+        # 1. отримуємо методи обміну для запису перед самим обміном
         # (з часу постановки в чергу він міг змінитися)
-        # якщо методів немає - вважаємо, то обмін не потрібно робити, запис - видаляється з черги
-        for method in record.ata_exchange_compute_methods():
+        # якщо нашого методу немає в списку - вважаємо, то обмін не потрібно робити, запис - видаляється з черги
+        if method in record.ata_exchange_compute_methods():
             # 2. Необхідно перевірити заповненість полів
             # якщо валідація негативна - видаляємо з черги,
             # нотифікації по результатам валідації описуємо в модулі прикладної моделі
@@ -233,10 +234,14 @@ class AtaExchangeBase(models.AbstractModel):
                                     self._re_exchanged_add(record)
                                     result = record.ata_exchange_response_post_processing(method, response_data)
                                     self._re_exchanged_delete(record)
+                        else:
+                            error = "Failed to receive a response from ext. systems"
+                    else:
+                        error = "Request data is empty"
 
                     results_ext_systems.append(result)
 
-            result_exchange = bool(results_ext_systems) and all(results_ext_systems)
-            result_delete = all(results_ext_systems)
+                result_exchange = bool(results_ext_systems) and all(results_ext_systems)
+                result_delete = all(results_ext_systems)
         
-        return ExchangeResult(success=result_exchange, delete_queue=result_delete)
+        return ExchangeResult(success=result_exchange, delete_queue=result_delete, error=error)

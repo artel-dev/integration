@@ -14,6 +14,7 @@
                                 <field name="ref_object" options="{'no_create': True}" required="1"/>
                                 <field name="state_exchange" attrs="{'readonly': [('id', '=', False)]}"/>
                                 <field name="attempt_number" readonly="1"/>
+                                <field name="error_last"/>
                             </group>
                         </page>
                     </notebook>
@@ -34,6 +35,7 @@
                 <field name="ref_object"/>
                 <field name="state_exchange"/>
                 <field name="attempt_number"/>
+                <field name="error_last"/>
                 <field name="method"/>
             </tree>
         </field>

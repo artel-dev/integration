@@ -15,11 +15,13 @@
                     <notebook>
                         <page string="Notifications" name="notifications">
                             <group>
-                                <field name="notification_queue_add" />
-                                <field name="notification_queue_remove" />
-                                <field name="notification_validation" />
-                                <field name="notification_first_failed" />
-                                <field name="notification_successful" />
+                                <group>
+                                <field name="notification_queue_add" widget="boolean_toggle"/>
+                                <field name="notification_queue_remove" widget="boolean_toggle"/>
+                                <field name="notification_validation" widget="boolean_toggle"/>
+                                <field name="notification_first_failed" widget="boolean_toggle"/>
+                                <field name="notification_successful" widget="boolean_toggle"/>
+                                </group>
                             </group>
                         </page>
                     </notebook>                        
