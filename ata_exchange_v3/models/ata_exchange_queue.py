@@ -1,6 +1,6 @@
 from odoo import api, fields, models, _
 
-from typing import Tuple, List, Union, Dict, cast
+from typing import Tuple, List, Union, Dict, cast, Optional
 
 from .ata_exchange_method import AtaExchangeMethod as ExMethod
 from .ata_exchange_base   import AtaExchangeClass  as ExClass
@@ -13,15 +13,6 @@ class AtaExchangeQueue(models.Model):
     _name = "ata.exchange.queue"
     _description = "Exchange queue objects with external systems"
     _inherit = ['ata.exchange.method.mixing']
-
-    @api.model
-    def _selection_ref_object_model(self):
-        models = self.env['ir.model'].sudo().search([
-            ('model', 'in',
-            [model_method.model_name for model_method in self.env['ata.exchange.method'].sudo().search([])]
-            ),
-        ])
-        return [(model.model, model.name) for model in models]
 
     ref_object = fields.Reference(
         selection='_selection_ref_object_model',
@@ -37,11 +28,50 @@ class AtaExchangeQueue(models.Model):
     attempt_number = fields.Integer(
         string='Attempt number',
         default=0)
+    error_last = fields.Text(string="Last error")
+
+    # region [ref_object] fold
+    @api.model
+    def _selection_ref_object_model(self):
+        models = self.env['ir.model'].sudo().search([
+            ('model', 'in',
+            [model_method.model_name for model_method in self.env['ata.exchange.method'].sudo().search([])]
+            ),
+        ])
+        return [(model.model, model.name) for model in models]
 
     @api.onchange('method')
     def _compute_ref_object(self):
         if self.method:
             self.ref_object = self.env[self.method.model_name].sudo().search([], limit=1)
+
+    @property
+    def ref_object_model(self) -> Optional[models.BaseModel]:
+        if self.ref_object:
+            return cast(models.BaseModel, self.ref_object)
+        return None
+
+    def _update_ref_object(self):
+        ref_object = self.ref_object_model
+        if ref_object:
+            ref_model, ref_id = ref_object._name, ref_object.id
+            # якщо змінилась модель для об'єкта, то очищуємо об'єкт
+            if not self.env[ref_model].sudo().search([('id', '=', ref_id)], limit=1):
+                self.ref_object = False
+    
+    def _check_ref_object(self):
+        # записи можуть бути видалені з БД, тому перед обміном перевіряємо, щоб вони ще були в БД
+        for record in self:
+            if not record.ref_object_model or not record.ref_object_model.exists():
+                record.unlink()
+
+    def get_ref_object_as_exclass(self) -> Union[ExClass, None]:
+        self.ensure_one()
+        ref_object = self.ref_object_model
+        if isinstance(ref_object, ExClass):
+            return cast(ExClass, ref_object)
+        return None
+    # endregion
 
     @api.model
     def search(self, domain, offset=0, limit=None, order=None, count=False):
@@ -51,22 +81,6 @@ class AtaExchangeQueue(models.Model):
         for record in records:
             record._update_ref_object()
         return records
-
-    def _update_ref_object(self):
-        if self.ref_object:
-            ref_model, ref_id = self.ref_object._name, self.ref_object.id
-            if not self.env[ref_model].sudo().search([('id', '=', ref_id)], limit=1):
-                self.ref_object = False
-
-    def get_ref_object_as_exclass(self) -> Union[ExClass, None]:
-        self.ensure_one()
-        if self.ref_object:
-            model_name, record_id = self.ref_object._name, self.ref_object.id
-            record = self.env[model_name].browse(record_id)
-            
-            if isinstance(record, ExClass):
-                return cast(ExClass, record)
-        return None
 
     @api.model
     def add_to_queue(self, record: ExClass):
@@ -110,15 +124,7 @@ class AtaExchangeQueue(models.Model):
             ('state_exchange', 'in', ('new', 'idle'))
         ], limit=100)
 
-        self._check_ref_object(records)
-
-    @api.model
-    def _check_ref_object(self, records):
-        # записи можуть бути видалені з БД, тому перед обміном перевіряємо, щоб вони ще були в БД
-        for record in records:
-            if not record.ref_object or not record.ref_object.exists():
-                record.unlink()
-                records -= record
+        records._check_ref_object()
 
     @api.model
     def exchange(self, records=None):
@@ -127,7 +133,7 @@ class AtaExchangeQueue(models.Model):
                 ('state_exchange', 'in', ('new', 'idle'))
             ], order="state_exchange DESC, attempt_number", limit=10)
 
-        self._check_ref_object(records)
+        records._check_ref_object()
 
         records.write({'state_exchange': 'in_exchange'})
 
@@ -137,10 +143,14 @@ class AtaExchangeQueue(models.Model):
                 if result_update.success:
                     if record.method.notification_successful and (ref_object := record.get_ref_object_as_exclass()):
                         ref_object.ata_exchange_notification(_("Exchange successful"))
+                
                 if result_update.delete_queue:
                     record.unlink()
                 else:
-                    record.write({'state_exchange': 'idle'})
+                    record.write({
+                        'state_exchange': 'idle',
+                        'error_last': result_update.error,
+                    })
 
     def exchange_immediately(self):
         records = self.sudo().search([
@@ -176,7 +186,7 @@ class AtaExchangeQueue(models.Model):
                 record.state_exchange == 'idle' and \
                 record.attempt_number == 1 and \
                 (ref_object := record.get_ref_object_as_exclass()):
-                    ref_object.ata_exchange_notification(_("Failed to exchange."))
+                    ref_object.ata_exchange_notification(_("Failed to exchange: ") + record.error_last)
 
     def unlink(self):
         for record in self:
