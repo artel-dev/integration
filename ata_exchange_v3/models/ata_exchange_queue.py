@@ -61,9 +61,9 @@ class AtaExchangeQueue(models.Model):
     
     def _check_ref_object(self):
         # записи можуть бути видалені з БД, тому перед обміном перевіряємо, щоб вони ще були в БД
-        for record in self:
-            if not record.ref_object_model or not record.ref_object_model.exists():
-                record.unlink()
+        to_unlink = self.filtered(lambda r: not r.ref_object_model or not r.ref_object_model.exists())
+        to_unlink.unlink()
+        return self - to_unlink
 
     def get_ref_object_as_exclass(self) -> Union[ExClass, None]:
         self.ensure_one()
@@ -133,7 +133,7 @@ class AtaExchangeQueue(models.Model):
                 ('state_exchange', 'in', ('new', 'idle'))
             ], order="state_exchange DESC, attempt_number", limit=10)
 
-        records._check_ref_object()
+        records = records._check_ref_object()
 
         records.write({'state_exchange': 'in_exchange'})
 
