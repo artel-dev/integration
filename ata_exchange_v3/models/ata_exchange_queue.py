@@ -103,7 +103,8 @@ class AtaExchangeQueue(models.Model):
                 # check record in DB
                 record_exist = self.sudo().search([
                     ('ref_object', '=', ref_record),
-                    ('state_exchange', 'in', ('new', 'idle'))
+                    ('state_exchange', 'in', ('new', 'idle')),
+                    ('method', '=', method.id)
                 ])
                 if not record_exist:
                     # check the need over domain
