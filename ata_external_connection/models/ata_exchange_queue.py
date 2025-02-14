@@ -53,27 +53,26 @@ class AtaExchangeQueue(models.Model):
                 self.ref_object = False
 
     @api.model
-    def add_to_queue(self, record:ExtClass) -> bool:
+    def add_to_queue(self, record:ExtClass):
         ExtConnection = self.env["ata.external.connection.base"]
-        if isinstance(record.id, models.NewId):
-            return False
-
-        for method in record.ata_exchange_compute_methods():
-            if not ExtConnection._re_exchanged_in(record):
-                if self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
-                    self._add(record, method)
-                else:
-                    ExtConnection.exchange(record, method)
+        if not isinstance(record.id, models.NewId):
+            for method in record.ata_exchange_compute_methods():
+                if not ExtConnection._re_exchanged_in(record):
+                    if self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
+                        self._add(record, method)
+                    else:
+                        ExtConnection.exchange(record, method)
 
     @api.model
-    def _add(self, records: list[ExtClass], method: ExtMethod):
+    def _add(self, records: ExtClass, method: ExtMethod):
         for record in records:
             ref_record = self._fields['ref_object'].convert_to_cache(record, self)
             if ref_record is not None:
                 # check record in DB
                 record_exist = self.sudo().search([
                     ('ref_object', '=', ref_record),
-                    ('state_exchange', 'in', ('new', 'idle'))
+                    ('state_exchange', 'in', ['new', 'idle']),
+                    ('method', '=', method.id)
                 ])
                 if not record_exist:
                     # check the need over domain

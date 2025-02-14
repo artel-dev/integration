@@ -145,7 +145,7 @@ class AtaExternalConnectionBase(models.AbstractModel):
 
         # сhecking the record for the exchange method at the moment
         # it may be that the record no longer needs to be exchanged
-        for method in record.ata_exchange_compute_methods():
+        if method in record.ata_exchange_compute_methods():
             ext_systems = self.env["ata.external.connection.domain"].get_ext_systems(record, method)
             for ext_system in ext_systems:
                 result = False
