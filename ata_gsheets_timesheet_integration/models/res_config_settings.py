@@ -5,10 +5,10 @@ class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     ata_spreadsheet_id = fields.Char(
-        string='Spreadsheet id'
+        string='Spreadsheet id (timesheet)'
     )
     ata_credentials = fields.Char(
-        string='Credentials'
+        string='Credentials (timesheet)'
     )
     ata_page_name = fields.Char(
         string='Page name'
