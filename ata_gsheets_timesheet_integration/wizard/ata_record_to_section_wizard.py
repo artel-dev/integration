@@ -3,6 +3,7 @@ from odoo import _, api, fields, models
 
 class AtaRecordSectionWizard(models.TransientModel):
     _name = 'ata.record.section.wizard'
+    _description = 'Record section wizard'
 
     @api.model
     def default_get(self, fields_list):
