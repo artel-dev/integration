@@ -17,12 +17,12 @@
                                  help="Set integration parameters">
                             <field name="ata_lead_active"/>
                             <div class="row mt8">
-                                <label class="col-lg-3" string="Spreadsheet id" for="ata_lead_spreadsheet_id"/>
-                                <field name="ata_lead_spreadsheet_id" title="Spreadsheet ID"/>
+                                <label class="col-lg-3" string="Spreadsheet id (lead)" for="ata_lead_spreadsheet_id"/>
+                                <field name="ata_lead_spreadsheet_id" title="Spreadsheet ID (lead)"/>
                             </div>
                             <div class="row mt8">
-                                <label class="col-lg-3" string="Credentials" for="ata_lead_credentials"/>
-                                <field name="ata_lead_credentials" title="Credentials json"/>
+                                <label class="col-lg-3" string="Credentials (lead)" for="ata_lead_credentials"/>
+                                <field name="ata_lead_credentials" title="Credentials json (lead)"/>
                             </div>
                             <div class="row mt8">
                                 <label class="col-lg-3" string="Page action name" for="ata_lead_page_action_name"/>
