@@ -199,4 +199,4 @@ class AccountAnalyticLine(models.Model):
                     )
                 except Exception as exc:
                     _logger.error(f"unlink error: {exc}")
-        super().unlink()
+        return super().unlink()
