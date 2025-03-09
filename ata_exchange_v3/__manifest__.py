@@ -1,0 +1,27 @@
+{
+    'name': 'Exchange between systems',
+    'summary': 'Exchange between systems (ATA)',
+    'version': '18.0.1.0.0',
+    'author': 'gnezamay',
+    'website': 'todo.ltd',
+    'license': 'OPL-1',
+    'category': 'Integration/Base',
+    'depends': [
+        'base',
+        'mail',
+    ],
+    'data': [
+        'data/ata_exchange_category.xml',
+        'data/ata_exchange_queue_cron.xml',
+        'security/ir.model.access.csv',
+        'views/ata_exchange_menus.xml',
+        'views/ata_exchange_method.xml',
+        'views/ata_exchange_domain.xml',
+        'views/ata_exchange_system_views.xml',
+        'views/ata_exchange_log_views.xml',
+        'views/ata_exchange_queue_views.xml',
+        'views/ata_exchange_queue_usage_views.xml',        
+    ],
+    'installable': True,
+    'application': True,
+}

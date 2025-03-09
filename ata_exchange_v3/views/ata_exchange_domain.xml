@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="ata_exchange_domain_view_form" model="ir.ui.view">
+        <field name="name">Exchange direction and custom filtering</field>
+        <field name="model">ata.exchange.domain</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="method" options="{'no_open': True, 'no_create': True}" required="1"/>
+                        <field name="ext_system" options="{'no_create': True}" required="1"/>                        
+                        <field name="model_name" invisible="1" />
+                        <field name="model_id" readonly="1"
+                            invisible="not model_id"/>
+                        <field name="domain" widget="domain"
+                            options="{'model': 'model_name', 'in_dialog': True}"
+                            invisible="not model_id"/> 
+                        <div colspan="2">
+                            <button name="action_add_to_queue" string="Add filtering records to exchange queue" class="oe_highlight"
+                                type="object"/>
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_exchange_domain_view_list" model="ir.ui.view">
+        <field name="name">Exchange directions and custom filtering</field>
+        <field name="model">ata.exchange.domain</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="method" required="1"/>
+                <field name="domain"/>
+                <field name="ext_system"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ata_exchange_domain_action" model="ir.actions.act_window">
+        <field name="name">Exchange directions and custom filtering</field>
+        <field name="res_model">ata.exchange.domain</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="ata_exchange_domain"
+        name="Exchange directions and custom filtering"
+        parent="ata_exchange_menu_config"
+        action="ata_exchange_domain_action"
+        sequence="30"/>
+        
+</odoo>

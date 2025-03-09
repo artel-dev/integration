@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+        <menuitem
+                id="ata_exchange_menu_root"
+                name="Integration"
+                web_icon="ata_exchange_v3,static/description/icon.png"
+                sequence="10"/>
+
+        <menuitem
+                id="ata_exchange_menu_general"
+                name="Exchange information"
+                parent="ata_exchange_menu_root"
+                sequence="10"/>
+
+        <menuitem
+                id="ata_exchange_menu_config"
+                name="Configuration"
+                parent="ata_exchange_menu_root"
+                sequence="20"/>
+
+</odoo>
