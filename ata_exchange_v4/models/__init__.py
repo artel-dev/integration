@@ -1,6 +1,7 @@
 from . import ata_exchange_method
 from . import ata_exchange_method_mixing
 from . import ata_exchange_base
+from . import ata_exchange_base_requestdata
 from . import ata_exchange_domain
 from . import ata_exchange_handler
 from . import ata_exchange_log

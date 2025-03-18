@@ -9,15 +9,15 @@
                     <group>
                         <field name="method" options="{'no_open': True, 'no_create': True}" required="1"/>
                         <field name="ext_system" options="{'no_create': True}" required="1"/>                        
-                        <field name="model_name" invisible="1" />
+                        <field name="model_name" invisible="1"/>
                         <field name="model_id" readonly="1"
                             invisible="not model_id"/>
                         <field name="domain" widget="domain"
                             options="{'model': 'model_name', 'in_dialog': True}"
-                            invisible="not model_id"/> 
+                            invisible="method.type != 'outgoing_data'"/> 
                         <div colspan="2">
                             <button name="action_add_to_queue" string="Add filtering records to exchange queue" class="oe_highlight"
-                                type="object"/>
+                                type="object" invisible="method.type != 'outgoing_data'"/>
                         </div>
                     </group>
                 </sheet>

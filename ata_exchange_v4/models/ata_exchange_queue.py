@@ -74,8 +74,8 @@ class AtaExchangeQueue(models.Model):
     # endregion
 
     @api.model
-    def search(self, domain, offset=0, limit=None, order=None, count=False):
-        records = super(AtaExchangeQueue, self).search(domain, offset, limit, order, count)
+    def search(self, domain, offset=0, limit=None, order=None):
+        records = super(AtaExchangeQueue, self).search(domain, offset, limit, order)
         if limit:
             return records
         for record in records:
@@ -93,7 +93,7 @@ class AtaExchangeQueue(models.Model):
                 if self.env["ata.exchange.queue.usage"].use_exchange_queue(method):
                     self._add_to_queue(record, method)
                 else:
-                    ExBase.exchange(record, method)
+                    ExBase.exchange_outgoing_data(record, method)
 
     @api.model
     def _add_to_queue(self, records: ExClass, method: ExMethod):
@@ -118,7 +118,7 @@ class AtaExchangeQueue(models.Model):
                         })
                         # start manual exchange over cron
                         if self.env["ata.exchange.queue.usage"].use_immediate_exchange(method):
-                            self.env.ref('ata_exchange_v3.ata_exchange_queue_cron')._trigger()
+                            self.env.ref('ata_exchange_v4.ata_exchange_queue_cron')._trigger()
 
     def test_queue(self):
         records = self.sudo().search([
@@ -129,6 +129,7 @@ class AtaExchangeQueue(models.Model):
 
     @api.model
     def exchange(self, records=None):
+        ExBase = self.env["ata.exchange.base"]
         if not records:
             records = self.sudo().search([
                 ('state_exchange', 'in', ('new', 'idle'))
@@ -140,7 +141,7 @@ class AtaExchangeQueue(models.Model):
 
         for record in records:
             if (ref_object_exclass := record.get_ref_object_as_exclass()):
-                result_update = self.env["ata.exchange.base"].exchange(ref_object_exclass, record.method)
+                result_update = ExBase.exchange_outgoing_data(ref_object_exclass, record.method)
                 if result_update.success:
                     if record.method.notification_successful and (ref_object := record.get_ref_object_as_exclass()):
                         ref_object.ata_exchange_notification(_("Exchange successful"))

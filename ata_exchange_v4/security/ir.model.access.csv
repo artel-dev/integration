@@ -1,6 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ata_exchange_system_base_requestdata,ata.exchange.base.requestdata,model_ata_exchange_base_requestdata,base.group_system,1,1,1,1
 access_ata_exchange_system_user,ata.exchange.system,model_ata_exchange_system,base.group_user,1,0,0,0
 access_ata_exchange_system_admin,ata.exchange.system,model_ata_exchange_system,base.group_system,1,1,1,1
+access_ata_exchange_system_parameters_admin,ata.exchange.system.parameters,model_ata_exchange_system_parameters,base.group_system,1,1,1,1
 access_ata_exchange_log_user,ata.exchange.log,model_ata_exchange_log,base.group_user,1,1,1,1
 access_ata_exchange_log_admin,ata.exchange.log,model_ata_exchange_log,base.group_system,1,1,1,1
 access_ata_exchange_queue_user,ata.exchange.queue,model_ata_exchange_queue,base.group_user,1,1,1,1

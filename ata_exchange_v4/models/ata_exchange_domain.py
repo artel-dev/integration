@@ -20,7 +20,7 @@ class AtaExchangeDomain(models.Model):
         required=True,)
     
     @api.model
-    def get_ext_systems(self, record:ExClass, method: ExMethod) -> ExSystem:
+    def get_ext_systems(self, record:ExClass|None, method: ExMethod) -> ExSystem:
         self_sudo = self.sudo()
         
         # 1. check ext. system without analysis record data
@@ -32,7 +32,7 @@ class AtaExchangeDomain(models.Model):
         # 2. check record data for compliance with the domain
         ext_systems = self.env['ata.exchange.system']
         for record_domain in records_domain:
-            if record_domain.domain:
+            if record and record_domain.domain:
                 _domain = safe_eval.safe_eval(record_domain.domain, self._get_eval_context())
                 if record.filtered_domain(_domain).with_env(record.env):
                     ext_systems |= record_domain.ext_system

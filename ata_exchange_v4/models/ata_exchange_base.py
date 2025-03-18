@@ -1,14 +1,17 @@
 from odoo import api, models, fields, Command
 from abc import abstractmethod
-from typing import Tuple, List, Union, Dict
+from typing import Tuple, List, Union, Dict, cast
 from collections import namedtuple
 from functools import wraps
 from datetime import date, datetime
+import logging
 
 from .ata_exchange_method import AtaExchangeMethod as ExMethod
+from .ata_exchange_system import ExtRequest
 from odoo.addons.mail.models.mail_thread import MailThread
 
 ExchangeResult = namedtuple('ExchangeResult', ['success', 'delete_queue', 'error'])
+_logger = logging.getLogger(__name__)
 
 
 class AtaExchangeClass(models.AbstractModel):
@@ -155,7 +158,7 @@ class AtaExchangeBase(models.AbstractModel):
     _name = "ata.exchange.base"
     _description = "Exchange base model"
 
-    _inherit = ['ata.exchange.method.mixing']
+    #_inherit = ['ata.exchange.method.mixing']
 
     @api.model
     def get_default_lang(self):
@@ -180,7 +183,7 @@ class AtaExchangeBase(models.AbstractModel):
     # endregion
 
     @api.model
-    def exchange(self, record:AtaExchangeClass, method: ExMethod) -> ExchangeResult:
+    def exchange_outgoing_data(self, record:AtaExchangeClass, method: ExMethod) -> ExchangeResult:
         # повертаємо 2 статуси:
         # 1 - що обмін пройшов вдало (для подальших нотифікацій)
         #    - коли запис пройшов валідацію
@@ -224,7 +227,7 @@ class AtaExchangeBase(models.AbstractModel):
                         }
 
                         response_body = ext_system.execute(ext_service)
-                        if response_body:
+                        if response_body and isinstance(response_body, dict):
                             error = response_body.get("error", False)
                             if not error:
                                 # parse response body
@@ -245,3 +248,14 @@ class AtaExchangeBase(models.AbstractModel):
                 result_delete = all(results_ext_systems)
         
         return ExchangeResult(success=result_exchange, delete_queue=result_delete, error=error)
+
+    def cron_exchange(self):
+        #start outgoing queue
+        self.env['ata.exchange.queue'].exchange()
+        
+        #start request_data
+        methods = self.env['ata.exchange.method'].search([
+            ('type', '=', 'request_data'),
+            ('start_over_cron', '=', True)
+        ])
+        self.env['ata.exchange.base.requestdata'].ata_exchange_requestdata(methods)

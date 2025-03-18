@@ -51,7 +51,7 @@
         <field name="code">
             action = records.action_test_queue()
         </field>
-        <field name="binding_model_id" ref="ata_exchange_v3.model_ata_exchange_queue_usage"/>
+        <field name="binding_model_id" ref="ata_exchange_v4.model_ata_exchange_queue_usage"/>
         <field name="binding_type">action</field>
         <field name="binding_view_types">list,form</field>
     </record>

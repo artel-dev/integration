@@ -1,8 +1,8 @@
 from odoo import models, fields, api
 from abc import abstractmethod
 
-from odoo.addons.ata_exchange_v3.models.ata_exchange_system import AtaExchangeSystem as ExSystem
-from odoo.addons.ata_exchange_v3.models.ata_exchange_method import AtaExchangeMethod as ExMethod
+from odoo.addons.ata_exchange_v4.models.ata_exchange_system import AtaExchangeSystem as ExSystem
+from odoo.addons.ata_exchange_v4.models.ata_exchange_method import AtaExchangeMethod as ExMethod
 
 
 class AtaExchangeHandler(models.Model):
@@ -24,7 +24,7 @@ class AtaExchangeHandler(models.Model):
         store=False,)
 
     @classmethod
-    def process_incoming_request(cls, request_data: dict, env):
+    def process_incoming_request(cls, request_data: dict, env: api.Environment|None):
         def check_request_meta():
             if (meta := request_data.get('meta','')) and isinstance(meta, dict):
                 # check for database
@@ -87,6 +87,9 @@ class AtaExchangeHandler(models.Model):
 
             return method
 
+        if env is None:
+            raise ValueError("request.env is None")
+            
         # перевіряємо на коректність вхідних даних meta        
         try:
             check_request_meta()            

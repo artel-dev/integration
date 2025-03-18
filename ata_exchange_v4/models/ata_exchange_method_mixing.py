@@ -1,6 +1,8 @@
 from odoo import fields, models, api
 from typing import Tuple
 
+from odoo.addons.base.models.ir_model import IrModel
+
 
 class AtaExchangeMethodMixing(models.AbstractModel):
     _name = "ata.exchange.method.mixing"
@@ -18,11 +20,11 @@ class AtaExchangeMethodMixing(models.AbstractModel):
         for record in self:
             record.model_id, record.model_name, record.model_desc = record._get_model_data()
 
-    def _get_model_data(self) -> Tuple[int, str, str]:
+    def _get_model_data(self) -> Tuple[IrModel|None, str, str]:
         method_model_name = self.method.model_name if self.method else False
         model_id = self.env['ir.model'].sudo().search([('model', '=', method_model_name)]) \
-            if method_model_name else False
-        model_name = model_id.model if model_id else False
+            if method_model_name else None
+        model_name = model_id.model if model_id else ''
         model_desc = f'{model_id.name} ({model_id.model})' if model_id else f'All models'
 
-        return int(model_id), str(model_name), str(model_desc)
+        return model_id, model_name, model_desc

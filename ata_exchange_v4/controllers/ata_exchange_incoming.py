@@ -3,8 +3,7 @@ from odoo.http import request
 
 
 class AtaExchangeIncomingController(http.Controller):
-    
-    @http.route("/api/ata_exchange_v3", auth='public', type='json', methods=['POST'], cors='*', csrf=False)
+    @http.route("/api/ata_exchange_v4", auth='public', type='json', methods=['POST'], cors='*', csrf=False)
     def method_request(self, **kw) -> dict:
         request_data = request.env['ata.exchange.json'].loads(request.httprequest.data)
         
