@@ -1,4 +1,4 @@
-ATA Exchange V3
+ATA Exchange V4
 ===============
 
 This module provides integration capabilities between Odoo and external systems.
@@ -6,7 +6,7 @@ This module provides integration capabilities between Odoo and external systems.
 Description
 -----------
 
-The ATA Exchange V3 module is designed to facilitate seamless data exchange and integration between Odoo and various external systems. It enhances Odoo's connectivity and interoperability with third-party applications and services.
+The ATA Exchange V4 module is designed to facilitate seamless data exchange and integration between Odoo and various external systems. It enhances Odoo's connectivity and interoperability with third-party applications and services.
 
 Key Features
 ------------

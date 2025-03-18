@@ -1,11 +1,7 @@
-from odoo import api, models, fields, Command
+from odoo import models
 
 from abc import abstractmethod
-from typing import Type, Dict, Any, Optional
-import types
 import logging
-
-from pydantic import BaseModel, ValidationError
 
 from .ata_exchange_method import AtaExchangeMethod
 from .ata_exchange_system import AtaExchangeSystem
