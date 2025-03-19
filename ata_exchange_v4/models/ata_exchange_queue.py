@@ -24,7 +24,8 @@ class AtaExchangeQueue(models.Model):
             ('idle', 'Idle'),
             ('in_exchange', 'In exchange')],
         string='State exchange objects',
-        default='new')
+        default='new',
+        index=True)
     attempt_number = fields.Integer(
         string='Attempt number',
         default=0)
@@ -189,6 +190,8 @@ class AtaExchangeQueue(models.Model):
                 record.attempt_number == 1 and \
                 (ref_object := record.get_ref_object_as_exclass()):
                     ref_object.ata_exchange_notification(_("Failed to exchange: ") + record.error_last)
+
+        return True
 
     def unlink(self):
         for record in self:

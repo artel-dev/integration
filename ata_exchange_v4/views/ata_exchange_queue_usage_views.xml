@@ -10,7 +10,6 @@
                     <notebook>
                         <page string="General">
                             <group>
-                                <field name="model_id" invisible="1" />
                                 <field name="method" placeholder="All methods" options="{'no_open': True, 'no_create': True}"/>
                                 <field name="model_name" invisible="not model_id"
                                     readonly="True" no_label="1"/>
