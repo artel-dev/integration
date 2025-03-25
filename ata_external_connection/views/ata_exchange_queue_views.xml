@@ -30,7 +30,7 @@
                     <button name="action_start_exchange" string="Start exchange"
                             type="object" class="oe_highlight" />
                 </header>
-                <field name="ref_object"/>
+                <field name="ref_object" widget="reference"/>
                 <field name="state_exchange"/>
                 <field name="method"/>
             </tree>
