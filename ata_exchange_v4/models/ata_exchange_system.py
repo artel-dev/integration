@@ -172,6 +172,13 @@ class AtaExchangeSystem(models.Model):
             method_params['url'] = self.get_url(ext_request, '', True)
 
         self.calc_headers_and_auth(ext_request)
+        
+        # convert request_body to json
+        if isinstance(method_params["request_body"], dict) and 'application/json' in method_params['headers']['Content-Type']:
+            data_post = self.env['ata.exchange.json'].dumps(method_params["request_body"])
+        else:
+            data_post = method_params["request_body"] or method_params["params"]
+
         start_date = datetime.now()
 
         # execute request
@@ -189,7 +196,7 @@ class AtaExchangeSystem(models.Model):
             elif http_method == 'POST':
                 response = requests.post(
                     url     = method_params['url'],
-                    data    = method_params["request_body"] or method_params["params"],
+                    data    = data_post,
                     headers = method_params['headers'],
                     auth    = method_params['auth'],
                     timeout = ext_request['timeout']
@@ -223,12 +230,13 @@ class AtaExchangeSystem(models.Model):
     def read_request(self, ext_response: ExtResponse):
         if not ext_response["status_code"] in [200, 201]:
             ext_response["error"] = True
-            ext_response["error_msg"] = 'Status code is not 200 or 201'
+            ext_response["error_msg"] = f'Status code is {ext_response["status_code"]}. {ext_response["result"]}'
         if not ext_response["result"]:
             ext_response["error"] = True
             ext_response["error_msg"] = 'Result is empty'
 
-        if ext_response['headers'].get('Content-Type','') == "application/json":
+        if not ext_response["error"] and \
+            "application/json" in ext_response['headers'].get('Content-Type','').lower():
             ext_response["result_json"] = self.env['ata.exchange.json'].loads(ext_response["result"])
         
     @api.model
@@ -270,7 +278,7 @@ class AtaExchangeSystem(models.Model):
         
         if params['token']:
             headers['Authorization'] = f'Bearer {params["token"]}'
-        elif login and password:
+        elif login:
             headers['Authorization'] = "Basic " + self.base64encodestring(
                 f'{login}:{password}')
             params['auth'] = HTTPBasicAuth(username=login, password=password)

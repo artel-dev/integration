@@ -7,7 +7,7 @@ from datetime import date, datetime
 import logging
 
 from .ata_exchange_method import AtaExchangeMethod as ExMethod
-from .ata_exchange_system import ExtRequest
+from .ata_exchange_system import ExtRequest, ExtResponse
 from odoo.addons.mail.models.mail_thread import MailThread
 
 ExchangeResult = namedtuple('ExchangeResult', ['success', 'delete_queue', 'error'])
@@ -42,7 +42,8 @@ class AtaExchangeClass(models.AbstractModel):
         return over_write
 
     def ata_exchange_check_add_to_queue(self, vals: Dict) -> bool:
-        return bool(self.ATA_EXCHANGE_NODE_NAME)
+        return True
+        # return bool(self.ATA_EXCHANGE_NODE_NAME)
             
     def ata_exchange_add_to_queue(self):
         for record in self:
@@ -127,10 +128,10 @@ class AtaExchangeClass(models.AbstractModel):
         }
 
     @api.model
-    def ata_exchange_response_body_parse(self, method: ExMethod, response_body: dict) -> Tuple[Dict, bool]:
+    def ata_exchange_response_body_parse(self, method: ExMethod, response_body: ExtResponse) -> Tuple[Dict, bool]:
         # typical parse response
-        response_data: dict = response_body.get("data", {})
-        result = response_body.get("status", False)
+        response_data: dict = response_body['result_json'] or {}
+        result = response_data.get("status", False)
 
         return response_data, result
 
@@ -196,7 +197,7 @@ class AtaExchangeBase(models.AbstractModel):
         result_exchange = False
         results_ext_systems = []
         result_delete = True
-        error = ""
+        error_msg = ""
 
         self = self.with_context(lang=self.get_default_lang())
 
@@ -216,20 +217,26 @@ class AtaExchangeBase(models.AbstractModel):
                     request_data = record.ata_exchange_get_request_data(method)
                     # request_data may be empty
                     if request_data:
-                        ext_service = {
-                            'exchange_id': record.ata_exchange_get_name(),
+                        ext_request = ext_system.get_init_extrequest()
+                        ext_request: ExtRequest = {
+                            **ext_request,
+                            'method_name': method.name,
                             'name': f'{method.description}',
-                            'description': f'{method.description}',
-                            'method_name': f'{method.name}',
-                            'http_method': 'POST',
-                            'params': dict(),
-                            'request_body': record.ata_exchange_get_request_body(method, request_data)
+                            'exchange_id': record.ata_exchange_get_name(),
                         }
-
-                        response_body = ext_system.execute(ext_service)
-                        if response_body and isinstance(response_body, dict):
-                            error = response_body.get("error", False)
-                            if not error:
+                        ext_request: ExtRequest = {
+                            **ext_request,
+                            'method_params': {
+                                **ext_request['method_params'],                
+                                'http_method': 'POST',
+                                'url': ext_system.get_url(ext_request, "", True),
+                                'request_body': record.ata_exchange_get_request_body(method, request_data)
+                            }
+                        }
+                        response_body = ext_system.execute(ext_request)
+                        
+                        if response_body:
+                            if not response_body['error']:
                                 # parse response body
                                 response_data, result_response_body_parse = record.ata_exchange_response_body_parse(method, response_body)
                                 if result_response_body_parse:
@@ -237,17 +244,19 @@ class AtaExchangeBase(models.AbstractModel):
                                     self._re_exchanged_add(record)
                                     result = record.ata_exchange_response_post_processing(method, response_data)
                                     self._re_exchanged_delete(record)
+                            else:
+                                error_msg = response_body['error_msg']
                         else:
-                            error = "Failed to receive a response from ext. systems"
+                            error_msg = "Failed to receive a response from ext. systems."
                     else:
-                        error = "Request data is empty"
+                        error_msg = "Request data is empty"
 
                     results_ext_systems.append(result)
 
                 result_exchange = bool(results_ext_systems) and all(results_ext_systems)
                 result_delete = all(results_ext_systems)
         
-        return ExchangeResult(success=result_exchange, delete_queue=result_delete, error=error)
+        return ExchangeResult(success=result_exchange, delete_queue=result_delete, error=error_msg)
 
     def cron_exchange(self):
         #start outgoing queue
