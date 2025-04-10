@@ -20,7 +20,7 @@ class AtaExchangeBaseRequestdata(models.AbstractModel):
     def ata_exchange_requestdata(self, methods: AtaExchangeMethod):
         for method in methods:
             if method.model_id:
-                model_handler = self.env[method.model_id.model]
+                model_handler = self.env[method.model_id.model] # type: ignore
                 if isinstance(model_handler, AtaExchangeBaseRequestdata):
                     #get ext.systems for request
                     ext_systems = self.env["ata.exchange.domain"].get_ext_systems(None, method)

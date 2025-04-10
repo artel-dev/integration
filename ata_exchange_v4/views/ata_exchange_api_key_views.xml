@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List/Tree View for ata.exchange.api.key -->
+    <record id="view_ata_exchange_api_key_list" model="ir.ui.view">
+        <field name="name">ata.exchange.api.key.list</field>
+        <field name="model">ata.exchange.api.key</field>
+        <field name="arch" type="xml">
+            <list string="API Keys">
+                <field name="active" widget="boolean_toggle"/>
+                <field name="display_name"/>
+                <field name="api_key" groups="base.group_system" optional="show"/> <!-- Show key only to admins, optional -->
+                <field name="system_id" optional="show"/>
+                <field name="create_date" optional="hide"/>
+                <field name="description" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View for ata.exchange.api.key -->
+    <record id="view_ata_exchange_api_key_form" model="ir.ui.view">
+        <field name="name">ata.exchange.api.key.form</field>
+        <field name="model">ata.exchange.api.key</field>
+        <field name="arch" type="xml">
+            <form string="API Key">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="api_key" readonly="1" groups="base.group_system"/>
+                            <field name="system_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                            <!-- Show related name only if system_id is set -->
+                            <field name="name" invisible="system_id == False" readonly="1" force_save="1"/>
+                             <!-- Allow setting name only if system_id is not set -->
+                            <field name="name" string="Key Name / Owner (Manual)"
+                                   invisible="system_id != False" required="system_id == False"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for ata.exchange.api.key -->
+    <record id="action_ata_exchange_api_key" model="ir.actions.act_window">
+        <field name="name">API Keys</field>
+        <field name="res_model">ata.exchange.api.key</field>
+        <field name="view_mode">list,form</field> 
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new API Key
+          </p><p>
+            API keys are used to authenticate external systems accessing the API.
+          </p>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <!-- Add under an appropriate parent menu, e.g., Exchange Settings -->
+    <menuitem
+        id="menu_ata_exchange_api_keys"
+        name="API Keys"
+        action="action_ata_exchange_api_key"
+        parent="ata_exchange_v4.ata_exchange_menu_config"
+        sequence="30"/>
+
+    <!-- Add API Keys tab to AtaExchangeSystem form view -->
+    <record id="view_ata_exchange_system_form_add_api_keys" model="ir.ui.view">
+        <field name="name">ata.exchange.system.form.add.api.keys</field>
+        <field name="model">ata.exchange.system</field>
+        <field name="inherit_id" ref="ata_exchange_v4.ata_exchange_system_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="API Keys" name="api_keys">
+                    <field name="api_key_ids">
+                        <list editable="bottom">
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="display_name"/>
+                            <field name="api_key" groups="base.group_system"/>                            
+                            <field name="description"/>
+                        </list>
+                        <form>
+                            <group>
+                                <field name="name" string="Key Name / Owner (Manual)" required="1"/>
+                                <field name="description"/>
+                                <field name="active"/>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

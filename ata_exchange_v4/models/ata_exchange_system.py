@@ -77,7 +77,15 @@ class AtaExchangeSystem(models.Model):
             ("json", "JSON"),
             ("html", "HTML")
         ],
-        default="json")
+        default="json"
+    )
+    # Add the One2many field to link to API keys
+    api_key_ids = fields.One2many(
+        'ata.exchange.api.key',
+        'system_id',
+        string="API Keys",
+        help="API Keys associated with this system."
+    )
 
     parameter_ids = fields.One2many(
         comodel_name='ata.exchange.system.parameters',

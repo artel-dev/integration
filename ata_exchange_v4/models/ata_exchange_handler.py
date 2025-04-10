@@ -1,116 +1,74 @@
-from odoo import models, fields, api
-from abc import abstractmethod
-
+from odoo import models, api
+from odoo.exceptions import UserError, ValidationError, AccessError
 from odoo.addons.ata_exchange_v4.models.ata_exchange_system import AtaExchangeSystem as ExSystem
 from odoo.addons.ata_exchange_v4.models.ata_exchange_method import AtaExchangeMethod as ExMethod
+from odoo.addons.ata_exchange_v4.models.ata_exchange_base_incomingrequest import AtaExchangeBaseIncomingrequest
 
+import logging
+from werkzeug.exceptions import InternalServerError, BadRequest, NotFound, Forbidden
 
-class AtaExchangeHandler(models.Model):
+_logger = logging.getLogger(__name__)
+
+class AtaExchangeHandler(models.AbstractModel):
     _name = "ata.exchange.handler"
-    _description = "Model for handling incoming requests"
+    _description = "Exchange Handler Dispatcher"
 
-    method_id = fields.Many2one(
-        comodel_name='ata.exchange.method')
-    type_request = fields.Selection(
-        selection=[
-            ('incoming', 'Incoming request'),
-            ('outgoing', 'Outgoing request')
-        ])
-    ext_system_id = fields.Many2one(
-        comodel_name='ata.exchange.system',
-        # compute="compute_fields",
-        store=False)
-    request_data = fields.Json(
-        store=False,)
+    @api.model
+    def process_incoming_request(self, method: ExMethod, ext_system: ExSystem | None, req_body: dict) -> dict:
+        """
+        Processes an incoming request by finding the correct handler model
+        (defined in method.model_id) and calling its ata_exchange_incomingrequest_run method.
 
-    @classmethod
-    def process_incoming_request(cls, request_data: dict, env: api.Environment|None):
-        def check_request_meta():
-            if (meta := request_data.get('meta','')) and isinstance(meta, dict):
-                # check for database
-                # можливо ще не було синхронизації або це не наша база
-                if (target_db_name := meta.get('odoo_db_name','')) and isinstance(target_db_name, str):
-                    if not target_db_name == env.cr.dbname:
-                        raise ValueError(f"the database specified in the request '{target_db_name}' does not match the current database")
-                else:
-                    raise ValueError("error searching, filling or typing 'odoo_db_name' in 'meta' tag in request")
-                
-                # перевірка id зовнішньої системи odoo, отриманий після синхронізації баз
-                if (id_ext_system := meta.get('odoo_id_external_system','')) and isinstance(id_ext_system, int):
-                    if env['ata.exchange.system'].sudo().search_count([('id', '=', id_ext_system)]) == 0:
-                        raise ValueError(f"the ID external system '{id_ext_system}' specified in the request not matched")
-                else:
-                    raise ValueError("error searching, filling or typing 'odoo_id_external_system' in 'meta' tag in request")
+        :param method: The ata.exchange.method record for the request.
+        :param ext_system: The ata.exchange.system record from API key (or None).
+        :param req_body: The parsed JSON request body.
+        :return: Dictionary or list representing the JSON response body.
+        :raises werkzeug.exceptions.*: For various processing errors.
+        """
+        if not method.model_id or not method.model_id.model:
+            _logger.error(f"Method '{method.name}' does not have a target model (model_id) defined.")
+            raise InternalServerError(f"Configuration error: Target model not defined for method '{method.name}'.")
 
-                # перевірка наявності методу обміну
-                if (method_name := meta.get('odoo_method_name','')) and isinstance(method_name, str):
-                    if env['ata.exchange.method'].sudo().search_count([('name', '=', method_name)]) == 0:
-                        raise ValueError(f"the method name '{method_name}' specified in the request not found")
-                else:
-                    raise ValueError("error searching, filling or typing 'odoo_method_name' in 'meta' tag in request")
-            else:
-                raise ValueError("error searching, filling or typing 'meta' tag in request")
+        target_model_name = method.model_id.model
+        
+        if target_model_name not in self.env:
+            _logger.error(f"Target handler model '{target_model_name}' not found in environment.")
+            raise InternalServerError(f"Configuration error: Target model '{target_model_name}' not found.")
 
-        def get_response_body_meta() -> dict:
-            return {
-                'meta': {
-                    'odoo_db_name': env.cr.dbname,
-                },
-            }
+        target_model_instance = self.env[target_model_name]
 
-        def get_response_body_error(error) -> dict:
-            return {
-                **get_response_body_meta(),
-                **{'error': error}
-            }
+        # Verify the target model inherits from the expected base class
+        if not isinstance(target_model_instance, AtaExchangeBaseIncomingrequest):
+            _logger.error(f"Target model '{target_model_name}' does not inherit from 'ata.exchange.base.incomingrequest'.")
+            raise InternalServerError(f"Configuration error: Target model '{target_model_name}' has incorrect base class for incoming requests.")
 
-        def get_response_body_data(data: dict) -> dict:
-            # додатково передаємо статус для підтверждення успішного виконання
-            # він може перекритися негативним статусом з data
-            status = data.pop('status') if 'status' in data else True
-            return {
-                **get_response_body_meta(),
-                **{'status': status},
-                **{'data': data}
-            }
-
-        def get_ext_system() -> ExSystem:
-            _meta: dict = request_data.get('meta', False)
-            _id_ext_system =_meta.get('odoo_id_external_system', False) if _meta else False
-            return env['ata.exchange.system'].sudo().search([('id', '=', _id_ext_system)], limit=1)
-
-        def get_method() -> ExMethod:
-            _meta: dict = request_data.get('meta', False)
-            _name_method =_meta.get('odoo_method_name', False) if _meta else False
-            if not (method := env['ata.exchange.method'].sudo().search([('name', '=', _name_method)], limit=1)):
-                raise ValueError(f"Method name '{_name_method}' not found")
-
-            return method
-
-        if env is None:
-            raise ValueError("request.env is None")
-            
-        # перевіряємо на коректність вхідних даних meta        
+        # Call the ata_exchange_incomingrequest method on the target model instance
         try:
-            check_request_meta()            
-        except ValueError as e:
-            return get_response_body_error(str(e))
+            # Use sudo() for potential broad access needs within the run method.
+            response_data = target_model_instance.sudo().ata_exchange_incomingrequest_run(
+                method=method,
+                ext_system=ext_system,
+                req_body=req_body
+            )
 
-        handler_id = env['ata.exchange.handler'].sudo().search([
-            ('type_request', '=', 'incoming'),
-            ('method_id.name', '=', get_method().name)
-        ], limit=1)
-        func_name = f'process_request_incoming_{get_method().name}'
-        if handler_id:
-            if hasattr(handler_id,func_name):
-                try:
-                    handler_id.request_data = request_data.get('data', [])
-                    handler_id.ext_system_id = get_ext_system().id
-                    result = getattr(handler_id,func_name)()
-                    return get_response_body_data(result)
-                except ValueError as e:
-                    return get_response_body_error(str(e))
-            else:
-                return get_response_body_error(f"Function of handler for method '{get_method().name}' not found")
-        else:
-            return get_response_body_error(f"Incoming request handler for method '{get_method().name}' not found")
+            _logger.debug(f"ata_exchange_incomingrequest for method '{method.name}' executed successfully.")
+            return response_data
+        except AccessError as e:
+             _logger.warning(f"Access Error during run for method '{method.name}': {e}")
+             raise Forbidden(str(e))
+        except (ValidationError, UserError) as e:
+            _logger.warning(f"Validation/User Error during run for method '{method.name}': {e}")
+            raise BadRequest(f"Invalid data or operation for method '{method.name}': {e}")
+        except NotImplementedError: 
+            _logger.error(f"Method 'ata_exchange_incomingrequest_run' not implemented in {target_model_name} for method '{method.name}'.")
+            raise InternalServerError(f"Processing logic not implemented for method '{method.name}'.")
+        except TypeError as e:
+             if "ata_exchange_incomingrequest_run() takes" in str(e) or "positional argument but" in str(e):
+                 _logger.exception(f"Signature mismatch calling {target_model_name}.ata_exchange_incomingrequest_run: {e}")
+                 raise InternalServerError(f"Internal configuration error calling handler for method '{method.name}'.")
+             else:
+                 _logger.exception(f"Unexpected TypeError during run for method '{method.name}': {e}")
+                 raise InternalServerError(f"An unexpected error occurred processing method '{method.name}'.")
+        except Exception as e:
+             _logger.exception(f"Unexpected error during run for method '{method.name}': {e}")
+             raise InternalServerError(f"An unexpected error occurred processing method '{method.name}'.")
