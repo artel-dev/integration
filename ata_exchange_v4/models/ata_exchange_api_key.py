@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import uuid
 from odoo import api, fields, models
 
@@ -26,6 +24,7 @@ class AtaExchangeApiKey(models.Model):
     system_id = fields.Many2one(
         'ata.exchange.system',
         string='External System',
+        required=True,
         ondelete='cascade', # Or 'set null' if you want to keep keys after deleting system
         help="Optional: Link this key to a pre-defined external system. "
              "If linked, the 'Key Name / Owner' field will be automatically filled, "
@@ -52,6 +51,11 @@ class AtaExchangeApiKey(models.Model):
         help="Only active keys can be used for authentication."
     )
     description = fields.Text(string='Description')
+    methods_ids = fields.Many2many(
+        'ata.exchange.method',
+        string='Methods',
+        domain=[('type', '=', 'incoming_request')]
+    )
 
     _sql_constraints = [
         ('api_key_uniq', 'unique (api_key)', 'API Key must be unique!')

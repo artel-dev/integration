@@ -25,7 +25,14 @@ class AtaExchangeMethod(models.Model):
 	model_name = fields.Char(
 		string="Model name")
 	model_id = fields.Many2one('ir.model', string="Model")
-		
+	need_api_key = fields.Boolean(
+		string="Need API key",
+		compute='_compute_need_api_key',)
+
+	def _compute_need_api_key(self):
+		for record in self:
+			record.need_api_key = bool(self.env['ata.exchange.api.key'].search([('methods_ids', 'in', record.id)], limit=1))
+
 	notification_queue_add 		= fields.Boolean(string="Addition to the exchange queue")
 	notification_queue_remove 	= fields.Boolean(string="Removal from the exchange queue")
 	notification_validation 	= fields.Boolean(string="Data validation errors")
