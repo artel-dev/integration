@@ -16,6 +16,6 @@ class AtaJsonRPCDispatcher(JsonRPCDispatcher):
                 'message': str(exc),
                 'data': exc.data,
             }
-            return self._response(error=error)
+            return self._response(error=error)  # type: ignore[attr-defined]
         else:
             return super().handle_error(exc)

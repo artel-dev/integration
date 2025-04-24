@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 
 class ExtResponse(TypedDict):
     result: str
-    result_json: Optional[Any]
+    result_json: Optional[dict|list]
     status_code: Optional[int]
     error: bool
     error_msg: str    
@@ -48,6 +48,9 @@ class ExtRequest(TypedDict):
     execution_date: Optional[datetime]
     is_processed: bool  # is request processed
     processing_date: Optional[datetime]
+
+    is_jsonrpc: bool
+    add_jsonrpc_name: bool
     
     response: Optional[ExtResponse]
     
@@ -119,6 +122,8 @@ class AtaExchangeSystem(models.Model):
             'processing_date':  None,
             'is_executed':      False,
             'is_processed':     False,
+            'is_jsonrpc':       False,
+            'add_jsonrpc_name': False,
             'response':         None,
         }
 
@@ -128,7 +133,7 @@ class AtaExchangeSystem(models.Model):
         headers['Content-Type'] = 'application/json'
 
         return {
-            'http_method': '',
+            'http_method': 'POST',
             'url': '',
             'params': {},
             'request_body': '',
@@ -177,10 +182,19 @@ class AtaExchangeSystem(models.Model):
             return
 
         if not method_params['url']:
-            method_params['url'] = self.get_url(ext_request, '', True)
+            method_params['url'] = self.get_url(ext_request)
 
         self.calc_headers_and_auth(ext_request)
         
+        #for json-rpc 2.0 forming structure
+        if ext_request['is_jsonrpc']:
+            method_params['request_body'] = {
+                'jsonrpc': '2.0',
+                'method': ext_request["method_name"],
+                'params': method_params['request_body'],
+                'id': None
+            }
+
         # convert request_body to json
         if isinstance(method_params["request_body"], dict) and 'application/json' in method_params['headers']['Content-Type']:
             data_post = self.env['ata.exchange.json'].dumps(method_params["request_body"])
@@ -245,7 +259,18 @@ class AtaExchangeSystem(models.Model):
 
         if not ext_response["error"] and \
             "application/json" in ext_response['headers'].get('Content-Type','').lower():
-            ext_response["result_json"] = self.env['ata.exchange.json'].loads(ext_response["result"])
+            
+            result_json = self.env['ata.exchange.json'].loads(ext_response["result"])
+        
+            if isinstance(result_json, dict) and \
+                result_json.get("jsonrpc") == "2.0":
+                if (error_jsonrpc := result_json.get('error', False)):
+                    ext_response["error"] = True
+                    ext_response["error_msg"] = error_jsonrpc
+                else:
+                    ext_response["result_json"] = result_json.get("result", False)
+            else:
+                ext_response["result_json"] = result_json
         
     @api.model
     def get_url(self,
@@ -268,8 +293,9 @@ class AtaExchangeSystem(models.Model):
         url_port = f':{server_port}' if server_port else ''
         resource_address = format_resource_address(resource_address or self.resource_address)
         method_address = format_resource_address(ext_request["method_name"]) if add_method_name else ''
+        jsonrpc_address = format_resource_address("jsonrpc") if ext_request['add_jsonrpc_name'] else ''
         
-        return f'{url_http_protocol}{server_address}{url_port}{resource_address}{method_address}'
+        return f'{url_http_protocol}{server_address}{url_port}{resource_address}{method_address}{jsonrpc_address}'
 
     def calc_headers_and_auth(self, ext_request: ExtRequest) -> HTTPBasicAuth|None:
         # calculate headers and auth
@@ -308,19 +334,15 @@ class AtaExchangeSystem(models.Model):
                 'processing_date': ext_request["processing_date"],
             }
             if (ext_response:=ext_request["response"]):
-                if ext_response['error']:
-                    log_vals.update({
-                        'response': f"Error. {ext_response['error_msg']}",
-                    })
-                else:
-                    log_vals.update({
-                        'status_code': ext_response["status_code"],
-                        'response': ext_response["result"],
-                        'start_date': ext_response["start_date"],
-                        'finish_date': ext_response["finish_date"],
-                    })
-            
+                log_vals.update({
+                    'status_code': ext_response["status_code"],
+                    'start_date': ext_response["start_date"],
+                    'finish_date': ext_response["finish_date"],
+                    'response': ext_response["result"],
+                })
+
             self.env['ata.exchange.log'].create(log_vals)
+            self.env.cr.commit()
 
     def action_test_connection(self):
         answers = []
@@ -377,37 +399,32 @@ class AtaExchangeSystem(models.Model):
     def action_synchronization(self):
         exchange_id = f'Synchronization: {self.name}'
         ext_request = self.get_init_extrequest()
-        ext_request: ExtRequest = {
-            **ext_request,
-            'exchange_id': exchange_id,
-            'name': 'Synchronization',
-            'method_name': 'sync',
-            'method_params': {
-                **ext_request['method_params'],                        
-                'http_method': 'POST',
-                'request_body': {
-                    'meta': {
-                        'db_name': self.env.cr.dbname,
-                    },
-                    'data': {
-                        'id': self.id,
-                        'name': self.name,
-                    }
-                }
+        ext_request['is_jsonrpc'] = True
+        ext_request['add_jsonrpc_name'] = True
+        ext_request['name'] = 'Synchronization'
+        ext_request['method_name'] = 'sync'
+        ext_request['exchange_id'] = exchange_id
+        ext_request['method_params']['request_body'] = {
+            'meta': {
+                'db_name': self.env.cr.dbname,
+            },
+            'data': {
+                'id': self.id,
+                'name': self.name,
             }
         }
 
         ext_response = self.execute(ext_request)
 
-        result = False
-        if ext_response and ext_response['result_json']:
-            if not (error := ext_response['error']):
-                if self.content_type == 'json' and isinstance(ext_response['result_json'], dict):
-                    result = ext_response['result_json'].get("status", False)
-                else:
-                    result = (ext_response['result'] == 'True')
+        if ext_response:
+            if ext_response['error']:
+                result = ext_response['error_msg']
+            elif (response_data := ext_response['result_json']) and isinstance(response_data, dict):
+                result = response_data.get('status', False)
             else:
-                result = error
+                result = "Invalid response data"
+        else:
+            result = "No connection or undefined error"
 
         return {
             'type': 'ir.actions.client',
