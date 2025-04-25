@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 
 class ExtResponse(TypedDict):
     result: str
-    result_json: Optional[dict|list]
+    result_json: Optional[dict]
     status_code: Optional[int]
     error: bool
     error_msg: str    
@@ -49,9 +49,6 @@ class ExtRequest(TypedDict):
     is_processed: bool  # is request processed
     processing_date: Optional[datetime]
 
-    is_jsonrpc: bool
-    add_jsonrpc_name: bool
-    
     response: Optional[ExtResponse]
     
 
@@ -78,6 +75,7 @@ class AtaExchangeSystem(models.Model):
     content_type = fields.Selection(
         selection=[
             ("json", "JSON"),
+            ("jsonrpc", "JSONRPC 2.0"),
             ("html", "HTML")
         ],
         default="json"
@@ -122,8 +120,6 @@ class AtaExchangeSystem(models.Model):
             'processing_date':  None,
             'is_executed':      False,
             'is_processed':     False,
-            'is_jsonrpc':       False,
-            'add_jsonrpc_name': False,
             'response':         None,
         }
 
@@ -187,7 +183,7 @@ class AtaExchangeSystem(models.Model):
         self.calc_headers_and_auth(ext_request)
         
         #for json-rpc 2.0 forming structure
-        if ext_request['is_jsonrpc']:
+        if self.content_type == 'jsonrpc':
             method_params['request_body'] = {
                 'jsonrpc': '2.0',
                 'method': ext_request["method_name"],
@@ -275,8 +271,7 @@ class AtaExchangeSystem(models.Model):
     @api.model
     def get_url(self,
             ext_request: ExtRequest,
-            resource_address: str = '',
-            add_method_name: bool = False) -> str:
+            resource_address: str = '') -> str:
 
         def format_resource_address(address: str|None = '') -> str:
             return '' if not address else f"/{address.lstrip('/')}"
@@ -291,11 +286,12 @@ class AtaExchangeSystem(models.Model):
         if not server_address.startswith('http'):
             url_http_protocol = f'{http_protocol}://'
         url_port = f':{server_port}' if server_port else ''
+        method_address = format_resource_address("jsonrpc"
+            if self.content_type == 'jsonrpc'
+            else ext_request["method_name"]) if not resource_address else ''
         resource_address = format_resource_address(resource_address or self.resource_address)
-        method_address = format_resource_address(ext_request["method_name"]) if add_method_name else ''
-        jsonrpc_address = format_resource_address("jsonrpc") if ext_request['add_jsonrpc_name'] else ''
         
-        return f'{url_http_protocol}{server_address}{url_port}{resource_address}{method_address}{jsonrpc_address}'
+        return f'{url_http_protocol}{server_address}{url_port}{resource_address}{method_address}'
 
     def calc_headers_and_auth(self, ext_request: ExtRequest) -> HTTPBasicAuth|None:
         # calculate headers and auth
@@ -353,36 +349,25 @@ class AtaExchangeSystem(models.Model):
             for method_http in methods_http:
                 exchange_id = f'Model: {record._name}, Id: {record.id}'
                 ext_request = record.get_init_extrequest()
-                ext_request: ExtRequest = {
-                    **ext_request,
-                    'exchange_id': exchange_id,
-                    'name': 'Test',
-                    'method_name': 'check',
-                    'method_params': {
-                        **ext_request['method_params'],                        
-                        'http_method': method_http,                        
-                    }
-                }
+                ext_request['exchange_id'] = exchange_id
+                ext_request['name'] = 'Test'
+                ext_request['method_name'] = 'check'
+                ext_request['method_params']['http_method'] = method_http
+                ext_request['method_params']['url'] = self.get_url(ext_request)
 
                 ext_response = record.execute(ext_request)
 
-                result = False
-                error = f'Error undefined'
-
                 if ext_response:
-                    error = ext_response['error']
-                    if not error:
-                        if (result_json:=ext_response['result_json']) and isinstance(result_json, dict):
-                            result = result_json.get("status", False)
-                        else:
-                            result = True if ext_response['result'] == 'True' else False
+                    if ext_response['error']:
+                        result = ext_response['error_msg']
+                    elif (response_data := ext_response['result_json']) and isinstance(response_data, dict):
+                        result = response_data.get('status', False)
                     else:
-                        answers.append(f'Test {method_http} method ext. system {record.name} is False\n'
-                            f'Error: {str(error)}')
-
-                answers.append(f'Test {method_http} method "{record.name}" is {str(result)}')
-                if error:
-                    answers.append(f'Error: {str(error)}')             
+                        result = "Invalid response data"
+                else:
+                    result = "No connection or undefined error"
+                
+                answers.append(f'Test {method_http} method "{record.name}": {str(result)}')
 
         return {
             'type': 'ir.actions.client',
@@ -399,8 +384,6 @@ class AtaExchangeSystem(models.Model):
     def action_synchronization(self):
         exchange_id = f'Synchronization: {self.name}'
         ext_request = self.get_init_extrequest()
-        ext_request['is_jsonrpc'] = True
-        ext_request['add_jsonrpc_name'] = True
         ext_request['name'] = 'Synchronization'
         ext_request['method_name'] = 'sync'
         ext_request['exchange_id'] = exchange_id

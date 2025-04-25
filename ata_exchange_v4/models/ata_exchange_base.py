@@ -218,21 +218,12 @@ class AtaExchangeBase(models.AbstractModel):
                     # request_data may be empty
                     if request_data:
                         ext_request = ext_system.get_init_extrequest()
-                        ext_request: ExtRequest = {
-                            **ext_request,
-                            'method_name': method.name,
-                            'name': f'{method.description}',
-                            'exchange_id': record.ata_exchange_get_name(),
-                        }
-                        ext_request: ExtRequest = {
-                            **ext_request,
-                            'method_params': {
-                                **ext_request['method_params'],                
-                                'http_method': 'POST',
-                                'url': ext_system.get_url(ext_request, "", True),
-                                'request_body': record.ata_exchange_get_request_body(method, request_data)
-                            }
-                        }
+                        ext_request['method_name']  = method.name
+                        ext_request['name']  = f'{method.description}'
+                        ext_request['exchange_id'] = record.ata_exchange_get_name()
+                        ext_request['method_params']['url'] = ext_system.get_url(ext_request)
+                        ext_request['method_params']['request_body'] = record.ata_exchange_get_request_body(method, request_data)
+
                         response_body = ext_system.execute(ext_request)
                         
                         if response_body:
