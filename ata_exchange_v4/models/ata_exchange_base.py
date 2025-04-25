@@ -115,17 +115,9 @@ class AtaExchangeClass(models.AbstractModel):
     @api.model
     def ata_exchange_get_request_body(self, method: ExMethod, request_data: Union[List[Dict], Dict, str]) -> Dict:
         return {
-            **self.get_response_body_meta(),
+            **self.env['ata.exchange.base'].get_response_body_meta(),
             "data": request_data,
-        }
-
-    @api.model
-    def get_response_body_meta(self) -> dict:
-        return {
-            'meta': {
-                'db_name': self._cr.dbname,
-            },
-        }
+        }    
 
     @api.model
     def ata_exchange_response_body_parse(self, method: ExMethod, response_body: ExtResponse) -> Tuple[Dict, bool]:
@@ -165,6 +157,13 @@ class AtaExchangeBase(models.AbstractModel):
     def get_default_lang(self):
         return 'en_US'
 
+    @api.model
+    def get_response_body_meta(self) -> dict:
+        return {
+            'meta': {
+                'db_name': self._cr.dbname,
+            },
+        }
     # region re-exchanged
     _re_exchanged = set()
 

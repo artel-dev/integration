@@ -14,8 +14,9 @@
                         <field name="model_name" readonly="1" invisible="type != 'outgoing_data'"/>                        
                         <field name="start_over_cron" invisible="type != 'request_data'" widget="boolean_toggle"/>
                         <field name="description"/>
-                        <span class="o_form_label fw-bold text-danger"
-                            invisible="type != 'incoming_request' or not need_api_key">Need API key</span>
+                        <t class="o_form_label" invisible="type != 'incoming_request' or not need_api_key">
+                            <span class="fw-bold text-danger">Need API key</span>
+                        </t>
                     </group>
                     <notebook>
                         <page string="Notifications" name="notifications">
@@ -41,7 +42,7 @@
         <field name="binding_model_id" ref="model_ata_exchange_method"/>
         <field name="state">code</field>
         <field name="code">
-            action = env['ata.exchange.base.requestdata'].ata_exchange_requestdata(env['ata.exchange.method'].browse(env.context.get('active_ids', [])))
+            action = env['ata.exchange.base.requestdata'].ata_exchange_requestdata_action(env['ata.exchange.method'].browse(env.context.get('active_ids', [])))
         </field>
     </record>
 

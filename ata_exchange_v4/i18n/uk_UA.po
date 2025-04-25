@@ -6,14 +6,54 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-24 20:20+0000\n"
-"PO-Revision-Date: 2025-03-24 20:20+0000\n"
+"POT-Creation-Date: 2025-04-25 08:00+0000\n"
+"PO-Revision-Date: 2025-04-25 08:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_method_view_form
+msgid "<span class=\"fw-bold text-danger\">Need API key</span>"
+msgstr "<span class=\"fw-bold text-danger\">Потрібен API ключ</span>"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__api_key
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.view_ata_exchange_api_key_form
+msgid "API Key"
+msgstr "API ключ"
+
+#. module: ata_exchange_v4
+#: model:ir.model.constraint,message:ata_exchange_v4.constraint_ata_exchange_api_key_api_key_uniq
+msgid "API Key must be unique!"
+msgstr "API ключ повинен бути унікальним!"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.act_window,name:ata_exchange_v4.action_ata_exchange_api_key
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__api_key_ids
+#: model:ir.ui.menu,name:ata_exchange_v4.menu_ata_exchange_api_keys
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.view_ata_exchange_api_key_list
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.view_ata_exchange_system_form_add_api_keys
+msgid "API Keys"
+msgstr "API ключі"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,help:ata_exchange_v4.field_ata_exchange_system__api_key_ids
+msgid "API Keys associated with this system."
+msgstr "API ключі, пов'язані з цією системою."
+
+#. module: ata_exchange_v4
+#: model_terms:ir.actions.act_window,help:ata_exchange_v4.action_ata_exchange_api_key
+msgid "API keys are used to authenticate external systems accessing the API."
+msgstr "API ключі використовуються для автентифікації зовнішніх систем, що підключаються до API."
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__active
+msgid "Active"
+msgstr "Активний"
 
 #. module: ata_exchange_v4
 #: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_domain_view_form
@@ -42,6 +82,11 @@ msgid "Attempt number"
 msgstr "Номер спроби"
 
 #. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_base_incomingrequest
+msgid "Base Model for Incoming API Request Handlers"
+msgstr "Базова модель для обробки вхідних запитів API"
+
+#. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__color
 msgid "Color"
 msgstr "Колір"
@@ -59,7 +104,7 @@ msgstr "Тип обміну"
 #. module: ata_exchange_v4
 #: model:ir.model,name:ata_exchange_v4.model_ata_exchange_json
 msgid "Convert json functions (ATA)"
-msgstr ""
+msgstr "Функції конвертації JSON (ATA)"
 
 #. module: ata_exchange_v4
 #: model:ir.module.category,description:ata_exchange_v4.module_category_integration_base
@@ -72,8 +117,13 @@ msgid "Create Date"
 msgstr "Дата створення"
 
 #. module: ata_exchange_v4
+#: model_terms:ir.actions.act_window,help:ata_exchange_v4.action_ata_exchange_api_key
+msgid "Create a new API Key"
+msgstr ""
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__create_uid
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__create_uid
-#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_handler__create_uid
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__create_uid
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__create_uid
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__create_uid
@@ -85,8 +135,8 @@ msgid "Created by"
 msgstr "Автор"
 
 #. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__create_date
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__create_date
-#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_handler__create_date
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__create_date
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__create_date
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__create_date
@@ -112,6 +162,7 @@ msgid "Delete all"
 msgstr "Видалити все"
 
 #. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__description
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__description
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__description
 msgid "Description"
@@ -123,8 +174,8 @@ msgid "Disabled"
 msgstr "Вимкнено"
 
 #. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__display_name
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__display_name
-#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_handler__display_name
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__display_name
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__display_name
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__display_name
@@ -154,6 +205,11 @@ msgstr "Фільтр для пошуку зовнішньої системи"
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__exchange_id
 msgid "Exchange"
 msgstr "Обмін"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_handler
+msgid "Exchange Handler Dispatcher"
+msgstr "Модель обробки вхідних запитів"
 
 #. module: ata_exchange_v4
 #: model:ir.model,name:ata_exchange_v4.model_ata_exchange_base
@@ -227,14 +283,25 @@ msgid "Execution Time"
 msgstr "Час виконання"
 
 #. module: ata_exchange_v4
-#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_handler__ext_system_id
-msgid "Ext System"
-msgstr "Зовн. система"
+#. odoo-python
+#: code:addons/ata_exchange_v4/models/ata_exchange_base_requestdata.py:0
+msgid "Execution result"
+msgstr "Результат виконання"
 
 #. module: ata_exchange_v4
 #: model:ir.module.category,description:ata_exchange_v4.module_category_integration_extension
 msgid "Extension of integration"
 msgstr "Розширення інтеграції"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__system_id
+msgid "External System"
+msgstr "Зовнішня система"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_api_key
+msgid "External System API Key"
+msgstr "API ключ зовнішньої системи"
 
 #. module: ata_exchange_v4
 #: model:ir.model,name:ata_exchange_v4.model_ata_exchange_system
@@ -276,7 +343,7 @@ msgstr "Загальні"
 #. module: ata_exchange_v4
 #: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_system__content_type__html
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__headers
@@ -284,8 +351,8 @@ msgid "Headers"
 msgstr "Заголовки"
 
 #. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__id
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__id
-#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_handler__id
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__id
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__id
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__id
@@ -294,7 +361,7 @@ msgstr "Заголовки"
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__id
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__ext_object_id
@@ -304,7 +371,7 @@ msgstr "ID в зовнішній системі"
 #. module: ata_exchange_v4
 #: model:ir.model,name:ata_exchange_v4.model_ata_exchange_matching_id
 msgid "Id matching in Exchange (v3)"
-msgstr ""
+msgstr "Відповідність ID в обмінах (v3)"
 
 #. module: ata_exchange_v4
 #: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_queue__state_exchange__idle
@@ -320,11 +387,6 @@ msgstr "Миттєво"
 #: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_queue__state_exchange__in_exchange
 msgid "In exchange"
 msgstr "Обмінюється"
-
-#. module: ata_exchange_v4
-#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_handler__type_request__incoming
-msgid "Incoming request"
-msgstr "Вхідний запит"
 
 #. module: ata_exchange_v4
 #: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_method__type__incoming_request
@@ -378,8 +440,24 @@ msgid "JSON"
 msgstr ""
 
 #. module: ata_exchange_v4
+#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_system__content_type__jsonrpc
+msgid "JSONRPC 2.0"
+msgstr ""
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__name
+msgid "Key Name / Owner"
+msgstr "Назва / Власник"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.view_ata_exchange_api_key_form
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.view_ata_exchange_system_form_add_api_keys
+msgid "Key Name / Owner (Manual)"
+msgstr "Назва / Власник (вручну)"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__write_uid
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__write_uid
-#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_handler__write_uid
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__write_uid
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__write_uid
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__write_uid
@@ -391,8 +469,8 @@ msgid "Last Updated by"
 msgstr "Автор останнього оновлення"
 
 #. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__write_date
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__write_date
-#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_handler__write_date
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__write_date
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__write_date
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__write_date
@@ -414,7 +492,6 @@ msgid "Login"
 msgstr "Логін"
 
 #. module: ata_exchange_v4
-#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_handler__method_id
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__method_id
 msgid "Method"
 msgstr "Метод"
@@ -431,6 +508,11 @@ msgstr "Ім'я методу"
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__method
 msgid "Method of exchange"
 msgstr "Метод обміну в моделі"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__methods_ids
+msgid "Methods"
+msgstr "Методи"
 
 #. module: ata_exchange_v4
 #: model:ir.actions.act_window,name:ata_exchange_v4.ata_exchange_method_action
@@ -470,11 +552,6 @@ msgid "Model description"
 msgstr "Опис моделі"
 
 #. module: ata_exchange_v4
-#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_handler
-msgid "Model for handling incoming requests"
-msgstr "Модель обробки вхідних запитів"
-
-#. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__model_name
 msgid "Model name"
 msgstr "Ім'я моделі"
@@ -486,9 +563,23 @@ msgid "Name"
 msgstr "Ім'я"
 
 #. module: ata_exchange_v4
+#: model:ir.model.fields,help:ata_exchange_v4.field_ata_exchange_api_key__name
+msgid ""
+"Name for this key, typically the owner or purpose. If an 'External System' "
+"is selected, this field defaults to the system name but can be changed. If "
+"no system is selected, this name must be set manually (or a default will be "
+"generated on creation)."
+msgstr ""
+
+#. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__name
 msgid "Name method"
 msgstr "Ім'я методу"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__need_api_key
+msgid "Need API key"
+msgstr "Потрібен API ключ"
 
 #. module: ata_exchange_v4
 #: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_queue__state_exchange__new
@@ -521,9 +612,17 @@ msgid "Object exchange"
 msgstr "Об'єкт обміну"
 
 #. module: ata_exchange_v4
-#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_handler__type_request__outgoing
-msgid "Outgoing request"
-msgstr "Вихідний запит"
+#: model:ir.model.fields,help:ata_exchange_v4.field_ata_exchange_api_key__active
+msgid "Only active keys can be used for authentication."
+msgstr "Тільки активні ключі можуть бути використані для автентифікації."
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,help:ata_exchange_v4.field_ata_exchange_api_key__system_id
+msgid ""
+"Optional: Link this key to a pre-defined external system. If linked, the "
+"'Key Name / Owner' field will be automatically filled, but can still be "
+"manually overridden."
+msgstr ""
 
 #. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__param
@@ -548,6 +647,12 @@ msgid "Processing Date"
 msgstr "Дата виконання"
 
 #. module: ata_exchange_v4
+#. odoo-python
+#: code:addons/ata_exchange_v4/models/ata_exchange_base_requestdata.py:0
+msgid "Processing completed successfully"
+msgstr "Виконано успішно"
+
+#. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__proxy_login
 msgid "Proxy Login"
 msgstr "Логін проксі"
@@ -565,7 +670,7 @@ msgstr "ID запису"
 #. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__notification_queue_remove
 msgid "Removal from the exchange queue"
-msgstr "при видаленні з черги обміну"
+msgstr "При видаленні з черги обміну"
 
 #. module: ata_exchange_v4
 #. odoo-python
@@ -583,11 +688,6 @@ msgstr "Запит"
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__request_body
 msgid "Request Body"
 msgstr "Тіло запиту"
-
-#. module: ata_exchange_v4
-#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_handler__request_data
-msgid "Request Data"
-msgstr "Дані запиту"
 
 #. module: ata_exchange_v4
 #: model:ir.model,name:ata_exchange_v4.model_ata_exchange_base_requestdata
@@ -645,7 +745,7 @@ msgstr "Початок обміну"
 #. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__start_over_cron
 msgid "Start over cron"
-msgstr ""
+msgstr "Старт через cron"
 
 #. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__state_exchange
@@ -701,7 +801,9 @@ msgid ""
 "This action synchronizes the ID with an external system.\n"
 "            This is necessary if there is incoming traffic to Odoo, several exchange databases \n"
 "            and binding of object IDs to an external database."
-msgstr ""
+msgstr "Ця дія синхронізує ID із зовнішньою системою."
+"            Це необхідно, якщо є вхідний трафік в Odoo, кілька баз даних обміну "
+"            та прив'язка ID об'єктів до зовнішньої бази даних."
 
 #. module: ata_exchange_v4
 #: model:ir.actions.server,name:ata_exchange_v4.ata_exchange_queue_cron_ir_actions_server
@@ -722,11 +824,6 @@ msgstr "Передача даних з Odoo до зовнішньої систе
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__type
 msgid "Type"
 msgstr "Тип"
-
-#. module: ata_exchange_v4
-#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_handler__type_request
-msgid "Type Request"
-msgstr "Тип запиту"
 
 #. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__use_proxy
