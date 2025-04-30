@@ -26,8 +26,10 @@ class AtaExchangeBaseRequestdata(models.AbstractModel):
                     ext_systems = self.env["ata.exchange.domain"].get_ext_systems(None, method)
                     for ext_system in ext_systems:
                         model_handler.ata_exchange_requestdata_run(method, ext_system)
+                else:
+                    raise Exception(f"Method exchange '{method.name}' has a type other than 'request_data'")
             else:
-                _logger.exception(f"Method {method.name} has no model_id")
+                raise Exception(f"Method exchange '{method.name}' has no model_id")
 
     @api.model
     def ata_exchange_requestdata_action(self, methods: AtaExchangeMethod):
@@ -36,10 +38,12 @@ class AtaExchangeBaseRequestdata(models.AbstractModel):
             result_msg = _("Processing completed successfully")
             type = 'info'
         except ValueError as ve:
+            _logger.warning(str(ve))
             result_msg = f"ValueError: {str(ve)}"
             type = 'warning'
         except Exception as ex:
-            result_msg = f"Error: {str(ex)}"
+            _logger.warning(str(ex))
+            result_msg = str(ex)
             type = 'warning'
         return {
             'type': 'ir.actions.client',

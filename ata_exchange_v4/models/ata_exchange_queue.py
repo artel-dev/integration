@@ -152,7 +152,8 @@ class AtaExchangeQueue(models.Model):
                 else:
                     record.write({
                         'state_exchange': 'idle',
-                        'error_last': result_update.error,
+                        'error_last': result_update.error.get('message', False) \
+                            if isinstance(result_update.error, dict) else result_update.error,
                     })
 
     def exchange_immediately(self):

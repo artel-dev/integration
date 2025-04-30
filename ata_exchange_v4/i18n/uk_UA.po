@@ -697,7 +697,7 @@ msgstr "Модель базових даних запиту"
 #. module: ata_exchange_v4
 #: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_method__type__request_data
 msgid "Request data from external systems"
-msgstr "Дані запиту з зовнішніх систем"
+msgstr "Запит даних з зовнішніх систем"
 
 #. module: ata_exchange_v4
 #: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__resource_address

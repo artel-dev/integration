@@ -342,9 +342,9 @@ class AtaExchangeSystem(models.Model):
 
     def action_test_connection(self):
         answers = []
-        methods_http = ['GET', 'POST']
-
+        
         for record in self:
+            methods_http = ['POST'] if record.content_type == 'jsonrpc' else ['GET', 'POST']
             # check POST and GET query resource /check on ext. system
             for method_http in methods_http:
                 exchange_id = f'Model: {record._name}, Id: {record.id}'
