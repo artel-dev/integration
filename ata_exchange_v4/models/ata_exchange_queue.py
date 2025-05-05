@@ -1,9 +1,15 @@
-from odoo import api, fields, models, _
+from __future__ import annotations
 
-from typing import Tuple, List, Union, Dict, cast, Optional
+from odoo import api, fields, models, _
+from odoo.tools import config
+import logging
+import time
+from typing import Union, cast, Optional
 
 from .ata_exchange_method import AtaExchangeMethod as ExMethod
 from .ata_exchange_base   import AtaExchangeClass  as ExClass
+
+_logger = logging.getLogger(__name__)
 
 
 class AtaExchangeQueue(models.Model):
@@ -129,42 +135,60 @@ class AtaExchangeQueue(models.Model):
         records._check_ref_object()
 
     @api.model
-    def exchange(self, records=None):
+    def exchange(self):
         ExBase = self.env["ata.exchange.base"]
-        if not records:
-            records = self.sudo().search([
+        max_time_cpu = config['limit_time_cpu']
+        permitted_time = int(max_time_cpu * 0.5)
+        start_time = time.time()
+        
+        records = self if self else None
+        while True:
+            if records is not None and not records:
+                _logger.debug("No more records to process in the select records.")
+                break
+
+            elapsed_time = time.time() - start_time
+            if elapsed_time >= permitted_time:
+                _logger.info(f"Exchange time limit ({permitted_time}s) exceeded after {elapsed_time:.2f}s. Stopping.")
+                break
+
+            record_to_process = self.sudo().search([
                 ('state_exchange', 'in', ('new', 'idle'))
-            ], order="state_exchange DESC, attempt_number", limit=10)
+            ], order="state_exchange DESC, attempt_number", limit=1) \
+                if records is None else records[0]
 
-        records = records._check_ref_object()
+            if not record_to_process:
+                _logger.debug("No more records to process in the queue.")
+                break
 
-        records.write({'state_exchange': 'in_exchange'})
+            record_to_process = record_to_process._check_ref_object()
+            if not record_to_process:
+                if records:
+                    records -= record_to_process
+                continue
 
-        for record in records:
-            if (ref_object_exclass := record.get_ref_object_as_exclass()):
-                result_update = ExBase.exchange_outgoing_data(ref_object_exclass, record.method)
+            record_to_process.write({'state_exchange': 'in_exchange'})
+            if (ref_object_exclass := record_to_process.get_ref_object_as_exclass()):
+                result_update = ExBase.exchange_outgoing_data(ref_object_exclass, record_to_process.method)
                 if result_update.success:
-                    if record.method.notification_successful and (ref_object := record.get_ref_object_as_exclass()):
+                    if record_to_process.method.notification_successful and (ref_object := record_to_process.get_ref_object_as_exclass()):
                         ref_object.ata_exchange_notification(_("Exchange successful"))
-                
+
                 if result_update.delete_queue:
-                    record.unlink()
-                else:
-                    record.write({
+                    record_to_process.unlink()
+                
+                if result_update.error:
+                    record_to_process.write({
                         'state_exchange': 'idle',
                         'error_last': result_update.error.get('message', False) \
                             if isinstance(result_update.error, dict) else result_update.error,
                     })
 
-    def exchange_immediately(self):
-        records = self.sudo().search([
-            ('state_exchange', '=', 'new')
-        ], limit=10)
-        records.write({'state_exchange': 'idle'})
-        self.exchange(records)
+                if records:
+                    records -= record_to_process
 
     def action_start_exchange(self):
-        self.exchange(self)
+        self.exchange()
 
     @api.model_create_multi
     def create(self, vals_list):

@@ -31,7 +31,7 @@
             <list>
                 <header>
                     <button name="action_start_exchange" string="Start exchange"
-                            type="object" class="oe_highlight" />
+                        type="object" class="oe_highlight" />
                 </header>
                 <field name="ref_object" widget="reference"/>
                 <field name="state_exchange"/>
