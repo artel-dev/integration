@@ -4,6 +4,7 @@ from odoo import api, fields, models, _
 from odoo.tools import config
 import logging
 import time
+from datetime import timedelta, datetime
 from typing import Union, cast, Optional
 
 from .ata_exchange_method import AtaExchangeMethod as ExMethod
@@ -19,6 +20,8 @@ class AtaExchangeQueue(models.Model):
     _name = "ata.exchange.queue"
     _description = "Exchange queue objects with external systems"
     _inherit = ['ata.exchange.method.mixing']
+
+    TIMEOUT_IN_EXCHANGE_MINUTES = 30
 
     ref_object = fields.Reference(
         selection='_selection_ref_object_model',
@@ -36,6 +39,7 @@ class AtaExchangeQueue(models.Model):
         string='Attempt number',
         default=0)
     error_last = fields.Text(string="Last error")
+    date_start = fields.Datetime(string="Date start")    
 
     # region [ref_object] fold
     @api.model
@@ -153,8 +157,19 @@ class AtaExchangeQueue(models.Model):
                 break
 
             record_to_process = self.sudo().search([
-                ('state_exchange', 'in', ('new', 'idle'))
-            ], order="state_exchange DESC, attempt_number", limit=1) \
+                '&',
+                '|',
+                    ('date_start', '=', False),
+                    ('date_start', '<', fields.Datetime.to_string(datetime.fromtimestamp(start_time))),
+                '|',
+                    ('state_exchange', 'in', ('new', 'idle')), 
+                    '&',
+                        ('state_exchange', '=', 'in_exchange'),
+                        '|',
+                            ('date_start', '=', False),
+                            ('date_start', '<', fields.Datetime.to_string(fields.Datetime.now() -
+                                timedelta(minutes=AtaExchangeQueue.TIMEOUT_IN_EXCHANGE_MINUTES)))
+            ], order="state_exchange DESC, date_start", limit=1) \
                 if records is None else records[0]
 
             if not record_to_process:
@@ -192,6 +207,9 @@ class AtaExchangeQueue(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            vals["date_start"] = fields.Datetime.now()
+
         records = super().create(vals_list)
         for record in records:
             if record.method.notification_queue_add and (ref_object:=record.get_ref_object_as_exclass()):
@@ -204,6 +222,7 @@ class AtaExchangeQueue(models.Model):
             # при додаванні на обмін збільшуємо лічильник спроб
             super(AtaExchangeQueue, record).write({
                 **vals,
+                "date_start": fields.Datetime.now(),
                 **({"attempt_number": record.attempt_number + 1}
                     if "state_exchange" in vals and vals.get("state_exchange", False) == 'in_exchange'
                     else {})

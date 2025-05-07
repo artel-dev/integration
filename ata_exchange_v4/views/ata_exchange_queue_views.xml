@@ -15,6 +15,7 @@
                                 <field name="ref_object" options="{'no_create': True}" required="1"/>
                                 <field name="state_exchange" readonly="not id"/>
                                 <field name="attempt_number" readonly="1"/>
+                                <field name="date_start" readonly="1"/>
                                 <field name="error_last"/>
                             </group>
                         </page>
