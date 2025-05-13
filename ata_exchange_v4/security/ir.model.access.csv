@@ -5,6 +5,7 @@ access_ata_exchange_system_admin,ata.exchange.system,model_ata_exchange_system,b
 access_ata_exchange_system_parameters_admin,ata.exchange.system.parameters,model_ata_exchange_system_parameters,base.group_system,1,1,1,1
 access_ata_exchange_log_user,ata.exchange.log,model_ata_exchange_log,base.group_user,1,1,1,1
 access_ata_exchange_log_admin,ata.exchange.log,model_ata_exchange_log,base.group_system,1,1,1,1
+access_ata_exchange_log_public,ata.exchange.log,model_ata_exchange_log,base.group_public,1,1,1,0
 access_ata_exchange_queue_user,ata.exchange.queue,model_ata_exchange_queue,base.group_user,1,1,1,1
 access_ata_exchange_queue_admin,ata.exchange.queue,model_ata_exchange_queue,base.group_system,1,1,1,1
 access_ata_exchange_queue_usage_user,ata.exchange.queue.usage,model_ata_exchange_queue_usage,base.group_user,1,0,0,0
@@ -14,7 +15,7 @@ access_ata_exchange_domain_admin,ata.exchange.domain,model_ata_exchange_domain,b
 access_ata_exchange_method_user,ata.exchange.method,model_ata_exchange_method,base.group_user,1,0,0,0
 access_ata_exchange_method_admin,ata.exchange.method,model_ata_exchange_method,base.group_system,1,1,1,1
 access_ata_exchange_handler,access_ata_exchange_handler,model_ata_exchange_handler,base.group_user,1,0,0,0
-access_ata_exchange_matching_id_portal,access_ata_exchange_matching_id_portal,model_ata_exchange_matching_id,base.group_portal,1,1,1,1
-access_ata_exchange_matching_id_admin,access_ata_exchange_matching_id_admin,model_ata_exchange_matching_id,base.group_system,1,1,1,1
-access_ata_exchange_matching_id_user,access_ata_exchange_matching_id_user,model_ata_exchange_matching_id,base.group_user,1,0,0,0
+access_ata_exchange_incoming_matching_data_portal,access_ata_exchange_incoming_matching_data_portal,model_ata_exchange_incoming_matching_data,base.group_portal,1,1,1,1
+access_ata_exchange_incoming_matching_data_admin,access_ata_exchange_incoming_matching_data_admin,model_ata_exchange_incoming_matching_data,base.group_system,1,1,1,1
+access_ata_exchange_incoming_matching_data_user,access_ata_exchange_incoming_matching_data_user,model_ata_exchange_incoming_matching_data,base.group_user,1,0,0,0
 access_ata_exchange_api_key_system,ata.exchange.api.key system,model_ata_exchange_api_key,base.group_system,1,1,1,1

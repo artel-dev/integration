@@ -1,8 +1,10 @@
 import logging
 from odoo.exceptions import ValidationError, UserError
 
-from odoo import http
+from odoo import http, fields
 from odoo.http import request
+
+from odoo.addons.ata_exchange_v4.models.ata_exchange_log import ExchangeLog
 
 from .jsonrpc_errors import (
     ApiKeyMissingError,
@@ -18,6 +20,9 @@ _logger = logging.getLogger(__name__)
 class AtaExchangeIncomingController(http.Controller):
     @http.route('/api/ata_exchange_v4/<string:method_name>', type='ata_json', auth='public', csrf=False, methods=['POST'])
     def method_request(self, method_name=None, **kwargs):
+        # start logging incoming request
+        ata_log = self.create_exchange_log()
+
         """Handles incoming JSON requests for specific methods."""
         env = request.env
 
@@ -25,8 +30,14 @@ class AtaExchangeIncomingController(http.Controller):
         # Using sudo() as specific method access isn't tied to public user
         try:
             request_body = env['ata.exchange.json'].sudo().loads(request.httprequest.data)
+            self.update_exchange_log(ata_log, {
+                'request_body': request_body,
+            })
             #TODO check structure fields of request body
         except Exception as e:
+            self.update_exchange_log(ata_log, {
+                'request_body': "Invalid JSON request",
+            })
             raise InvalidJsonError(method_name, e)
 
         if method_name == 'jsonrpc':
@@ -71,6 +82,12 @@ class AtaExchangeIncomingController(http.Controller):
                 ext_system=ext_system,
                 req_body=request_data
             )
+            self.update_exchange_log(ata_log, {
+                'method_name': method_exchange_name,
+                'system_id': ext_system.id if ext_system else None,
+                'response': response_body,
+                'finish_date': fields.Datetime.now(),
+            })
             return response_body
         except ValidationError as e:
             raise InvalidJsonError(method_exchange_name, e)
@@ -79,3 +96,17 @@ class AtaExchangeIncomingController(http.Controller):
         except Exception as e:
             _logger.exception(f"Unexpected error processing request for method '{method_exchange_name}': {e}")
             raise ServerError(f"Unexpected error processing request for method '{method_exchange_name}'.")
+
+    def create_exchange_log(self) -> ExchangeLog:
+        log_vals = {
+            'name': 'Incoming request',
+            'start_date': fields.Datetime.now(),
+        }
+
+        ata_log = request.env['ata.exchange.log'].create(log_vals)
+        request.env.cr.commit()
+
+        return ata_log
+
+    def update_exchange_log(self, ata_log: ExchangeLog, vals: dict):
+        ata_log.write(vals)
