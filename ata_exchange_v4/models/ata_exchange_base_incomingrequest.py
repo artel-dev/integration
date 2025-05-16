@@ -3,11 +3,10 @@ from odoo import models
 from abc import abstractmethod
 import logging
 
-# Import necessary types
-from .ata_exchange_method import AtaExchangeMethod
-from .ata_exchange_system import AtaExchangeSystem
+from .ata_exchange_base_incomingrequest_types import IncomingRequestParam
 
 _logger = logging.getLogger(__name__)
+
 
 class AtaExchangeBaseIncomingrequest(models.AbstractModel):
     """
@@ -18,17 +17,15 @@ class AtaExchangeBaseIncomingrequest(models.AbstractModel):
     _description = "Base Model for Incoming API Request Handlers"
 
     @abstractmethod
-    def ata_exchange_incomingrequest_run(
-            self, method: AtaExchangeMethod,
-            ext_system: AtaExchangeSystem | None,
-            req_body: dict) -> dict:
+    def ata_exchange_incomingrequest_run(self, params: IncomingRequestParam) -> dict:
         """
         Abstract method to be implemented by specific incoming request handlers.
         Processes the data received in an incoming API request.
 
-        :param method: The ata.exchange.method record that triggered this handler.
-        :param ext_system: The ata.exchange.system record identified by the API key (or None).
-        :param req_body: The parsed JSON body of the incoming request.
+        :param params: A TypedDict containing the necessary parameters:
+                       - method: The 'ata.exchange.method' record.
+                       - ext_system: The 'ata.exchange.system' record (can be None).
+                       - req_body: The parsed JSON body of the incoming request.
         :return: A dictionary representing the JSON response body.
         :raises: Implementation specific exceptions (e.g., ValidationError, UserError, werkzeug exceptions).
         """

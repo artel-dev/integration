@@ -45,11 +45,12 @@ class AtaExchangeHandler(models.AbstractModel):
         # Call the ata_exchange_incomingrequest method on the target model instance
         try:
             # Use sudo() for potential broad access needs within the run method.
-            response_data = target_model_instance.sudo().ata_exchange_incomingrequest_run(
-                method=method,
-                ext_system=ext_system,
-                req_body=req_body
-            )
+            response_data = target_model_instance.sudo().ata_exchange_incomingrequest_run({
+                'method': method,
+                'ext_system': ext_system,
+                'req_body': req_body,
+                'req_body_data': req_body.get('data', {}) if isinstance(req_body, dict) else None
+            })
 
             _logger.debug(f"ata_exchange_incomingrequest for exchange method '{method.name}' executed successfully.")
             return response_data

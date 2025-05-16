@@ -2,7 +2,7 @@ from odoo import fields, models, api
 
 from .ata_exchange_method import AtaExchangeMethod
 from .ata_exchange_system import AtaExchangeSystem
-
+from odoo.addons.ata_exchange_v4.models.ata_exchange_base_incomingrequest_types import IncomingRequestParam
 
 class AtaExchangeIncomingMatchingData(models.Model):
     _name = "ata.exchange.incoming.matching.data"
@@ -33,25 +33,24 @@ class AtaExchangeIncomingMatchingData(models.Model):
 
     @api.model
     def get_matching_data(self,
-        method: AtaExchangeMethod,
-        ext_system: AtaExchangeSystem | None,
-        id_data: str) -> 'AtaExchangeIncomingMatchingData':
+        params: IncomingRequestParam,
+        id_object: str) -> 'AtaExchangeIncomingMatchingData':
         
         return self.search([
-            ('method_id', '=', method.id),
-            ('ext_system_id', '=', ext_system.id if ext_system else False),
-            ('ext_object_id', '=', id_data)
+            ('method_id', '=', params['method'].id),
+            ('ext_system_id', '=', params['ext_system'].id if params['ext_system'] else False),
+            ('ext_object_id', '=', id_object)
         ], limit=1)
 
     def save_matching_data(self,
-        method: AtaExchangeMethod,
-        ext_system: AtaExchangeSystem | None,
-        id_data: str, matching_data: dict) -> None:
-        
+        params: IncomingRequestParam,
+        id_object: str,
+        matching_data: dict) -> None:
+
         vals = {
-            'method_id': method.id,
-            'ext_system_id': ext_system.id if ext_system else False,
-            'ext_object_id': id_data,
+            'method_id': params['method'].id,
+            'ext_system_id': params['ext_system'].id if params['ext_system'] else False,
+            'ext_object_id': id_object,
             'matching_data': matching_data
         }
         

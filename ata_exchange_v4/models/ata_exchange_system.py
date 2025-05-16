@@ -11,7 +11,8 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-from .ata_exchange_mixin import ExtResponse, ExtRequest, ExtRequestMethodParameters
+from .ata_exchange_system_types import ExtResponse, ExtRequest, ExtRequestMethodParameters
+
 
 class AtaExchangeSystem(models.Model):
     """
@@ -362,7 +363,9 @@ class AtaExchangeSystem(models.Model):
 
         if ext_response:
             if ext_response['error']:
-                result = ext_response['error_msg']
+                result = ext_response['error_msg'].get('message', False) \
+                    if isinstance(ext_response['error_msg'], dict) else ext_response['error_msg']
+                # result = ext_response['error_msg']
             elif (response_data := ext_response['result_json']) and isinstance(response_data, dict):
                 result = response_data.get('status', False)
             else:
@@ -376,7 +379,7 @@ class AtaExchangeSystem(models.Model):
             'params': {
                 'title': 'Result synchronization',
                 'type': 'info',
-                'message': f'Synchronization: {str(result)}',
+                'message': str(result),
                 'sticky': False
             }
         }
