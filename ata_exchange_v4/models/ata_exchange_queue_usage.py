@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 
-from .ata_exchange_method import AtaExchangeMethod as ExMethod
+from .ata_exchange_method import AtaExchangeMethod
 
 
 class AtaExchangeQueueUsage(models.Model):
@@ -18,14 +18,14 @@ class AtaExchangeQueueUsage(models.Model):
             record.immediate = min(record.immediate, bool(record.method))
 
     @api.model
-    def use_exchange_queue(self, method: ExMethod) -> bool:
+    def use_exchange_queue(self, method: AtaExchangeMethod) -> bool:
         return bool(self.search([
             ('method', 'in', (method.id, False)),
             ('usage', "=", True)
         ]))
 
     @api.model
-    def use_immediate_exchange(self, method: ExMethod) -> bool:
+    def use_immediate_exchange(self, method: AtaExchangeMethod) -> bool:
         return bool(self.search([
             ('method', '=', method.id),
             ('usage', "=", True),

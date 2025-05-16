@@ -2,7 +2,7 @@
 <odoo noupdate="0">
     <record id="ata_exchange_queue_cron" model="ir.cron">
         <field name="name">ToDo: Exchange queue with external systems</field>
-        <field name="model_id" ref="model_ata_exchange_base"/>
+        <field name="model_id" ref="model_ata_exchange_mixin"/>
         <field name="state">code</field>
         <field name="code">model.cron_exchange()</field>
         <field name="interval_number">10</field>

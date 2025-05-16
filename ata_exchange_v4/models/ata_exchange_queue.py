@@ -7,8 +7,8 @@ import time
 from datetime import timedelta, datetime
 from typing import Union, cast, Optional
 
-from .ata_exchange_method import AtaExchangeMethod as ExMethod
-from .ata_exchange_base   import AtaExchangeClass  as ExClass
+from .ata_exchange_method import AtaExchangeMethod
+from .ata_exchange_class  import AtaExchangeClass
 
 _logger = logging.getLogger(__name__)
 
@@ -76,11 +76,11 @@ class AtaExchangeQueue(models.Model):
         to_unlink.unlink()
         return self - to_unlink
 
-    def get_ref_object_as_exclass(self) -> Union[ExClass, None]:
+    def get_ref_object_as_exclass(self) -> Union[AtaExchangeClass, None]:
         self.ensure_one()
         ref_object = self.ref_object_model
-        if isinstance(ref_object, ExClass):
-            return cast(ExClass, ref_object)
+        if isinstance(ref_object, AtaExchangeClass):
+            return cast(AtaExchangeClass, ref_object)
         return None
     # endregion
 
@@ -94,8 +94,8 @@ class AtaExchangeQueue(models.Model):
         return records
 
     @api.model
-    def add_to_queue(self, record: ExClass):
-        ExBase = self.env["ata.exchange.base"]
+    def add_to_queue(self, record: AtaExchangeClass):
+        ExBase = self.env["ata.exchange.base.outgoingdata"]
         if isinstance(record.id, api.NewId):
             return False
 
@@ -107,7 +107,7 @@ class AtaExchangeQueue(models.Model):
                     ExBase.exchange_outgoing_data(record, method)
 
     @api.model
-    def _add_to_queue(self, records: ExClass, method: ExMethod):
+    def _add_to_queue(self, records: AtaExchangeClass, method: AtaExchangeMethod):
         for record in records:
             ref_record = self._fields['ref_object'].convert_to_cache(record, self)
             if ref_record is not None:
@@ -140,7 +140,7 @@ class AtaExchangeQueue(models.Model):
 
     @api.model
     def exchange(self):
-        ExBase = self.env["ata.exchange.base"]
+        ExBase = self.env["ata.exchange.base.outgoingdata"]
         max_time_cpu = config['limit_time_cpu']
         permitted_time = int(max_time_cpu * 0.5)
         start_time = time.time()

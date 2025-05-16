@@ -32,8 +32,10 @@ class AtaExchangeIncomingMatchingData(models.Model):
     )]
 
     @api.model
-    def get_matching_data(self, method: AtaExchangeMethod, ext_system: AtaExchangeSystem | None, id_data: str) \
-        -> 'AtaExchangeIncomingMatchingData':
+    def get_matching_data(self,
+        method: AtaExchangeMethod,
+        ext_system: AtaExchangeSystem | None,
+        id_data: str) -> 'AtaExchangeIncomingMatchingData':
         
         return self.search([
             ('method_id', '=', method.id),
@@ -41,9 +43,10 @@ class AtaExchangeIncomingMatchingData(models.Model):
             ('ext_object_id', '=', id_data)
         ], limit=1)
 
-    @api.model
-    def save_matching_data(self, method: AtaExchangeMethod, ext_system: AtaExchangeSystem | None, id_data: str, matching_data: dict) \
-        -> 'AtaExchangeIncomingMatchingData':
+    def save_matching_data(self,
+        method: AtaExchangeMethod,
+        ext_system: AtaExchangeSystem | None,
+        id_data: str, matching_data: dict) -> None:
         
         vals = {
             'method_id': method.id,
@@ -51,10 +54,8 @@ class AtaExchangeIncomingMatchingData(models.Model):
             'ext_object_id': id_data,
             'matching_data': matching_data
         }
-        matching_data_id = self.get_matching_data(method, ext_system, id_data)
-        if matching_data_id:
-            matching_data_id.write(vals)
+        
+        if self:
+            self.write(vals)
         else:
-            matching_data_id = self.create([vals])
-
-        return matching_data_id
+            self.create([vals])

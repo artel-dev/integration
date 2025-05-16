@@ -3,54 +3,15 @@ from odoo.exceptions import UserError
 
 import base64
 from datetime import datetime
-import logging
 from requests_toolbelt import MultipartEncoder
 import requests
 from requests.auth import HTTPBasicAuth
 from requests.structures import CaseInsensitiveDict
-from typing import TypedDict, Optional, Any
+import logging
 
 _logger = logging.getLogger(__name__)
 
-
-class ExtResponse(TypedDict):
-    result: str
-    result_json: Optional[dict]
-    status_code: Optional[int]
-    error: bool
-    error_msg: str    
-    start_date: Optional[datetime]
-    finish_date: Optional[datetime]
-    headers: CaseInsensitiveDict
-
-class ExtRequestMethodParameters(TypedDict):
-    # parameters for request.method()
-    http_method: str
-    url: str
-    params: dict|MultipartEncoder
-    request_body: str|dict|list
-    headers: CaseInsensitiveDict
-    auth: Optional[HTTPBasicAuth]
-    token: str
-
-class ExtRequest(TypedDict):
-    # general
-    name: Optional[str]
-    create_date: datetime
-    method_name: Optional[str]
-    exchange_id: Optional[str]
-    
-    method_params: ExtRequestMethodParameters
-    
-    # execution parameters
-    timeout: int
-    is_executed: bool   # is request executed
-    execution_date: Optional[datetime]
-    is_processed: bool  # is request processed
-    processing_date: Optional[datetime]
-
-    response: Optional[ExtResponse]
-    
+from .ata_exchange_mixin import ExtResponse, ExtRequest, ExtRequestMethodParameters
 
 class AtaExchangeSystem(models.Model):
     """
@@ -315,7 +276,7 @@ class AtaExchangeSystem(models.Model):
 
     def create_exchange_log(self, ext_request: ExtRequest):
         if ext_request["method_name"]:
-            log_vals = {
+            log_val = {
                 'name': f'{ext_request["exchange_id"]}',
                 'system_id': self["id"],
                 'server_address': self.server_address,
@@ -330,14 +291,14 @@ class AtaExchangeSystem(models.Model):
                 'processing_date': ext_request["processing_date"],
             }
             if (ext_response:=ext_request["response"]):
-                log_vals.update({
+                log_val.update({
                     'status_code': ext_response["status_code"],
                     'start_date': ext_response["start_date"],
                     'finish_date': ext_response["finish_date"],
                     'response': ext_response["result"],
                 })
 
-            self.env['ata.exchange.log'].create(log_vals)
+            self.env['ata.exchange.log'].create([log_val])
             self.env.cr.commit()
 
     def action_test_connection(self):

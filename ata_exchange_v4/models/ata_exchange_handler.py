@@ -1,8 +1,8 @@
 from odoo import models, api
 from odoo.exceptions import UserError, ValidationError, AccessError
-from odoo.addons.ata_exchange_v4.models.ata_exchange_system import AtaExchangeSystem as ExSystem
-from odoo.addons.ata_exchange_v4.models.ata_exchange_method import AtaExchangeMethod as ExMethod
-from odoo.addons.ata_exchange_v4.models.ata_exchange_base_incomingrequest import AtaExchangeBaseIncomingrequest
+from .ata_exchange_system import AtaExchangeSystem
+from .ata_exchange_method import AtaExchangeMethod
+from .ata_exchange_base_incomingrequest import AtaExchangeBaseIncomingrequest
 
 import logging
 from odoo.addons.ata_exchange_v4.controllers.jsonrpc_errors import (
@@ -17,7 +17,7 @@ class AtaExchangeHandler(models.AbstractModel):
     _description = "Exchange Handler Dispatcher"
 
     @api.model
-    def process_incoming_request(self, method: ExMethod, ext_system: ExSystem | None, req_body: dict) -> dict:
+    def process_incoming_request(self, method: AtaExchangeMethod, ext_system: AtaExchangeSystem | None, req_body: dict) -> dict:
         """
         Processes an incoming request by finding the correct handler model
         (defined in method.model_id) and calling its ata_exchange_incomingrequest_run method.
