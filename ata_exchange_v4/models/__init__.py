@@ -10,6 +10,8 @@ from . import ata_exchange_base_incomingrequest_types
 from . import ata_exchange_base_incomingrequest
 from . import ata_exchange_domain
 from . import ata_exchange_handler
+from . import ata_exchange_model_handler
+from . import ata_exchange_model_handler_mixin
 from . import ata_exchange_log
 from . import ata_exchange_queue, ata_exchange_queue_usage
 from . import ata_exchange_json

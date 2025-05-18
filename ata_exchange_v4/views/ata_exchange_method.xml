@@ -42,7 +42,7 @@
         <field name="binding_model_id" ref="model_ata_exchange_method"/>
         <field name="state">code</field>
         <field name="code">
-            action = env['ata.exchange.mixin'].ata_exchange_requestdata_action(env['ata.exchange.method'].browse(env.context.get('active_ids', [])))
+            action = env['ata.exchange.mixin'].requestdata_action(env['ata.exchange.method'].browse(env.context.get('active_ids', [])))
         </field>
     </record>
 

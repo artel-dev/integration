@@ -16,8 +16,6 @@ class AtaExchangeClass(models.AbstractModel):
     _name = "ata.exchange.class"
     _description = "Exchange class extension"
 
-    _inherit = ['ata.exchange.mixin']
-
     # потрібно для визначення чи модель потрібно направляти на додавання в чергу або обмін
     # також використувується для формування структури пакету даних
     ATA_EXCHANGE_NODE_NAME = ""
@@ -151,7 +149,7 @@ class AtaExchangeClass(models.AbstractModel):
     @api.model
     def ata_exchange_get_request_body(self, method: AtaExchangeMethod, request_data: Union[List[Dict], Dict, str]) -> Dict:
         return {
-            **self.get_meta_data(),
+            **self.env['ata.exchange.mixin'].get_meta_data(),
             "data": request_data,
         }
 

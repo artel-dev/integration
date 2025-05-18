@@ -49,7 +49,7 @@ class AtaExchangeHandler(models.AbstractModel):
                 'method': method,
                 'ext_system': ext_system,
                 'req_body': req_body,
-                'req_body_data': req_body.get('data', {}) if isinstance(req_body, dict) else None
+                'req_body_data': req_body.get('data', {}) if isinstance(req_body, dict) else {}
             })
 
             _logger.debug(f"ata_exchange_incomingrequest for exchange method '{method.name}' executed successfully.")

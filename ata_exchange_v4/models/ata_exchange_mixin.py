@@ -7,7 +7,6 @@ from .ata_exchange_base_requestdata import AtaExchangeBaseRequestdata
 
 _logger = logging.getLogger(__name__)
 
-
 class AtaExchangeMixin(models.AbstractModel):
     _name = "ata.exchange.mixin"
     _description = "Exchange mixin"
@@ -29,9 +28,9 @@ class AtaExchangeMixin(models.AbstractModel):
             ('type', '=', 'request_data'),
             ('start_over_cron', '=', True)
         ])
-        self.ata_exchange_requestdata(methods)
+        self.requestdata_run(methods)
 
-    def ata_exchange_requestdata(self, methods: AtaExchangeMethod):
+    def requestdata_run(self, methods: AtaExchangeMethod):
         for method in methods:
             if method.model_id:
                 model_handler = self.env[method.model_id.model] # type: ignore
@@ -46,9 +45,9 @@ class AtaExchangeMixin(models.AbstractModel):
                 raise Exception(f"Method exchange '{method.name}' has no model_id")
 
     @api.model
-    def ata_exchange_requestdata_action(self, methods: AtaExchangeMethod):
+    def requestdata_action(self, methods: AtaExchangeMethod):
         try:
-            self.ata_exchange_requestdata(methods)
+            self.requestdata_run(methods)
             result_msg = _("Processing completed successfully")
             type = 'info'
         except ValueError as ve:

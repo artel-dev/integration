@@ -42,10 +42,20 @@ class AtaExchangeIncomingMatchingData(models.Model):
             ('ext_object_id', '=', id_object)
         ], limit=1)
 
+    @api.model
     def save_matching_data(self,
         params: IncomingRequestParam,
         id_object: str,
-        matching_data: dict) -> None:
+        add_matching_data: dict) -> None:
+
+        matching_id = self.get_matching_data(params, id_object)
+        if matching_id:
+            matching_data = {
+                **matching_id.matching_data,
+                **add_matching_data
+            }
+        else:
+            matching_data = add_matching_data
 
         vals = {
             'method_id': params['method'].id,
@@ -54,7 +64,7 @@ class AtaExchangeIncomingMatchingData(models.Model):
             'matching_data': matching_data
         }
         
-        if self:
-            self.write(vals)
+        if matching_id:
+            matching_id.write(vals)
         else:
             self.create([vals])
