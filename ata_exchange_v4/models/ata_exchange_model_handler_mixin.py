@@ -1,4 +1,5 @@
 from odoo import api, models
+from odoo.exceptions import UserError
 
 from typing import TypedDict, Any
 
@@ -54,6 +55,13 @@ class AtaExchangeModelHandlerMixin(models.AbstractModel):
     def ata_exchange_get_model_record(self, params: RecordHandlerParams) -> models.BaseModel:
         records = self.env['ata.exchange.model.handler'].model_handler(params)
         return next(iter(records), records)
+
+    @api.model
+    def ata_exchange_get_settings(self, param_name: str, block: str, Model: models.BaseModel) -> models.BaseModel:
+        if not (sett_id:=self.env['ir.config_parameter'].get_param(param_name)):
+            raise UserError(f"Setting '{param_name}' in {block} is not defined")
+        else:
+            return Model.browse(int(sett_id))
 
     @api.model
     def ata_exchange_prepare_vals(self, params: RecordHandlerParams) -> dict:

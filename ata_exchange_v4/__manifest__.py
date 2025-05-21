@@ -1,7 +1,7 @@
 {
     'name': 'Exchange between systems',
     'summary': 'Exchange between systems (ATA)',
-    'version': '18.0.1.4.13',
+    'version': '18.0.1.4.14',
     'author': 'gnezamay',
     'website': 'todo.ltd',
     'license': 'OPL-1',
@@ -21,7 +21,8 @@
         'views/ata_exchange_api_key_views.xml',
         'views/ata_exchange_log_views.xml',
         'views/ata_exchange_queue_views.xml',
-        'views/ata_exchange_queue_usage_views.xml',        
+        'views/ata_exchange_queue_usage_views.xml',  
+        'views/res_config_settings_views.xml',      
     ],
     'installable': True,
     'application': True,

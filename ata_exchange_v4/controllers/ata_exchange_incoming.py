@@ -1,8 +1,9 @@
 import logging
 from odoo.exceptions import ValidationError, UserError
 
-from odoo import http, fields
+from odoo import fields, http
 from odoo.http import request
+from datetime import datetime
 
 from odoo.addons.ata_exchange_v4.models.ata_exchange_log import ExchangeLog
 
@@ -86,7 +87,7 @@ class AtaExchangeIncomingController(http.Controller):
                 'method_name': method_exchange_name,
                 'system_id': ext_system.id if ext_system else None,
                 'response': response_body,
-                'finish_date': fields.Datetime.now(),
+                'finish_date': datetime.now(),
             })
             return response_body
         except ValidationError as e:
@@ -100,7 +101,7 @@ class AtaExchangeIncomingController(http.Controller):
     def create_exchange_log(self) -> ExchangeLog:
         log_vals = {
             'name': 'Incoming request',
-            'start_date': fields.Datetime.now(),
+            'start_date': datetime.now(),
         }
 
         ata_log = request.env['ata.exchange.log'].create(log_vals)
