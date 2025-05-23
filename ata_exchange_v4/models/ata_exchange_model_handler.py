@@ -17,16 +17,16 @@ class AtaExchangeModelHandler(models.AbstractModel):
             if (not records and params['create_record']) or params['write_record']:
                 if isinstance(Model, AtaExchangeModelHandlerMixin):
                     vals = Model.ata_exchange_prepare_vals(params)
-                
-                    if records:
-                        records.write(vals)
-                    else:
-                        records = Model.create([vals])
-
-                    self.save_matching_data(params, records)
                 else:
-                    raise ValueError("Model is not instance of AtaExchangeModelHandlerMixin")
+                    vals = params['data']
+                
+                if records:
+                    records.write(vals)
+                else:
+                    records = Model.create([vals])
 
+                self.save_matching_data(params, records)
+                
             return records
         else:
             raise ValueError("Data or model name is undefined")
@@ -46,7 +46,7 @@ class AtaExchangeModelHandler(models.AbstractModel):
             
             # search record in matching data
             search_id = matching_data.get(Model._name, False)
-            records = Model.browse(search_id)
+            records = Model.browse(search_id).exists()
 
         if not records and params['search_domain_second']:
             records = Model.search(params['search_domain_second'])
