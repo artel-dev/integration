@@ -9,54 +9,62 @@ class AtaExchangeModelHandler(models.AbstractModel):
     _description = "Exchange model handler"
 
     @api.model
-    def model_handler(self, params: RecordHandlerParams) -> models.BaseModel:
-        if params['model']:
-            Model = self.env[params['model']]
+    def model_handler(self,
+        record_params: RecordHandlerParams,
+        inc_req_params: IncomingRequestParam|None = None) -> models.BaseModel:
+
+        Model = record_params['model']
+        records = self.search_records(record_params, inc_req_params)
+        if (not records and record_params['create_record']) or record_params['write_record']:
+            if isinstance(Model, AtaExchangeModelHandlerMixin):
+                vals = Model.ata_exchange_prepare_vals(record_params, inc_req_params)
+            else:
+                vals = record_params['data']
             
-            records = self.search_records(params, Model)
-            if (not records and params['create_record']) or params['write_record']:
-                if isinstance(Model, AtaExchangeModelHandlerMixin):
-                    vals = Model.ata_exchange_prepare_vals(params)
-                else:
-                    vals = params['data']
-                
+            if vals:
                 if records:
                     records.write(vals)
                 else:
                     records = Model.create([vals])
 
-                self.save_matching_data(params, records)
-                
-            return records
-        else:
-            raise ValueError("Data or model name is undefined")
+                self.save_matching_data(records, record_params, inc_req_params)
+            
+        return records
 
     @api.model
-    def search_records(self, params: RecordHandlerParams, Model: models.BaseModel) -> models.BaseModel:
+    def search_records(self,
+        record_params: RecordHandlerParams,
+        inc_req_params: IncomingRequestParam|None = None) -> models.BaseModel:
+
+        Model = record_params['model']
         records = Model.browse(None)
         
-        if params['search_domain']:
-            records = Model.search(params['search_domain'])
+        if (search_domain:=record_params['search_params']['search_domain']):
+            records = Model.search(search_domain)
 
-        if not records and params['use_matching_data']:
+        if not records and inc_req_params and record_params['search_params']['use_matching_data']:
             # get matching data
-            id_object: str = params['incoming_request_params']['req_body_data'].get('id', False)
-            matching_id = self.env['ata.exchange.incoming.matching.data'].get_matching_data(params['incoming_request_params'], id_object)
+            id_matching: str = inc_req_params['req_body_data'].get('id_matching', False)
+            matching_id = self.env['ata.exchange.incoming.matching.data'].get_matching_data(inc_req_params, id_matching)
             matching_data: dict = matching_id.matching_data if matching_id else {}
             
             # search record in matching data
-            search_id = matching_data.get(Model._name, False)
+            search_id = matching_data.get(record_params['model_name'], False)
             records = Model.browse(search_id).exists()
 
-        if not records and params['search_domain_second']:
-            records = Model.search(params['search_domain_second'])
+        if not records and (search_domain_second:=record_params['search_params']['search_domain_second']):
+            records = Model.search(search_domain_second)
         
         return records
 
-    def save_matching_data(self, params: RecordHandlerParams, records: models.BaseModel) -> None:
-        if params['use_matching_data']:
-            id_object: str = params['incoming_request_params']['req_body_data'].get('id', False)
+    def save_matching_data(self,
+        records: models.BaseModel,
+        record_params: RecordHandlerParams,
+        inc_req_params: IncomingRequestParam|None = None) -> None:
+
+        if inc_req_params and record_params['search_params']['use_matching_data']:
+            id_object: str = inc_req_params['req_body_data'].get('id_matching', False)
             self.env['ata.exchange.incoming.matching.data'].save_matching_data(
-                params['incoming_request_params'],
+                inc_req_params,
                 id_object,
                 {records._name: records[0].id})        

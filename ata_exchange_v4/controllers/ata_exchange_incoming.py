@@ -33,12 +33,12 @@ class AtaExchangeIncomingController(http.Controller):
             request_body = env['ata.exchange.json'].sudo().loads(request.httprequest.data)
             self.update_exchange_log(ata_log, {
                 'request_body': request_body,
-            })
+            }, True)
             #TODO check structure fields of request body
         except Exception as e:
             self.update_exchange_log(ata_log, {
                 'request_body': "Invalid JSON request",
-            })
+            }, True)
             raise InvalidJsonError(method_name, e)
 
         if method_name == 'jsonrpc':
@@ -109,5 +109,7 @@ class AtaExchangeIncomingController(http.Controller):
 
         return ata_log
 
-    def update_exchange_log(self, ata_log: ExchangeLog, vals: dict):
+    def update_exchange_log(self, ata_log: ExchangeLog, vals: dict, commit: bool = False):
         ata_log.write(vals)
+        if commit:
+            request.env.cr.commit()

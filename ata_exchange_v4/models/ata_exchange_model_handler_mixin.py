@@ -1,21 +1,27 @@
 from odoo import api, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 from typing import TypedDict, Any
+from pydantic import BaseModel as BaseModelPydantic, ValidationError as ValidationErrorPydantic
 
 from .ata_exchange_base_incomingrequest_types import IncomingRequestParam
 
 
-class RecordHandlerParams(TypedDict):
-    incoming_request_params: IncomingRequestParam
-    data: dict
-    model: str | None
-    create_record: bool                     # create record if not found
-    write_record: bool                      # write data in record if found
-    use_matching_data: bool                 # use matching data for save pointer for record from external systems
+class SearchRecordHandlerParams(TypedDict):
     search_domain: list[tuple[str, str, Any]] | None  # domain for primary search record
     search_domain_second: list[tuple[str, str, Any]] | None  # domain for secondary search record (after matching)
-    
+    use_matching_data: bool  # use matching data for save pointer for record from external systems
+    matching_id: str | None
+
+
+class RecordHandlerParams(TypedDict):
+    data: dict
+    model_name: str
+    model: models.BaseModel
+    create_record: bool                     # create record if not found
+    write_record: bool                      # write data in record if found
+    search_params: SearchRecordHandlerParams
+
 
 class RecordHandlerResult(TypedDict):
     record: models.Model | None
@@ -28,32 +34,29 @@ class AtaExchangeModelHandlerMixin(models.AbstractModel):
 
     @api.model
     def ata_exchange_get_default_record_handler_params(self,
-        incoming_request_params: IncomingRequestParam,
-        data: dict = {}) -> RecordHandlerParams:
+        model_name: str) -> RecordHandlerParams:
 
         return {
-            'incoming_request_params': incoming_request_params,
-            'data': data,
-            'model': None,
-            'create_record': True,
+            'data': {},
+            'model_name': model_name,
+            'model': self.env[model_name],
+            'create_record': False,
             'write_record': False,
-            'use_matching_data': False,
-            'search_domain': None,
-            'search_domain_second': None,
+            'search_params': {                
+                'search_domain': None,
+                'search_domain_second': None,
+                'use_matching_data': False,
+                'matching_id': None
+            }
         }
 
-    def ata_exchange_get_clone_record_handler_params(self,
-        params: RecordHandlerParams,
-        data: dict = {}) -> RecordHandlerParams:
-        
-        return self.ata_exchange_get_default_record_handler_params(
-            incoming_request_params=params['incoming_request_params'],
-            data=data,
-        )
-
     @api.model
-    def ata_exchange_get_model_record(self, params: RecordHandlerParams) -> models.BaseModel:
-        records = self.env['ata.exchange.model.handler'].model_handler(params)
+    def ata_exchange_get_model_record(self,        
+        record_params: RecordHandlerParams,
+        inc_req_params: IncomingRequestParam|None = None) -> models.BaseModel:
+
+        records = self.env['ata.exchange.model.handler'].model_handler(record_params, inc_req_params)
+
         return next(iter(records), records)
 
     @api.model
@@ -63,6 +66,16 @@ class AtaExchangeModelHandlerMixin(models.AbstractModel):
         else:
             return Model.browse(int(sett_id))
 
+    def ata_exchange_process_data_with_pydantic(self, data: dict, pydantic_model: type[BaseModelPydantic]) -> BaseModelPydantic:
+        try:
+            return pydantic_model(**data)
+        except ValidationErrorPydantic as e:
+            error_message = f"Validation error data for sale.order: {str(e)}"
+            raise ValidationError(error_message) from e
+
     @api.model
-    def ata_exchange_prepare_vals(self, params: RecordHandlerParams) -> dict:
+    def ata_exchange_prepare_vals(self,
+        record_params: RecordHandlerParams,
+        inc_req_params: IncomingRequestParam|None = None) -> dict:
+
         return {}
