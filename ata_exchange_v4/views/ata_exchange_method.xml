@@ -18,6 +18,9 @@
                             <span class="fw-bold text-danger">Need API key</span>
                         </t>
                     </group>
+                    <group>
+                        <field name="resource_url"/>
+                    </group>
                     <notebook>
                         <page string="Notifications" name="notifications">
                             <group>

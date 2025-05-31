@@ -1,7 +1,7 @@
 {
     'name': 'Exchange between systems',
     'summary': 'Exchange between systems (ATA)',
-    'version': '18.0.1.4.16',
+    'version': '18.0.1.4.17',
     'author': 'gnezamay',
     'website': 'todo.ltd',
     'license': 'OPL-1',
@@ -25,5 +25,6 @@
         'views/res_config_settings_views.xml',      
     ],
     'installable': True,
+    'pre_init_hook': 'pre_init_hook',
     'application': True,
 }

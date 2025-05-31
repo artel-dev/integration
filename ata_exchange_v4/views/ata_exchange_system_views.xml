@@ -25,9 +25,10 @@
                                 <field name="server_port"/>
                                 <field name="resource_address"/>
                                 <field name="content_type"/>
-                                <field name="login"/>
-                                <field name="password" password="True"/>
-                                <field name="is_token_authentication"/>
+                                <field name="authentication_type"/>
+                                <field name="token_provider_method" invisible="authentication_type != 'token'" required="authentication_type == 'token'"/>
+                                <field name="login" invisible="authentication_type != 'basic'" required="authentication_type == 'basic'"/>
+                                <field name="password" password="True" invisible="authentication_type != 'basic'"/>
                                 <field name="use_proxy"/>
                                 <field name="proxy_login" invisible="not use_proxy"/>
                                 <field name="proxy_password" invisible="not use_proxy" password="True"/>
@@ -61,7 +62,7 @@
                 <field name="server_port"/>
                 <field name="resource_address"/>
                 <field name="content_type"/>
-                <field name="is_token_authentication"/>
+                <field name="authentication_type"/>
                 <field name="login"/>
                 <field name="description"/>
             </list>
@@ -83,10 +84,12 @@
                         domain="[('is_secure_connection', '=', True)]"/>
                 <filter name="filter_is_not_secure_connection" string="Not secure connection"
                         domain="[('is_secure_connection', '=', False)]"/>
-                <filter name="filter_is_token_authentication" string="Token authentication"
-                        domain="[('is_token_authentication', '=', True)]"/>
-                <filter name="filter_is_not_token_authentication" string="Not token authentication"
-                        domain="[('is_token_authentication', '=', False)]"/>
+                <filter name="filter_auth_none" string="No Authentication"
+                        domain="[('authentication_type', '=', 'none')]"/>
+                <filter name="filter_auth_basic" string="Basic Authentication"
+                        domain="[('authentication_type', '=', 'basic')]"/>
+                <filter name="filter_auth_token" string="Token Authentication"
+                        domain="[('authentication_type', '=', 'token')]"/>
             </search>
         </field>
     </record>

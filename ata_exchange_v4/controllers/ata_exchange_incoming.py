@@ -19,8 +19,8 @@ _logger = logging.getLogger(__name__)
 
 
 class AtaExchangeIncomingController(http.Controller):
-    @http.route('/api/ata_exchange_v4/<string:method_name>', type='ata_json', auth='public', csrf=False, methods=['POST'])
-    def method_request(self, method_name=None, **kwargs):
+    @http.route('/api/ata_exchange_v4/<string:method_incoming>', type='ata_json', auth='public', csrf=False, methods=['POST'])
+    def method_request(self, method_incoming=None, **kwargs):
         # start logging incoming request
         ata_log = self.create_exchange_log()
 
@@ -39,13 +39,13 @@ class AtaExchangeIncomingController(http.Controller):
             self.update_exchange_log(ata_log, {
                 'request_body': "Invalid JSON request",
             }, True)
-            raise InvalidJsonError(method_name, e)
+            raise InvalidJsonError(method_incoming, e)
 
-        if method_name == 'jsonrpc':
+        if method_incoming == 'jsonrpc':
             method_exchange_name = request_body.get('method')
             request_data = request_body.get('params')
         else:
-            method_exchange_name = method_name
+            method_exchange_name = method_incoming
             request_data = request_body
         
         method = env['ata.exchange.method'].sudo().search([

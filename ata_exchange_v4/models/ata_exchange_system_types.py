@@ -1,9 +1,12 @@
-from typing import TypedDict, Optional
+from typing import TypedDict, Optional, TYPE_CHECKING
 from datetime import datetime
 
+if TYPE_CHECKING:
+    from .ata_exchange_method import AtaExchangeMethod
 from requests.structures import CaseInsensitiveDict
 from requests_toolbelt import MultipartEncoder # type: ignore
 from requests.auth import HTTPBasicAuth
+
 
 
 class ExtResponse(TypedDict):
@@ -24,15 +27,18 @@ class ExtRequestMethodParameters(TypedDict):
     params: dict | MultipartEncoder
     request_body: str | dict | list
     headers: CaseInsensitiveDict
+    auth_type: Optional[str]
     auth: Optional[HTTPBasicAuth]
     token: str
+    valid_codes: list[int]
 
 
 class ExtRequest(TypedDict):
     # general
     name: Optional[str]
     create_date: datetime
-    method_name: Optional[str]
+    method: Optional['AtaExchangeMethod']
+    method_name: str
     exchange_id: Optional[str]
 
     method_params: ExtRequestMethodParameters

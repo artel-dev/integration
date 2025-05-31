@@ -6,7 +6,9 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside" >
-                <app data-string="Integration" string="Integration" name="td_yaroslav_exchange_base" groups="base.group_system" />                    
+                <app data-string="Integration" string="Integration" name="ata_exchange_v4" groups="base.group_system">                    
+                    <block title="Integration Settings" id="ata_exchange_settings"/>
+                </app>
             </xpath>
         </field>
     </record>

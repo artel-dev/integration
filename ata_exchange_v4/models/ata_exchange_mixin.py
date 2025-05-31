@@ -38,7 +38,7 @@ class AtaExchangeMixin(models.AbstractModel):
                     # get ext.systems for request
                     ext_systems = self.env["ata.exchange.domain"].get_ext_systems(None, method)
                     for ext_system in ext_systems:
-                        model_handler.ata_exchange_requestdata_run(method, ext_system)
+                        model_handler.requestdata_run(method, ext_system)
                 else:
                     raise Exception(f"Method exchange '{method.name}' has a type other than 'request_data'")
             else:

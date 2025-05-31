@@ -14,6 +14,6 @@ class AtaExchangeBaseRequestdata(models.AbstractModel):
     _description = "Request data base model"
 
     @abstractmethod
-    def ata_exchange_requestdata_run(self, methods: AtaExchangeMethod, ext_system: AtaExchangeSystem):
+    def requestdata_run(self, methods: AtaExchangeMethod, ext_system: AtaExchangeSystem):
         pass
     

@@ -67,25 +67,30 @@ class AtaExchangeBaseOutgoingdata(models.AbstractModel):
                     # request_data may be empty
                     if request_data:
                         ext_request = ext_system.get_init_extrequest()
-                        ext_request['method_name']  = method.name
+                        method.set_request_valid_codes(ext_request)
+                        
+                        ext_request['method']  = method
                         ext_request['name']  = f'{method.description}'
                         ext_request['exchange_id'] = record.ata_exchange_get_name()
-                        ext_request['method_params']['url'] = ext_system.get_url(ext_request)
-                        ext_request['method_params']['request_body'] = record.ata_exchange_get_request_body(method, request_data)
+                        ext_system.calc_url(ext_request)
+                        ext_request['method_params']['request_body'] = method.get_request_body(request_data)
 
-                        response_body = ext_system.execute(ext_request)
+                        ext_system.execute(ext_request)
                         
-                        if response_body:
-                            if not response_body['error']:
-                                # parse response body
-                                response_data, result_response_body_parse = record.ata_exchange_response_body_parse(method, response_body)
-                                if result_response_body_parse:
+                        if (response := method.read_response(ext_request)):
+                            if not response['error']:
+                                response_data = method.get_response_data(response)
+                                if response_data:
                                     # post-processing response data
                                     self._re_exchanged_add(record)
-                                    result = record.ata_exchange_response_post_processing(method, response_data)
+                                    result = method.response_post_processing(response, response_data, record)
                                     self._re_exchanged_delete(record)
+                                    error_msg = response['error_msg']
+                                else:
+                                    error_msg = "Response data is empty"
                             else:
-                                error_msg = response_body['error_msg']
+                                error_msg = response['error_msg']
+                                result = method.response_error_post_processing(response)
                         else:
                             error_msg = "Failed to receive a response from ext. systems."
                     else:

@@ -6,7 +6,6 @@ from datetime import date, datetime
 import logging
 
 from .ata_exchange_method import AtaExchangeMethod
-from .ata_exchange_system import ExtResponse
 from odoo.addons.mail.models.mail_thread import MailThread
 
 _logger = logging.getLogger(__name__)
@@ -78,17 +77,6 @@ class AtaExchangeClass(models.AbstractModel):
     def ata_exchange_get_data_record(self, method: AtaExchangeMethod, as_node = False) -> Union[List[Dict], Dict, str]:
         return {}
 
-    @api.model
-    def ata_exchange_response_body_parse(self, method: AtaExchangeMethod, response_body: ExtResponse) -> Tuple[Dict, bool]:
-        # typical parse response
-        response_data: dict = response_body['result_json'] or {}
-        result = response_data.get("status", False)
-
-        return response_data, result
-
-    def ata_exchange_response_post_processing(self, method: AtaExchangeMethod, response_data: dict) -> bool:
-        return True
-
     #endregion
 
     #region enqueue event
@@ -146,13 +134,6 @@ class AtaExchangeClass(models.AbstractModel):
         # пакет даних може бути пустим. Це робиться для зменшення розміру пакетів обміну
         return data if (data:=self.ata_exchange_get_data_record(method = method, as_node = True)) else {}
     
-    @api.model
-    def ata_exchange_get_request_body(self, method: AtaExchangeMethod, request_data: Union[List[Dict], Dict, str]) -> Dict:
-        return {
-            **self.env['ata.exchange.mixin'].get_meta_data(),
-            "data": request_data,
-        }
-
     def ata_exchange_get_name(self) -> str:
         return f'{self._name} ({self.id}), {"name" in self._fields and self["name"]}' \
             if isinstance(self, models.Model) else ''
