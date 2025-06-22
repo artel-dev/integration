@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ata_exchange_log_view_form" model="ir.ui.view">
+        <field name="name">Exchange log form view</field>
+        <field name="model">ata.exchange.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <notebook>
+                        <page string="General">
+                            <group>
+                                <field name="name"/>
+                                <field name="system_id"/>
+                                <field name="server_address"/>
+                                <field name="server_port"/>
+                                <field name="method_name"/>
+                                <field name="parameters"/>
+                                <field name="request"/>
+                                <field name="headers"/>
+                                <field name="status_code"/>
+                                <field name="create_date"/>
+                                <field name="is_executed"/>
+                                <field name="execution_date"/>
+                                <field name="is_processed"/>
+                                <field name="processing_date"/>
+                                <field name="start_date"/>
+                                <field name="finish_date"/>
+                                <field name="execution_time"/>
+                            </group>
+                        </page>
+                        <page string="Request">
+                            <field name="request_body"/>
+                        </page>
+                        <page string="Response">
+                            <field name="response"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ata_exchange_log_view_list" model="ir.ui.view">
+        <field name="name">Exchange log list view</field>
+        <field name="model">ata.exchange.log</field>
+        <field name="arch" type="xml">
+            <tree>
+                <header>
+                    <button name="action_delete_all" string="Delete all"
+                        type="object" confirm="Do you want to delete all entries from the exchange log?"/>
+                </header>
+                <field name="name"/>
+                <field name="system_id" optional="show"/>
+                <field name="server_address" optional="hide"/>
+                <field name="server_port" optional="hide"/>
+                <field name="method_name"/>
+                <field name="parameters" optional="show"/>
+                <field name="request" optional="hide"/>
+                <field name="response" optional="hide"/>
+                <field name="headers" optional="hide"/>
+                <field name="status_code"/>
+                <field name="create_date" optional="hide"/>
+                <field name="is_executed" optional="hide"/>
+                <field name="execution_date" optional="hide"/>
+                <field name="is_processed" optional="hide"/>
+                <field name="processing_date" optional="hide"/>
+                <field name="start_date" optional="show"/>
+                <field name="finish_date" optional="hide"/>
+                <field name="execution_time"/>
+                <field name="day_delta" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ata_exchange_log_view_search" model="ir.ui.view">
+        <field name="name">Exchange log search view</field>
+        <field name="model">ata.exchange.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="method_name"/>
+                <field name="headers"/>
+                <field name="status_code"/>
+                <field name="execution_time"/>
+                <filter name="start_date" date="start_date"/>
+                <filter name="finish_date" date="finish_date"/>
+                <filter name="filter_status_code_200" string="Status: OK"
+                        domain="[('status_code', '=', 200)]"/>
+                <filter name="filter_status_code_error" string="Status: Error"
+                        domain="[('status_code', '&gt;', 0), ('status_code', '!=', 200)]"/>
+                <group>
+                    <filter name="groupby_method_name" context="{'group_by': 'method_name'}"/>
+                    <filter name="groupby_status_code" context="{'group_by': 'status_code'}"/>
+                    <filter name="groupby_start_date" context="{'group_by': 'start_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="ata_exchange_log_action" model="ir.actions.act_window">
+        <field name="name">Exchange log</field>
+        <field name="res_model">ata.exchange.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="ata_exchange_log_menu"
+            name="Exchange log"
+            parent="ata_exchange_menu_general"
+            action="ata_exchange_log_action"
+            sequence="30"
+    />
+
+</odoo>

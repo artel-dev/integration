@@ -1,0 +1,851 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ata_exchange_v4
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-25 08:00+0000\n"
+"PO-Revision-Date: 2025-04-25 08:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_method_view_form
+msgid "<span class=\"fw-bold text-danger\">Need API key</span>"
+msgstr "<span class=\"fw-bold text-danger\">Потрібен API ключ</span>"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__api_key
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.view_ata_exchange_api_key_form
+msgid "API Key"
+msgstr "API ключ"
+
+#. module: ata_exchange_v4
+#: model:ir.model.constraint,message:ata_exchange_v4.constraint_ata_exchange_api_key_api_key_uniq
+msgid "API Key must be unique!"
+msgstr "API ключ повинен бути унікальним!"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.act_window,name:ata_exchange_v4.action_ata_exchange_api_key
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__api_key_ids
+#: model:ir.ui.menu,name:ata_exchange_v4.menu_ata_exchange_api_keys
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.view_ata_exchange_api_key_list
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.view_ata_exchange_system_form_add_api_keys
+msgid "API Keys"
+msgstr "API ключі"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,help:ata_exchange_v4.field_ata_exchange_system__api_key_ids
+msgid "API Keys associated with this system."
+msgstr "API ключі, пов'язані з цією системою."
+
+#. module: ata_exchange_v4
+#: model_terms:ir.actions.act_window,help:ata_exchange_v4.action_ata_exchange_api_key
+msgid "API keys are used to authenticate external systems accessing the API."
+msgstr "API ключі використовуються для автентифікації зовнішніх систем, що підключаються до API."
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__active
+msgid "Active"
+msgstr "Активний"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_domain_view_form
+msgid "Add filtering records to exchange queue"
+msgstr "Додати відібрані записи в чергу обміну"
+
+#. module: ata_exchange_v4
+#. odoo-python
+#: code:addons/ata_exchange_v4/models/ata_exchange_queue.py:0
+msgid "Added to the exchange queue"
+msgstr "Додати в чергу обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__notification_queue_add
+msgid "Addition to the exchange queue"
+msgstr "при додаванні в чергу обміну"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_queue_usage_view_form
+msgid "All methods"
+msgstr "Всі методи обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__attempt_number
+msgid "Attempt number"
+msgstr "Номер спроби"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_base_incomingrequest
+msgid "Base Model for Incoming API Request Handlers"
+msgstr "Базова модель для обробки вхідних запитів API"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__color
+msgid "Color"
+msgstr "Колір"
+
+#. module: ata_exchange_v4
+#: model:ir.ui.menu,name:ata_exchange_v4.ata_exchange_menu_config
+msgid "Configuration"
+msgstr "Налаштування"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__content_type
+msgid "Content Type"
+msgstr "Тип обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_json
+msgid "Convert json functions (ATA)"
+msgstr "Функції конвертації JSON (ATA)"
+
+#. module: ata_exchange_v4
+#: model:ir.module.category,description:ata_exchange_v4.module_category_integration_base
+msgid "Core of integration"
+msgstr "Ядро інтеграції"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__create_date
+msgid "Create Date"
+msgstr "Дата створення"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.actions.act_window,help:ata_exchange_v4.action_ata_exchange_api_key
+msgid "Create a new API Key"
+msgstr ""
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__create_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__create_uid
+msgid "Created by"
+msgstr "Автор"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__create_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__create_date
+msgid "Created on"
+msgstr "Створено"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__notification_validation
+msgid "Data validation errors"
+msgstr "при помилках валідації даних"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__day_delta
+msgid "Day Delta"
+msgstr "Кількість днів"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_log_view_list
+msgid "Delete all"
+msgstr "Видалити все"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__description
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__description
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__description
+msgid "Description"
+msgstr "Опис"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__disabled
+msgid "Disabled"
+msgstr "Вимкнено"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__display_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__display_name
+msgid "Display Name"
+msgstr "Представлення"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_log_view_list
+msgid "Do you want to delete all entries from the exchange log?"
+msgstr "Ви бажаєте видалити всі записи з журналу обміну?"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__domain
+msgid "Domain"
+msgstr "Фільтр"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_domain
+msgid "Domain for search external system"
+msgstr "Фільтр для пошуку зовнішньої системи"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__exchange_id
+msgid "Exchange"
+msgstr "Обмін"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_handler
+msgid "Exchange Handler Dispatcher"
+msgstr "Модель обробки вхідних запитів"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_base
+msgid "Exchange base model"
+msgstr "Базова модель зовнішних з'єднань"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_class
+msgid "Exchange class extension"
+msgstr "Клас розширення зовнішних з'єднань"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.act_window,name:ata_exchange_v4.ata_exchange_domain_action
+#: model:ir.ui.menu,name:ata_exchange_v4.ata_exchange_domain
+msgid "Exchange directions and custom filtering"
+msgstr "Напрямки обміну і фільтрування даних"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_method_mixing
+msgid "Exchange http methods"
+msgstr "Методи http обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.ui.menu,name:ata_exchange_v4.ata_exchange_menu_general
+msgid "Exchange information"
+msgstr "Дані обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.act_window,name:ata_exchange_v4.ata_exchange_log_action
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_log
+#: model:ir.ui.menu,name:ata_exchange_v4.ata_exchange_log_menu
+msgid "Exchange log"
+msgstr "Журнал обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.act_window,name:ata_exchange_v4.ata_exchange_queue_action
+#: model:ir.ui.menu,name:ata_exchange_v4.ata_exchange_queue_menu
+msgid "Exchange queue"
+msgstr "Черга обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_queue
+msgid "Exchange queue objects with external systems"
+msgstr "Об'єкти, що обмінюються з зовнішніми системами"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.act_window,name:ata_exchange_v4.ata_exchange_queue_usage_action
+#: model:ir.ui.menu,name:ata_exchange_v4.ata_exchange_queue_usage_menu
+msgid "Exchange queue usage"
+msgstr "Використання черги обміну"
+
+#. module: ata_exchange_v4
+#. odoo-python
+#: code:addons/ata_exchange_v4/models/ata_exchange_queue.py:0
+msgid "Exchange successful"
+msgstr "Обмін пройшов вдало"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_system_parameters
+msgid "Exchange system parameters"
+msgstr "Параметри обміну з зовнішніми системами"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__execution_date
+msgid "Execution Date"
+msgstr "Дата виконання"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__execution_time
+msgid "Execution Time"
+msgstr "Час виконання"
+
+#. module: ata_exchange_v4
+#. odoo-python
+#: code:addons/ata_exchange_v4/models/ata_exchange_base_requestdata.py:0
+msgid "Execution result"
+msgstr "Результат виконання"
+
+#. module: ata_exchange_v4
+#: model:ir.module.category,description:ata_exchange_v4.module_category_integration_extension
+msgid "Extension of integration"
+msgstr "Розширення інтеграції"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__system_id
+msgid "External System"
+msgstr "Зовнішня система"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_api_key
+msgid "External System API Key"
+msgstr "API ключ зовнішньої системи"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_system
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__ext_system
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__ext_system_id
+msgid "External system"
+msgstr "Зовнішня система"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.act_window,name:ata_exchange_v4.ata_exchange_system_action
+#: model:ir.ui.menu,name:ata_exchange_v4.ata_exchange_system_menu
+msgid "External systems"
+msgstr "Зовнішні системи"
+
+#. module: ata_exchange_v4
+#. odoo-python
+#: code:addons/ata_exchange_v4/models/ata_exchange_queue.py:0
+msgid "Failed to exchange: "
+msgstr "Помилка обміну: "
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__finish_date
+msgid "Finish Date"
+msgstr "Дата завершення"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__notification_first_failed
+msgid "First unsuccessful exchange attempt"
+msgstr "перша невдала спроба обміну"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_log_view_form
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_queue_usage_view_form
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_queue_view_form
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_system_view_form
+msgid "General"
+msgstr "Загальні"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_system__content_type__html
+msgid "HTML"
+msgstr "HTML"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__headers
+msgid "Headers"
+msgstr "Заголовки"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__id
+msgid "ID"
+msgstr "ID"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__ext_object_id
+msgid "ID in ext. systems"
+msgstr "ID в зовнішній системі"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_matching_id
+msgid "Id matching in Exchange (v3)"
+msgstr "Відповідність ID в обмінах (v3)"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_queue__state_exchange__idle
+msgid "Idle"
+msgstr "Очікування"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__immediate
+msgid "Immediate"
+msgstr "Миттєво"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_queue__state_exchange__in_exchange
+msgid "In exchange"
+msgstr "Обмінюється"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_method__type__incoming_request
+msgid "Incoming request handler"
+msgstr "Обробник вхідного запиту"
+
+#. module: ata_exchange_v4
+#: model:ir.module.category,name:ata_exchange_v4.module_category_integration
+#: model:ir.ui.menu,name:ata_exchange_v4.ata_exchange_menu_root
+msgid "Integration"
+msgstr "Інтеграція"
+
+#. module: ata_exchange_v4
+#: model:ir.module.category,name:ata_exchange_v4.module_category_integration_base
+msgid "Integration (base)"
+msgstr "Інтеграція (ядро)"
+
+#. module: ata_exchange_v4
+#: model:ir.module.category,name:ata_exchange_v4.module_category_integration_extension
+msgid "Integration (extension)"
+msgstr "Інтеграція (розширення)"
+
+#. module: ata_exchange_v4
+#: model:ir.module.category,description:ata_exchange_v4.module_category_integration
+msgid "Integration with external systems"
+msgstr "Інтеграція з зовнішними системами"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__is_executed
+msgid "Is Executed"
+msgstr "Виконано"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__is_processed
+msgid "Is Processed"
+msgstr "Оброблено"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__is_secure_connection
+msgid "Is Secure Connection"
+msgstr "Це захищене з'єднання"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__is_token_authentication
+msgid "Is Token Authentication"
+msgstr "Автентифікація через токен"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_system__content_type__json
+msgid "JSON"
+msgstr ""
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_system__content_type__jsonrpc
+msgid "JSONRPC 2.0"
+msgstr ""
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__name
+msgid "Key Name / Owner"
+msgstr "Назва / Власник"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.view_ata_exchange_api_key_form
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.view_ata_exchange_system_form_add_api_keys
+msgid "Key Name / Owner (Manual)"
+msgstr "Назва / Власник (вручну)"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__write_uid
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__write_uid
+msgid "Last Updated by"
+msgstr "Автор останнього оновлення"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__write_date
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__write_date
+msgid "Last Updated on"
+msgstr "Останнє оновлення"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__error_last
+msgid "Last error"
+msgstr "Остання помилка"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__login
+msgid "Login"
+msgstr "Логін"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__method_id
+msgid "Method"
+msgstr "Метод"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__method_name
+msgid "Method Name"
+msgstr "Ім'я методу"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__method
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method_mixing__method
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__method
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__method
+msgid "Method of exchange"
+msgstr "Метод обміну в моделі"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_api_key__methods_ids
+msgid "Methods"
+msgstr "Методи"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.act_window,name:ata_exchange_v4.ata_exchange_method_action
+#: model:ir.ui.menu,name:ata_exchange_v4.ata_exchange_method
+msgid "Methods (notification)"
+msgstr "Методи (повідомлення)"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_method
+msgid "Methods of exchange with external systems"
+msgstr "Методи обміну з зовнішними системами"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__model_id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__model_id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__model_id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method_mixing__model_id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__model_id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__model_id
+msgid "Model"
+msgstr "Модель"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__model_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method_mixing__model_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__model_name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__model_name
+msgid "Model Name"
+msgstr "Ім'я моделі"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_domain__model_desc
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method_mixing__model_desc
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__model_desc
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__model_desc
+msgid "Model description"
+msgstr "Опис моделі"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__model_name
+msgid "Model name"
+msgstr "Ім'я моделі"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__name
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__name
+msgid "Name"
+msgstr "Ім'я"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,help:ata_exchange_v4.field_ata_exchange_api_key__name
+msgid ""
+"Name for this key, typically the owner or purpose. If an 'External System' "
+"is selected, this field defaults to the system name but can be changed. If "
+"no system is selected, this name must be set manually (or a default will be "
+"generated on creation)."
+msgstr ""
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__name
+msgid "Name method"
+msgstr "Ім'я методу"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__need_api_key
+msgid "Need API key"
+msgstr "Потрібен API ключ"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_queue__state_exchange__new
+msgid "New"
+msgstr "Новий"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_system_view_search
+msgid "Not secure connection"
+msgstr "Не захищене з'єднання"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_system_view_search
+msgid "Not token authentication"
+msgstr "Автентифікація без токену"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_method_view_form
+msgid "Notifications"
+msgstr "Повідомлення"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__number_of_attempts
+msgid "Number Of Attempts"
+msgstr "Кількість спроб"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__ref_object
+msgid "Object exchange"
+msgstr "Об'єкт обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,help:ata_exchange_v4.field_ata_exchange_api_key__active
+msgid "Only active keys can be used for authentication."
+msgstr "Тільки активні ключі можуть бути використані для автентифікації."
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,help:ata_exchange_v4.field_ata_exchange_api_key__system_id
+msgid ""
+"Optional: Link this key to a pre-defined external system. If linked, the "
+"'Key Name / Owner' field will be automatically filled, but can still be "
+"manually overridden."
+msgstr ""
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__param
+msgid "Parameter"
+msgstr "Параметр"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__parameters
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__parameter_ids
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_system_view_form
+msgid "Parameters"
+msgstr "Параметри"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__password
+msgid "Password"
+msgstr "Пароль"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__processing_date
+msgid "Processing Date"
+msgstr "Дата виконання"
+
+#. module: ata_exchange_v4
+#. odoo-python
+#: code:addons/ata_exchange_v4/models/ata_exchange_base_requestdata.py:0
+msgid "Processing completed successfully"
+msgstr "Виконано успішно"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__proxy_login
+msgid "Proxy Login"
+msgstr "Логін проксі"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__proxy_password
+msgid "Proxy Password"
+msgstr "Пароль проксі"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_matching_id__object_id
+msgid "Record ID"
+msgstr "ID запису"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__notification_queue_remove
+msgid "Removal from the exchange queue"
+msgstr "При видаленні з черги обміну"
+
+#. module: ata_exchange_v4
+#. odoo-python
+#: code:addons/ata_exchange_v4/models/ata_exchange_queue.py:0
+msgid "Removed from the exchange queue"
+msgstr "Видалено з черги обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__request
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_log_view_form
+msgid "Request"
+msgstr "Запит"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__request_body
+msgid "Request Body"
+msgstr "Тіло запиту"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_base_requestdata
+msgid "Request data base model"
+msgstr "Модель базових даних запиту"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_method__type__request_data
+msgid "Request data from external systems"
+msgstr "Запит даних з зовнішніх систем"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__resource_address
+msgid "Resource Address"
+msgstr "Адреса ресурсу"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__response
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_log_view_form
+msgid "Response"
+msgstr "Відповідь"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.server,name:ata_exchange_v4.action_run_exchange_requestdata
+msgid "Run Exchange"
+msgstr "Запустити обмін"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_system_view_search
+msgid "Secure connection"
+msgstr "Захищене з'єднання"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__server_address
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__server_address
+msgid "Server Address"
+msgstr "Адреса серверу"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__server_port
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__server_port
+msgid "Server Port"
+msgstr "Порт серверу"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__start_date
+msgid "Start Date"
+msgstr "Дата початку"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_queue_view_list
+msgid "Start exchange"
+msgstr "Початок обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__start_over_cron
+msgid "Start over cron"
+msgstr "Старт через cron"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue__state_exchange
+msgid "State exchange objects"
+msgstr "Стан обміну об'єкта"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__status_code
+msgid "Status Code"
+msgstr "Код статусу"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_log_view_search
+msgid "Status: Error"
+msgstr "Статус: Помилка"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_log_view_search
+msgid "Status: OK"
+msgstr "Статус: ОК"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__notification_successful
+msgid "Successful exchange"
+msgstr "Вдалий обмін"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.server,name:ata_exchange_v4.ata_exchange_system_action_sync
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_system_view_form
+msgid "Synchronization"
+msgstr "Сінхронізація"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_log__system_id
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__system_id
+msgid "System"
+msgstr "Система"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.server,name:ata_exchange_v4.ata_exchange_system_action_test_connection
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_system_view_form
+msgid "Test connection"
+msgstr "Тест з'єднання"
+
+#. module: ata_exchange_v4
+#: model:ir.actions.server,name:ata_exchange_v4.ata_exchange_queue_usage_action_test_queue
+msgid "Test queue"
+msgstr "Тест черги"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.actions.server,help:ata_exchange_v4.ata_exchange_system_action_sync
+msgid ""
+"This action synchronizes the ID with an external system.\n"
+"            This is necessary if there is incoming traffic to Odoo, several exchange databases \n"
+"            and binding of object IDs to an external database."
+msgstr "Ця дія синхронізує ID із зовнішньою системою."
+"            Це необхідно, якщо є вхідний трафік в Odoo, кілька баз даних обміну "
+"            та прив'язка ID об'єктів до зовнішньої бази даних."
+
+#. module: ata_exchange_v4
+#: model:ir.actions.server,name:ata_exchange_v4.ata_exchange_queue_cron_ir_actions_server
+msgid "ToDo: Exchange queue with external systems"
+msgstr "Обмін об'єктами с зовнішними системами"
+
+#. module: ata_exchange_v4
+#: model_terms:ir.ui.view,arch_db:ata_exchange_v4.ata_exchange_system_view_search
+msgid "Token authentication"
+msgstr "Токен автентифікація"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields.selection,name:ata_exchange_v4.selection__ata_exchange_method__type__outgoing_data
+msgid "Transfer data from Odoo to external system"
+msgstr "Передача даних з Odoo до зовнішньої системи"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_method__type
+msgid "Type"
+msgstr "Тип"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system__use_proxy
+msgid "Use Proxy"
+msgstr "Використовувати проксі"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_queue_usage__usage
+msgid "Use exchange queue"
+msgstr "Використовувати чергу обміну"
+
+#. module: ata_exchange_v4
+#: model:ir.model,name:ata_exchange_v4.model_ata_exchange_queue_usage
+msgid "Using exchange queue objects with external system"
+msgstr "Використання черги обміну з зовнішніми системами"
+
+#. module: ata_exchange_v4
+#: model:ir.model.fields,field_description:ata_exchange_v4.field_ata_exchange_system_parameters__value
+msgid "Value"
+msgstr "Значення"
+
+#. module: ata_exchange_v4
+#: model:ir.model.constraint,message:ata_exchange_v4.constraint_ata_exchange_matching_id_method_ext_system_object_unique
+msgid "to search for records on incoming request"
+msgstr "для пошуку записів за вхідним запитом"

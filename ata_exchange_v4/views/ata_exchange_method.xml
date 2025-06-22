@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ata_exchange_method_view_form" model="ir.ui.view">
+        <field name="name">Methods form</field>
+        <field name="model">ata.exchange.method</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="need_api_key" invisible="1"/>
+                        <field name="name" readonly="1"/>
+                        <field name="type" readonly="1"/>
+                        <field name="model_id" readonly="1"/>
+                        <field name="model_name" readonly="1" invisible="type != 'outgoing_data'"/>                        
+                        <field name="start_over_cron" invisible="type != 'request_data'" widget="boolean_toggle"/>
+                        <field name="description"/>
+                        <t class="o_form_label" invisible="type != 'incoming_request' or not need_api_key">
+                            <span class="fw-bold text-danger">Need API key</span>
+                        </t>
+                    </group>
+                    <group>
+                        <field name="resource_url"/>
+                    </group>
+                    <notebook>
+                        <page string="Notifications" name="notifications">
+                            <group>
+                                <group>
+                                <field name="notification_queue_add" widget="boolean_toggle"/>
+                                <field name="notification_queue_remove" widget="boolean_toggle"/>
+                                <field name="notification_validation" widget="boolean_toggle"/>
+                                <field name="notification_first_failed" widget="boolean_toggle"/>
+                                <field name="notification_successful" widget="boolean_toggle"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Parameters" name="parameters">
+                            <group/>
+                        </page>
+                    </notebook>                        
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_run_exchange_requestdata" model="ir.actions.server">
+        <field name="name">Run Exchange</field>
+        <field name="model_id" ref="model_ata_exchange_base_requestdata"/>
+        <field name="binding_model_id" ref="model_ata_exchange_method"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = env['ata.exchange.mixin'].requestdata_action(env['ata.exchange.method'].browse(env.context.get('active_ids', [])))
+        </field>
+    </record>
+
+    <record id="ata_exchange_method_view_list" model="ir.ui.view">
+        <field name="name">Methods</field>
+        <field name="model">ata.exchange.method</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="type"/>
+                <field name="start_over_cron"/>
+                <field name="need_api_key"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ata_exchange_method_action" model="ir.actions.act_window">
+        <field name="name">Methods (notification)</field>
+        <field name="res_model">ata.exchange.method</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="ata_exchange_method"
+        name="Methods (notification)"
+        parent="ata_exchange_menu_config"
+        action="ata_exchange_method_action"
+        sequence="15"/>
+
+</odoo>
