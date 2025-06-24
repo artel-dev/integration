@@ -3,12 +3,14 @@
     'summary': 'Adds FTP support for the Data Exchange module.',
     'description': """
 This module extends the 'Data Exchange' functionality to allow integration with FTP servers.
+
 Key features:
-- Configure FTP connections (server, port, credentials).
-- Test the connection to the FTP server directly from Odoo.
-- List and download files from specified directories.
-- Automatically create folders and move files on the FTP server.
-- Seamlessly integrates into the existing exchange system workflows.
+
+*   Configure FTP connections (server, port, credentials).
+*   Test the connection to the FTP server directly from Odoo.
+*   List and download files from specified directories.
+*   Automatically create folders and move files on the FTP server.
+*   Seamlessly integrates into the existing exchange system workflows.
     """,
     'version': '17.0.1.4.0',
     'author': 'ToDo',
