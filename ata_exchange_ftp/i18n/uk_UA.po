@@ -1,0 +1,31 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ata_exchange_ftp
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-24 08:34+0000\n"
+"PO-Revision-Date: 2025-06-24 08:34+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ata_exchange_ftp
+#: model:ir.model.fields,field_description:ata_exchange_ftp.field_ata_exchange_system__content_type
+msgid "Content Type"
+msgstr "Тип обміну"
+
+#. module: ata_exchange_ftp
+#: model:ir.model,name:ata_exchange_ftp.model_ata_exchange_system
+msgid "External system"
+msgstr "Зовнішня система"
+
+#. module: ata_exchange_ftp
+#: model:ir.model.fields.selection,name:ata_exchange_ftp.selection__ata_exchange_system__content_type__ftp
+msgid "FTP"
+msgstr ""
