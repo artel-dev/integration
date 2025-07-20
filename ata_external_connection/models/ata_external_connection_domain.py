@@ -17,6 +17,8 @@ class AtaExternalConnectionDomain(models.Model):
         comodel_name="ata.external.system",
         string="External system",
         required=True,)
+    disabled = fields.Boolean(
+        string="Disabled",)
     
     @api.model
     def get_ext_systems(self, record:ExtClass, method: ExtMethod) -> list[ExtSystem]:
@@ -25,6 +27,7 @@ class AtaExternalConnectionDomain(models.Model):
         
         # 1. check ext. system without analysis record data
         records_domain = self_sudo.search([
+            ("disabled", "=", False),
             ('method', '=', method.id),
             ('ext_system.disabled', '=', False)
         ])

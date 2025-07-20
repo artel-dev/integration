@@ -31,6 +31,7 @@
         <field name="arch" type="xml">
             <tree>
                 <!--<field name="model_name"/>-->
+                <field name="disabled" widget="boolean_toggle"/>
                 <field name="method" required="1"/>
                 <field name="domain"/>
                 <field name="ext_system"/>
