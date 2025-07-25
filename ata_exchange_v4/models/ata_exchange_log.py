@@ -50,6 +50,13 @@ class ExchangeLog(models.Model):
         self.update_json_fields(vals)
         return super().write(vals)
 
+    def add_logs(self, additional_logs: list[str]):
+        if not self:
+            return
+        self.write({
+            'response': "\n".join(filter(None, [self.response, "\n".join(additional_logs)]))
+        })
+
     def update_json_fields(self, vals):
         for key in ['request_body', 'response']:
             if key in vals:

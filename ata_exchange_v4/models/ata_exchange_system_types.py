@@ -18,6 +18,7 @@ class ExtResponse(TypedDict):
     start_date: Optional[datetime]
     finish_date: Optional[datetime]
     headers: CaseInsensitiveDict
+    logs: list[str]
 
 
 class ExtRequestMethodParameters(TypedDict):

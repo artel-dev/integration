@@ -1,4 +1,4 @@
-from odoo import api, fields, _, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 import base64
@@ -12,6 +12,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 from .ata_exchange_system_types import ExtResponse, ExtRequest, ExtRequestMethodParameters
+from .ata_exchange_log import ExchangeLog
 
 
 class AtaExchangeSystem(models.Model):
@@ -135,6 +136,7 @@ class AtaExchangeSystem(models.Model):
             'start_date':   None,
             'finish_date':  None,
             'headers':      CaseInsensitiveDict(),
+            'logs':         [],
         }
     #endregion
 
@@ -396,32 +398,46 @@ class AtaExchangeSystem(models.Model):
             
         return auth_object
 
-    def create_exchange_log(self, ext_request: ExtRequest):
-        if ext_request["method"]:
-            log_val = {
-                'name': f'{ext_request["exchange_id"]}',
-                'system_id': self["id"],
-                'server_address': self.server_address,
-                'server_port': self.server_port,
-                #'headers': ext_request["method_params"]["headers"],
-                'method_name': ext_request["method"].name or ext_request["method_name"],
-                'request': ext_request["method_params"]["url"],
-                'request_body': ext_request["method_params"]["request_body"],
-                'is_executed': ext_request["is_executed"],
-                'execution_date': ext_request["execution_date"],
-                'is_processed': ext_request["is_processed"],
-                'processing_date': ext_request["processing_date"],
-            }
-            if (ext_response:=ext_request["response"]):
-                log_val.update({
-                    'status_code': ext_response["status_code"],
-                    'start_date': ext_response["start_date"] or datetime.now(),
-                    'finish_date': ext_response["finish_date"],
-                    'response': ext_response["result"],
-                })
+    def create_exchange_log(self, ext_request: ExtRequest) -> ExchangeLog | None:
+        method = ext_request.get("method")
+        if not method:
+            return None
 
-            self.env['ata.exchange.log'].create([log_val])
-            self.env.cr.commit()
+        method_params = ext_request.get("method_params", {})
+        log_val = {
+            'name': f'{ext_request["exchange_id"]}',
+            'system_id': self.id,
+            'server_address': self.server_address,
+            'server_port': self.server_port,
+            'method_name': method.name or ext_request.get("method_name"),
+            'request': method_params.get("url"),
+            'request_body': method_params.get("request_body"),
+            'is_executed': ext_request["is_executed"],
+            'execution_date': ext_request["execution_date"],
+            'is_processed': ext_request["is_processed"],
+            'processing_date': ext_request["processing_date"],
+        }
+        if (ext_response := ext_request.get("response")):
+            log_val.update({
+                'status_code': ext_response.get("status_code"),
+                'start_date': ext_response.get("start_date") or fields.Datetime.now(),
+                'finish_date': ext_response.get("finish_date"),
+                'response': "\n".join(filter(None, ["\n".join(ext_response.get("logs", [])), ext_response.get("result", "")])),
+            })
+            # clear logs, so its not added to next log
+            ext_response['logs'] = []
+
+        log_id = None
+        try:
+            with self.pool.cursor() as new_cr:
+                new_env = api.Environment(new_cr, self.env.uid, self.env.context)
+                log_in_new_env = new_env['ata.exchange.log'].create([log_val])
+                new_cr.commit()
+                log_id = self.env['ata.exchange.log'].browse(log_in_new_env.id)
+        except Exception as e:
+            _logger.error(f"Failed to create exchange log in a separate transaction: {e}")
+
+        return log_id
 
     def action_test_connection(self):
         answers = []

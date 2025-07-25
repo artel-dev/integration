@@ -1,7 +1,7 @@
 {
     'name': 'Exchange between systems',
     'summary': 'Exchange between systems (ATA)',
-    'version': '17.0.1.4.0',
+    'version': '17.0.1.4.1',
     'author': 'gnezamay',
     'website': 'todo.ltd',
     'license': 'OPL-1',
