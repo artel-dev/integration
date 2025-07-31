@@ -5,13 +5,17 @@ from typing import TypedDict, Any
 from pydantic import BaseModel as BaseModelPydantic, ValidationError as ValidationErrorPydantic
 
 from .ata_exchange_base_incomingrequest_types import IncomingRequestParam
+from .ata_exchange_method import AtaExchangeMethod
+from .ata_exchange_system import AtaExchangeSystem
 
 
 class SearchRecordHandlerParams(TypedDict):
     search_domain: list[tuple[str, str, Any]] | None  # domain for primary search record
     search_domain_second: list[tuple[str, str, Any]] | None  # domain for secondary search record (after matching)
     use_matching_data: bool  # use matching data for save pointer for record from external systems
-    matching_id: str | None
+    key_matching_data: str  # field of object data for search matching data ('id_matching' by default)
+    ext_system_id: AtaExchangeSystem | None  # external system for search record
+    method_id: AtaExchangeMethod | None  # method for search record    
 
 
 class RecordHandlerParams(TypedDict):
@@ -34,7 +38,8 @@ class AtaExchangeModelHandlerMixin(models.AbstractModel):
 
     @api.model
     def ata_exchange_get_default_record_handler_params(self,
-        model_name: str) -> RecordHandlerParams:
+        model_name: str,
+        inc_req_params: IncomingRequestParam|None = None) -> RecordHandlerParams:
 
         return {
             'data': {},
@@ -42,20 +47,21 @@ class AtaExchangeModelHandlerMixin(models.AbstractModel):
             'model': self.env[model_name],
             'create_record': False,
             'write_record': False,
-            'search_params': {                
+            'search_params': {
                 'search_domain': None,
                 'search_domain_second': None,
                 'use_matching_data': False,
-                'matching_id': None
+                'key_matching_data': 'id_matching',
+                'ext_system_id': inc_req_params['ext_system_id'] if inc_req_params else None,
+                'method_id': inc_req_params['method_id'] if inc_req_params else None
             }
         }
 
     @api.model
     def ata_exchange_get_model_record(self,        
-        record_params: RecordHandlerParams,
-        inc_req_params: IncomingRequestParam|None = None) -> models.BaseModel:
+        record_params: RecordHandlerParams) -> models.BaseModel:
 
-        records = self.env['ata.exchange.model.handler'].model_handler(record_params, inc_req_params)
+        records = self.env['ata.exchange.model.handler'].model_handler(record_params)
 
         return next(iter(records), records)
 
@@ -74,8 +80,11 @@ class AtaExchangeModelHandlerMixin(models.AbstractModel):
             raise ValidationError(error_message) from e
 
     @api.model
+    def ata_exchange_check_record_params(self, record_params: RecordHandlerParams):
+        return True
+
+    @api.model
     def ata_exchange_prepare_vals(self,
-        record_params: RecordHandlerParams,
-        inc_req_params: IncomingRequestParam|None = None) -> dict:
+        record_params: RecordHandlerParams) -> dict:
 
         return {}

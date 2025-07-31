@@ -66,6 +66,7 @@
     <record id="ata_exchange_method_action" model="ir.actions.act_window">
         <field name="name">Methods (notification)</field>
         <field name="res_model">ata.exchange.method</field>
+        <field name="domain">[('type', '!=', 'inner_types')]</field>
         <field name="view_mode">list,form</field>
     </record>
 

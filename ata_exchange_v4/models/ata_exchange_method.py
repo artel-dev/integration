@@ -23,6 +23,7 @@ class AtaExchangeMethod(models.Model):
 			('outgoing_data', 'Transfer data from Odoo to external system'),
 			('request_data', 'Request data from external systems'),
 			('incoming_request', 'Incoming request handler'),
+			('inner_types', 'For inner matching data'),
 		],
 		required=True)
 	start_over_cron = fields.Boolean(

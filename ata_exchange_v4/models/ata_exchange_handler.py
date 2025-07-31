@@ -46,8 +46,8 @@ class AtaExchangeHandler(models.AbstractModel):
         try:
             # Use sudo() for potential broad access needs within the run method.
             response_data = target_model_instance.sudo().ata_exchange_incomingrequest_run({
-                'method': method,
-                'ext_system': ext_system,
+                'method_id': method,
+                'ext_system_id': ext_system,
                 'req_body': req_body,
                 'req_body_data': req_body.get('data', {}) if isinstance(req_body, dict) else {}
             })
