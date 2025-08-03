@@ -20,10 +20,11 @@ class AtaExchangeModelHandler(models.AbstractModel):
                 vals = record_params['data']
             
             if vals:
-                if records:
-                    records.write(vals)
-                else:
-                    records = Model.create([vals])
+                with self.env['ata.exchange.queue'].disable_add_temporarily(not record_params['add_to_queue']):
+                    if records:
+                        records.write(vals)
+                    else:
+                        records = Model.create([vals])
 
                 self.save_matching_data(records, record_params)
             

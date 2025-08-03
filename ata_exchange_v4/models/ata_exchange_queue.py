@@ -6,6 +6,7 @@ import logging
 import time
 from datetime import timedelta, datetime
 from typing import Union, cast, Optional
+from contextlib import contextmanager
 
 from .ata_exchange_method import AtaExchangeMethod
 from .ata_exchange_class  import AtaExchangeClass
@@ -22,6 +23,7 @@ class AtaExchangeQueue(models.Model):
     _inherit = ['ata.exchange.method.mixing']
 
     TIMEOUT_IN_EXCHANGE_MINUTES = 30
+    disable_add_to_queue: bool = False
 
     ref_object = fields.Reference(
         selection='_selection_ref_object_model',
@@ -84,6 +86,20 @@ class AtaExchangeQueue(models.Model):
         return None
     # endregion
 
+    @contextmanager
+    def disable_add_temporarily(self, disable: bool = True):
+        """Context manager to temporarily disable adding to queue"""
+        if not disable:
+            yield
+            return
+            
+        original_state = AtaExchangeQueue.disable_add_to_queue
+        try:
+            AtaExchangeQueue.disable_add_to_queue = True
+            yield
+        finally:
+            AtaExchangeQueue.disable_add_to_queue = original_state
+
     @api.model
     def search(self, domain, offset=0, limit=None, order=None):
         records = super(AtaExchangeQueue, self).search(domain, offset, limit, order)
@@ -95,6 +111,10 @@ class AtaExchangeQueue(models.Model):
 
     @api.model
     def add_to_queue(self, record: AtaExchangeClass):
+        # Check if adding to queue is temporarily disabled
+        if AtaExchangeQueue.disable_add_to_queue:
+            return False
+            
         ExBase = self.env["ata.exchange.base.outgoingdata"]
         if isinstance(record.id, api.NewId):
             return False

@@ -24,6 +24,7 @@ class RecordHandlerParams(TypedDict):
     model: models.BaseModel
     create_record: bool                     # create record if not found
     write_record: bool                      # write data in record if found
+    add_to_queue: bool                      # add record to queue exchange to ext. system
     search_params: SearchRecordHandlerParams
 
 
@@ -47,6 +48,7 @@ class AtaExchangeModelHandlerMixin(models.AbstractModel):
             'model': self.env[model_name],
             'create_record': False,
             'write_record': False,
+            'add_to_queue': False,
             'search_params': {
                 'search_domain': None,
                 'search_domain_second': None,
