@@ -198,7 +198,7 @@ class AtaExchangeSystem(models.Model):
                 **self.get_init_extresponse(),
                 'headers': response.headers,
                 'status_code': response.status_code,
-                'result': response.text,
+                'result': response.text or response.reason,
                 'start_date': start_date,
                 'finish_date': finish_date,
             }
