@@ -64,7 +64,7 @@ class AtaExchangeMethod(models.Model):
         }
 	
 	def read_response(self, ext_request: ExtRequest) -> ExtResponse | None:
-		return self.read_response_standart(ext_request)
+		return self.read_response_standard(ext_request)
 	
 	def get_response_data(self, response: ExtResponse) -> dict:
 		# typical parse response
@@ -83,7 +83,7 @@ class AtaExchangeMethod(models.Model):
 	#endregion
 
 	@api.model
-	def read_response_standart(self, ext_request: ExtRequest) -> ExtResponse | None:
+	def read_response_standard(self, ext_request: ExtRequest) -> ExtResponse | None:
 		if not (ext_response:=ext_request['response']):
 			return None
 

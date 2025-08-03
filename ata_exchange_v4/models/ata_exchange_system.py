@@ -159,7 +159,7 @@ class AtaExchangeSystem(models.Model):
         if self.content_type == 'jsonrpc':
             method_params['request_body'] = {
                 'jsonrpc': '2.0',
-                'method': ext_request["method"].id if ext_request["method"] else "",
+                'method': ext_request["method"].id if ext_request["method"] else ext_request["method_name"],
                 'params': method_params['request_body'],
                 'id': None
             }
@@ -290,7 +290,7 @@ class AtaExchangeSystem(models.Model):
                     f"params['params'] is not a dictionary, skipping multipart encoding. Type: {type(params.get('params'))}"
                 )
 
-    def _handle_basic_auth(self, headers: CaseInsensitiveDict, params: ExtRequestMethodParameters) -> HTTPBasicAuth | None:
+    def calc_auth_basic(self, headers: CaseInsensitiveDict, params: ExtRequestMethodParameters):
         """
         Handles Basic authentication.
         Returns an HTTPBasicAuth object for use with requests library, or None if login is not set.
@@ -299,12 +299,12 @@ class AtaExchangeSystem(models.Model):
             del headers['Authorization']
 
         if self.login:
-            return HTTPBasicAuth(username=self.login, password=self.password)
+            params['auth'] = HTTPBasicAuth(username=self.login, password=self.password)
         else:
             _logger.warning(f"Basic authentication selected for system '{self.name}' (ID: {self.id}) but login is not set.")
             return None
 
-    def _handle_token_auth(self, headers: CaseInsensitiveDict):
+    def calc_auth_token(self, headers: CaseInsensitiveDict):
         """Handles Token authentication by fetching a token using the registered provider and adding it to headers."""
         if 'Authorization' in headers:
             del headers['Authorization']
@@ -347,7 +347,7 @@ class AtaExchangeSystem(models.Model):
                 f"Authorization header not set."
             )
 
-    def _handle_no_auth(self, headers: CaseInsensitiveDict):
+    def calc_auth_no(self, headers: CaseInsensitiveDict):
         if 'Authorization' in headers:
             del headers['Authorization']
         _logger.debug(f"No authentication selected for system '{self.name}' (ID: {self.id}).")        
@@ -376,12 +376,12 @@ class AtaExchangeSystem(models.Model):
         auth_object = None
 
         if auth_type == 'basic':
-            auth_object = self._handle_basic_auth(headers, params)
+            self.calc_auth_basic(headers, params)
         elif auth_type == 'token':
             # Token auth modifies headers directly, does not return an auth object for requests' `auth` param.
-            self._handle_token_auth(headers) 
+            self.calc_auth_token(headers) 
         elif auth_type == 'none':
-            self._handle_no_auth(headers)
+            self.calc_auth_no(headers)
         else:
             _logger.error(f"Unknown authentication type: {auth_type} for system '{self.name}' (ID: {self.id})")
             
@@ -427,12 +427,12 @@ class AtaExchangeSystem(models.Model):
                 ext_request['name'] = 'Test'
                 ext_request['method_name'] = 'check'
                 ext_request['method_params']['http_method'] = method_http
-                ext_request['method_params']['auth_type'] = 'none'
+                ext_request['method_params']['auth_type'] = self.authentication_type
                 self.calc_url(ext_request)
 
                 record.execute(ext_request)
 
-                if (ext_response := self.env['ata.exchange.method'].read_response_standart(ext_request)):
+                if (ext_response := self.env['ata.exchange.method'].read_response_standard(ext_request)):
                     if ext_response['error']:
                         result = ext_response['error_msg']
                     elif (response_data := ext_response['result_json']) and isinstance(response_data, dict):
@@ -459,9 +459,9 @@ class AtaExchangeSystem(models.Model):
     def action_synchronization(self):
         exchange_id = f'Synchronization: {self.name}'
         ext_request = self.get_init_extrequest()
-        ext_request['name'] = 'Synchronization'
-        ext_request['method_name'] = 'sync'
         ext_request['exchange_id'] = exchange_id
+        ext_request['name'] = 'Synchronization'
+        ext_request['method_name'] = 'sync'        
         ext_request['method_params']['request_body'] = {
             'meta': {
                 'db_name': self.env.cr.dbname,
@@ -471,17 +471,18 @@ class AtaExchangeSystem(models.Model):
                 'name': self.name,
             }
         }
-        ext_request['method_params']['auth_type'] = 'none'
+        ext_request['method_params']['auth_type'] = self.authentication_type
+        self.calc_url(ext_request)
 
         self.execute(ext_request)
 
-        if (ext_response := self.env['ata.exchange.method'].read_response_standart(ext_request)):
+        if (ext_response := self.env['ata.exchange.method'].read_response_standard(ext_request)):
             if ext_response['error']:
                 result = ext_response['error_msg'].get('message', False) \
                     if isinstance(ext_response['error_msg'], dict) else ext_response['error_msg']
                 # result = ext_response['error_msg']
             elif (response_data := ext_response['result_json']) and isinstance(response_data, dict):
-                result = response_data.get('status', False)
+                result = response_data.get('status', False) or response_data.get('error', '')
             else:
                 result = "Invalid response data"
         else:
