@@ -77,20 +77,19 @@ class AtaExchangeBaseOutgoingdata(models.AbstractModel):
 
                         ext_system.execute(ext_request)
                         
-                        if (response := method.read_response(ext_request)):
-                            if not response['error']:
-                                response_data = method.get_response_data(response)
-                                if response_data:
+                        if (ext_response := self.env['ata.exchange.method'].read_response_standard(ext_request)):
+                            if not ext_response['error']:
+                                if (response_data := method.get_response_data(ext_response)):
                                     # post-processing response data
                                     self._re_exchanged_add(record)
-                                    result = method.response_post_processing(response, response_data, record)
+                                    result = method.response_post_processing(ext_response, response_data, record)
                                     self._re_exchanged_delete(record)
-                                    error_msg = response['error_msg']
+                                    error_msg = ext_response['error_msg']
                                 else:
                                     error_msg = "Response data is empty"
                             else:
-                                error_msg = response['error_msg']
-                                result = method.response_error_post_processing(response)
+                                error_msg = ext_response['error_msg']
+                                result = method.response_error_post_processing(ext_response)
                         else:
                             error_msg = "Failed to receive a response from ext. systems."
                     else:

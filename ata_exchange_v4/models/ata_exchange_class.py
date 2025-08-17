@@ -1,6 +1,5 @@
-from odoo import api, models, fields, Command
+from odoo import api, models
 
-from typing import Tuple, List, Union, Dict, cast, overload
 from functools import wraps
 from datetime import date, datetime
 import logging
@@ -15,18 +14,17 @@ class AtaExchangeClass(models.AbstractModel):
     _name = "ata.exchange.class"
     _description = "Exchange class extension"
 
-    # потрібно для визначення чи модель потрібно направляти на додавання в чергу або обмін
-    # також використувується для формування структури пакету даних
-    ATA_EXCHANGE_NODE_NAME = ""
-
     @staticmethod
     def ata_exchange_get_data_record_format(always_list=False):
         def decorator(func):
             @wraps(func)
             def wrapper(self: AtaExchangeClass, *args, **kwargs):
                 data = func(self, *args, **kwargs)
-                if always_list:
-                    out = data
+                if data is None or not isinstance(data, list):
+                    return data
+
+                if always_list or not data:
+                    out = data if data else ""
                 else:
                     if len(data) == 0:
                         out = ""
@@ -34,11 +32,6 @@ class AtaExchangeClass(models.AbstractModel):
                         out = data[0]
                     else:
                         out = data
-
-                # if kwargs.get('as_node', False) and self.ATA_EXCHANGE_NODE_NAME:
-                #     out = {
-                #         self.ATA_EXCHANGE_NODE_NAME: out
-                #     }
 
                 return out
             return wrapper
@@ -57,10 +50,10 @@ class AtaExchangeClass(models.AbstractModel):
             return ''
 
     #region overload outgoingdata methods
-    def ata_exchange_compute_methods(self) -> List[AtaExchangeMethod]:
+    def ata_exchange_compute_methods(self) -> list[AtaExchangeMethod]:
         return []
 
-    def ata_exchange_validate(self, method: AtaExchangeMethod) -> List[str]:
+    def ata_exchange_validate(self, method: AtaExchangeMethod) -> list[str]:
         """
         Validate the record before exchange.
 
@@ -74,8 +67,12 @@ class AtaExchangeClass(models.AbstractModel):
         """
         return []
 
-    def ata_exchange_get_data_record(self, method: AtaExchangeMethod, as_node = False) -> Union[List[Dict], Dict, str]:
+    def ata_exchange_get_data_record(self, method: AtaExchangeMethod|None = None, as_node = False) -> list[dict]|dict|str:
         return {}
+
+    @property
+    def exchange_data(self) -> list[dict]|dict|str:
+        return self.ata_exchange_get_data_record(method=None, as_node=False)
 
     #endregion
 
@@ -84,7 +81,7 @@ class AtaExchangeClass(models.AbstractModel):
     def create(self, vals_list):
         records = self.env[self._name]
         for vals in vals_list:
-            record = super().create(vals)
+            record = super().create([vals])
             records |= record
             if record._ata_exchange_check_add_to_queue(vals):
                 record.ata_exchange_add_to_queue()
@@ -98,7 +95,7 @@ class AtaExchangeClass(models.AbstractModel):
                 record.ata_exchange_add_to_queue()
         return over_write
 
-    def _ata_exchange_check_add_to_queue(self, vals: Dict) -> bool:
+    def _ata_exchange_check_add_to_queue(self, vals: dict) -> bool:
         return True
         # return bool(self.ATA_EXCHANGE_NODE_NAME)
             
@@ -115,7 +112,7 @@ class AtaExchangeClass(models.AbstractModel):
                     body = message,
                     subtype_xmlid = type)
     
-    def ata_exchange_get_ref_from_record(self) -> Union[str, None]:
+    def ata_exchange_get_ref_from_record(self) -> str|None:
         self.ensure_one()
         return "%s,%s" % (self._name, self.id) if self else None
 
@@ -129,7 +126,7 @@ class AtaExchangeClass(models.AbstractModel):
                 
         return not result
 
-    def ata_exchange_get_request_data(self, method: AtaExchangeMethod) -> Union[List[Dict], Dict, str]:
+    def ata_exchange_get_request_data(self, method: AtaExchangeMethod) -> list[dict]|dict|str:
         # as_node - якщо запитуємо дані для кореневої ноди, то в залежності від статусу об'єкта
         # пакет даних може бути пустим. Це робиться для зменшення розміру пакетів обміну
         return data if (data:=self.ata_exchange_get_data_record(method = method, as_node = True)) else {}

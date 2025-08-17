@@ -132,8 +132,6 @@ class AtaExchangeSystem(models.Model):
     def execute(self, ext_request: ExtRequest) -> None:
         self.execute_request(ext_request)
         if ext_request['response'] and ext_request['is_executed']:
-            # self.read_request(ext_request['response'])
-            
             ext_request['is_processed'] = True
             ext_request['processing_date'] = datetime.now()
         self.create_exchange_log(ext_request)        
@@ -159,7 +157,7 @@ class AtaExchangeSystem(models.Model):
         if self.content_type == 'jsonrpc':
             method_params['request_body'] = {
                 'jsonrpc': '2.0',
-                'method': ext_request["method"].id if ext_request["method"] else ext_request["method_name"],
+                'method': ext_request["method"].name if ext_request["method"] else ext_request["method_name"],
                 'params': method_params['request_body'],
                 'id': None
             }
@@ -213,31 +211,7 @@ class AtaExchangeSystem(models.Model):
                 'error_msg': msg
             }
             _logger.warning(msg)
-            
-    @api.model
-    def read_request(self, ext_response: ExtResponse):
-        if not ext_response["status_code"] in [200]:
-            ext_response["error"] = True
-            ext_response["error_msg"] = f'Status code is {ext_response["status_code"]}. {ext_response["result"]}'
-        if not ext_response["result"]:
-            ext_response["error"] = True
-            ext_response["error_msg"] = 'Result is empty'
 
-        if not ext_response["error"] and \
-            "application/json" in ext_response['headers'].get('Content-Type','').lower():
-            
-            result_json = self.env['ata.exchange.json'].loads(ext_response["result"])
-        
-            if isinstance(result_json, dict) and \
-                result_json.get("jsonrpc") == "2.0":
-                if (error_jsonrpc := result_json.get('error', False)):
-                    ext_response["error"] = True
-                    ext_response["error_msg"] = error_jsonrpc
-                else:
-                    ext_response["result_json"] = result_json.get("result", False)
-            else:
-                ext_response["result_json"] = result_json
-        
     @api.model
     def calc_url(self, ext_request: ExtRequest, resource_address: str = ""):
 
@@ -480,7 +454,6 @@ class AtaExchangeSystem(models.Model):
             if ext_response['error']:
                 result = ext_response['error_msg'].get('message', False) \
                     if isinstance(ext_response['error_msg'], dict) else ext_response['error_msg']
-                # result = ext_response['error_msg']
             elif (response_data := ext_response['result_json']) and isinstance(response_data, dict):
                 result = response_data.get('status', False) or response_data.get('error', '')
             else:
