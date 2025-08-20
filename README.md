@@ -1,2 +1,1 @@
-# odoo-jira
-Integration Odoo and Jira
+Exchange Odoo data with external systems
