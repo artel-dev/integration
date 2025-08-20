@@ -120,15 +120,11 @@ The module includes comprehensive error handling and logging for debugging:
 For support and documentation:
 - **Documentation**: [Google Docs](https://docs.google.com/document/d/1EeH-4xgoMnLQGrsSZORt5rM4KM5kiPj8zMauZxArKc0/edit?usp=sharing)
 - **Issues**: Create an issue on the GitHub repository
-- **Contact**: gnezamay@todo.ltd
+- **Contact**: gnezamay@it-artel.ua
 
 ## License
 
 This module is licensed under the Odoo Proprietary License v1.0 (OPL-1).
-
-## Contributors
-
-- **gnezamay** - Lead Developer and Maintainer
 
 ---
 
