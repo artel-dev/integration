@@ -4,7 +4,7 @@
         <menuitem
                 id="ata_exchange_menu_root"
                 name="Integration"
-                web_icon="ata_exchange,static/description/icon.png"
+                web_icon="ata_exchange_v3,static/description/icon.png"
                 sequence="10"/>
 
         <menuitem
