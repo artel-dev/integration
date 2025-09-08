@@ -15,6 +15,7 @@ class AtaExchangeMixin(models.AbstractModel):
     def get_meta_data(self, *kwargs) -> dict:
         return {
             'meta': {
+                'system_type': 'odoo',
                 'db_name': self._cr.dbname,
             },
         }

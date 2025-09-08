@@ -12,7 +12,6 @@ import logging
 _logger = logging.getLogger(__name__)
 
 from .ata_exchange_system_types import ExtResponse, ExtRequest, ExtRequestMethodParameters
-from .ata_exchange_method import AtaExchangeMethod
 
 
 class AtaExchangeSystem(models.Model):
@@ -129,7 +128,17 @@ class AtaExchangeSystem(models.Model):
         }
     #endregion
 
+    def add_meta_data(self, ext_request: ExtRequest):
+        body = ext_request["method_params"]['request_body']
+        if isinstance(body, dict) and 'meta' in body:
+            body['meta'] = {
+                **body['meta'],
+                'ext_system_id': self.id,
+                'ext_system_name': self.name,
+            }
+
     def execute(self, ext_request: ExtRequest) -> None:
+        self.add_meta_data(ext_request)
         self.execute_request(ext_request)
         if ext_request['response'] and ext_request['is_executed']:
             ext_request['is_processed'] = True
@@ -437,9 +446,7 @@ class AtaExchangeSystem(models.Model):
         ext_request['name'] = 'Synchronization'
         ext_request['method_name'] = 'sync'        
         ext_request['method_params']['request_body'] = {
-            'meta': {
-                'db_name': self.env.cr.dbname,
-            },
+            **self.env['ata.exchange.mixin'].get_meta_data(),
             'data': {
                 'id': self.id,
                 'name': self.name,
@@ -454,8 +461,11 @@ class AtaExchangeSystem(models.Model):
             if ext_response['error']:
                 result = ext_response['error_msg'].get('message', False) \
                     if isinstance(ext_response['error_msg'], dict) else ext_response['error_msg']
-            elif (response_data := ext_response['result_json']) and isinstance(response_data, dict):
-                result = response_data.get('status', False) or response_data.get('error', '')
+            elif (response_data := ext_response['result_json']) and isinstance(response_data, dict) \
+                and (metadata := response_data.get('meta', False)) and isinstance(metadata, dict):
+                
+                result = f"Success. Access to exchange {'granted' if metadata.get('odoo_granted_status') else 'denied'}"\
+                    if metadata.get('odoo_db_name', "") == self._cr.dbname else "Failed"
             else:
                 result = "Invalid response data"
         else:

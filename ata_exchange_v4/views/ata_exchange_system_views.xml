@@ -10,7 +10,7 @@
                     <button name="action_test_connection" string="Test connection" class="oe_highlight"
                             type="object"/>
                     <button name="action_synchronization" string="Synchronization" class="oe_highlight"
-                            type="object"/>
+                            type="object" help="This action synchronizes the ID with an external system. This is necessary if there is incoming traffic to Odoo, several exchange databases and binding of object IDs to an external database."/>
                 </header>
                 <sheet>
                     <notebook>
@@ -22,7 +22,7 @@
                                 <field name="description"/>
                                 <field name="is_secure_connection"/>
                                 <field name="server_address"/>
-                                <field name="server_port"/>
+                                <field name="server_port" widget="char"/>
                                 <field name="resource_address"/>
                                 <field name="content_type"/>
                                 <field name="authentication_type"/>
@@ -59,7 +59,7 @@
                 <field name="name"/>
                 <field name="is_secure_connection"/>
                 <field name="server_address"/>
-                <field name="server_port"/>
+                <field name="server_port" widget="char"/>
                 <field name="resource_address"/>
                 <field name="content_type"/>
                 <field name="authentication_type"/>

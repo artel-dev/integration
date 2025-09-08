@@ -1,6 +1,5 @@
 from odoo import api, fields, models
 from odoo.tools import safe_eval
-from typing import List
 
 from .ata_exchange_method import AtaExchangeMethod
 from .ata_exchange_class  import AtaExchangeClass

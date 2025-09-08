@@ -8,7 +8,6 @@ from requests_toolbelt import MultipartEncoder # type: ignore
 from requests.auth import HTTPBasicAuth
 
 
-
 class ExtResponse(TypedDict):
     result: str
     result_json: Optional[dict]

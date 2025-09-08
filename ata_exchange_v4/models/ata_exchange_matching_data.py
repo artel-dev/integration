@@ -1,6 +1,7 @@
-from odoo import fields, models, api
+from odoo import api, fields, models
 
-from .ata_exchange_model_handler_mixin import SearchRecordHandlerParams
+from .ata_exchange_model_handler_mixin import RecordHandlerParams, SearchRecordHandlerParams
+from .ata_exchange_base_incomingrequest_types import IncomingResponseParamMatching
 
 class AtaExchangeIncomingMatchingData(models.Model):
     _name = "ata.exchange.matching.data"
@@ -35,10 +36,10 @@ class AtaExchangeIncomingMatchingData(models.Model):
         params: SearchRecordHandlerParams,
         key_matching: str) -> 'AtaExchangeIncomingMatchingData | None':
         
-        if params['ext_system_id'] and params['method_id']:
+        if params.ext_system_id and params.method_id:
             return self.search([
-                ('ext_system_id', '=', params['ext_system_id'].id),
-                ('method_id', '=', params['method_id'].id),            
+                ('ext_system_id', '=', params.ext_system_id.id),
+                ('method_id', '=', params.method_id.id),            
                 ('key_object', '=', key_matching)
             ], limit=1)
         else:
@@ -46,12 +47,15 @@ class AtaExchangeIncomingMatchingData(models.Model):
 
     @api.model
     def save_matching_data(self,
-        params: SearchRecordHandlerParams,
+        record_params: RecordHandlerParams,
         key_object: str,
-        add_matching_data: dict) -> None:
+        records: models.BaseModel) -> IncomingResponseParamMatching|None:
 
-        if (method_id := params['method_id']) and (ext_system_id := params['ext_system_id']):
-            matching_id = self.get_matching_data(params, key_object)
+        search_params = record_params.search_params
+        add_matching_data = {records._name: records[0].id}
+
+        if (method_id := search_params.method_id) and (ext_system_id := search_params.ext_system_id):
+            matching_id = self.get_matching_data(search_params, key_object)
             if matching_id:
                 matching_data = {
                     **matching_id.matching_data,
@@ -70,4 +74,14 @@ class AtaExchangeIncomingMatchingData(models.Model):
             if matching_id:
                 matching_id.write(vals)
             else:
-                self.create([vals])
+                matching_id = self.create([vals])
+
+            return IncomingResponseParamMatching(
+                method = search_params.method_id,
+                id_ext = key_object,
+                model_name = records._name,
+                model_id = records[0].id
+            )
+
+            # need to be commit, because after write we need will use new record of matching data
+            # self.env.cr.commit()

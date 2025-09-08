@@ -1,14 +1,14 @@
 from odoo import models, api
-from odoo.exceptions import UserError, ValidationError, AccessError
+from odoo.exceptions import UserError
+from odoo.addons.ata_exchange_v4.controllers.jsonrpc_errors import ServerError
+
 from .ata_exchange_system import AtaExchangeSystem
 from .ata_exchange_method import AtaExchangeMethod
 from .ata_exchange_base_incomingrequest import AtaExchangeBaseIncomingrequest
+from .ata_exchange_base_incomingrequest_types import IncomingRequestParam
 
 import logging
-from odoo.addons.ata_exchange_v4.controllers.jsonrpc_errors import (
-    InvalidJsonError,
-    ServerError
-)
+
 
 _logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ class AtaExchangeHandler(models.AbstractModel):
     _description = "Exchange Handler Dispatcher"
 
     @api.model
-    def process_incoming_request(self, method: AtaExchangeMethod, ext_system: AtaExchangeSystem | None, req_body: dict) -> dict:
+    def process_incoming_request(self, method: AtaExchangeMethod, ext_system: AtaExchangeSystem | None, req_body: dict) -> dict|list[dict]:
         """
         Processes an incoming request by finding the correct handler model
         (defined in method.model_id) and calling its ata_exchange_incomingrequest_run method.
@@ -44,16 +44,20 @@ class AtaExchangeHandler(models.AbstractModel):
 
         # Call the ata_exchange_incomingrequest method on the target model instance
         try:
+            incoming_param = IncomingRequestParam(
+                method_id     =method,
+                ext_system_id =ext_system,
+                req_body      =req_body,
+                req_body_data =req_body.get('data', {}) if isinstance(req_body, dict) else {}
+            )
             # Use sudo() for potential broad access needs within the run method.
-            response_data = target_model_instance.sudo().ata_exchange_incomingrequest_run({
-                'method_id': method,
-                'ext_system_id': ext_system,
-                'req_body': req_body,
-                'req_body_data': req_body.get('data', {}) if isinstance(req_body, dict) else {}
-            })
+            response_param = target_model_instance.sudo().ata_exchange_incomingrequest_run(incoming_param)
+            if response_param.has_error:
+                raise UserError('\n'.join(response_param.error))
+            else:
+                _logger.debug(f"ata_exchange_incomingrequest for exchange method '{method.name}' executed successfully.")
 
-            _logger.debug(f"ata_exchange_incomingrequest for exchange method '{method.name}' executed successfully.")
-            return response_data
+                return response_param.get_data_json()
         except UserError:
             raise
         except NotImplementedError: 

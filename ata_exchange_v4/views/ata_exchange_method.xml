@@ -22,7 +22,15 @@
                         <field name="resource_url"/>
                     </group>
                     <notebook>
-                        <page string="Notifications" name="notifications">
+                        <page string="Parameters" name="parameters">
+                            <group>
+                                <group>
+                                    <field name="parameter_always_rewrite" widget="boolean_toggle"
+                                        invisible="type not in ['incoming_request','request_data']"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Notifications" name="notifications" invisible="type != 'outgoing_data'">
                             <group>
                                 <group>
                                 <field name="notification_queue_add" widget="boolean_toggle"/>
@@ -53,7 +61,7 @@
         <field name="name">Methods</field>
         <field name="model">ata.exchange.method</field>
         <field name="arch" type="xml">
-            <list create="false" edit="false">
+            <list create="false" edit="false" default_order="name">
                 <field name="name"/>
                 <field name="description"/>
                 <field name="type"/>

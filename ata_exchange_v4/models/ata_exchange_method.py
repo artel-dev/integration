@@ -50,6 +50,8 @@ class AtaExchangeMethod(models.Model):
 
 	get_request_body_method = fields.Selection(selection=[])
 
+	parameter_always_rewrite = fields.Boolean(string="Always rewrite records")
+
 	def get_xml_id(self) -> str|None:
 		return self.get_external_id().get(self.id)
 
