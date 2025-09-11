@@ -116,7 +116,7 @@ class AtaExchangeModelHandlerMixin(models.AbstractModel):
         try:
             return pydantic_model(**data)
         except ValidationErrorPydantic as e:
-            error_message = f"Validation error data for sale.order: {str(e)}"
+            error_message = f"Validation error data: {str(e)}"
             raise ValidationError(error_message) from e
 
     @api.model

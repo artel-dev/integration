@@ -17,3 +17,4 @@ from . import ata_exchange_queue, ata_exchange_queue_usage
 from . import ata_exchange_json
 from . import ata_exchange_matching_data
 from . import ata_exchange_api_key
+from . import ata_exchange_pydantic_model
