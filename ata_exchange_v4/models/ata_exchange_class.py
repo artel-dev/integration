@@ -106,6 +106,7 @@ class AtaExchangeClass(models.AbstractModel):
 
     #region outgoingdata methods
     def ata_exchange_notification(self, message: str, type: str = "mail.mt_note"):
+        # TODO move to the functions of Method and processed there
         for record in self:
             if isinstance(record, MailThread):
                 record.message_post(

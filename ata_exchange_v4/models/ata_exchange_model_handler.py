@@ -45,7 +45,12 @@ class AtaExchangeModelHandler(models.AbstractModel):
         records = Model.browse(None)
         search_params = record_params.search_params
         
-        if (search_domain := search_params.search_domain):
+        if (search_ref := search_params.search_ref):
+            search_ref = f"{record_params.model_name}.{search_ref}" 
+            if (records_find := self.env.ref(search_ref, raise_if_not_found=False)):
+                records = records_find
+        
+        if not records and (search_domain := search_params.search_domain):
             records = Model.search(search_domain)
 
         if not records and search_params.use_matching_data:

@@ -14,6 +14,7 @@ from .ata_exchange_system import AtaExchangeSystem
 
 @dataclass
 class SearchRecordHandlerParams:
+    search_ref: str | None = None  # search record by XML ID
     search_domain: list[tuple[str, str, Any]] | None = None  # domain for primary search record
     search_domain_second: list[tuple[str, str, Any]] | None = None  # domain for secondary search record (after matching)
     use_matching_data: bool = False  # use matching data for save pointer for record from external systems
