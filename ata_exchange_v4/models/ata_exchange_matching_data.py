@@ -13,11 +13,13 @@ class AtaExchangeIncomingMatchingData(models.Model):
     method_id = fields.Many2one(
         comodel_name='ata.exchange.method',
         string='Method',
-        required=True)
+        required=True,
+        ondelete='cascade')
     ext_system_id = fields.Many2one(
         comodel_name='ata.exchange.system',
         string='External system',
-        required=True)
+        required=True,
+        ondelete='cascade')
     key_object = fields.Char(
         string="Key (ID) of object",
         required=True)
