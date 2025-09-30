@@ -1,5 +1,5 @@
 from datetime import datetime
-from odoo import api, fields, models
+from odoo import api, fields, models, SUPERUSER_ID
 
 
 class ExchangeLog(models.Model):
@@ -40,15 +40,30 @@ class ExchangeLog(models.Model):
     day_delta = fields.Integer(compute='_compute_day_delta', store=True)
     color = fields.Integer()
 
-    @api.model_create_multi
-    def create(self, vals_list):
+    def create(self, vals_list, use_new_cursor = False):
         for vals in vals_list:
             self.update_json_fields(vals)
-        return super().create(vals_list)
+        if use_new_cursor:
+            with self.env.registry.cursor() as new_cr:
+                new_env = api.Environment(new_cr, SUPERUSER_ID, {})
+                log_in_new_env = self.with_env(new_env)
+                records = super(ExchangeLog, log_in_new_env).create(vals_list)
 
-    def write(self, vals):
+            return records
+        else:
+            return super().create(vals_list)
+
+    def write(self, vals, use_new_cursor = False):
         self.update_json_fields(vals)
-        return super().write(vals)
+        if use_new_cursor:
+            with self.env.registry.cursor() as new_cr:
+                new_env = api.Environment(new_cr, SUPERUSER_ID, {})
+                log_in_new_env = self.with_env(new_env)
+                super(ExchangeLog, log_in_new_env).write(vals)
+
+            return True
+        else:
+            return super().write(vals)
 
     def update_json_fields(self, vals):
         for key in ['request_body', 'response']:

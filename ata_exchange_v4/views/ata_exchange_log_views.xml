@@ -45,7 +45,7 @@
         <field name="name">Exchange log list view</field>
         <field name="model">ata.exchange.log</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-danger="not is_processed">
                 <header>
                     <button name="action_delete_all" string="Delete all"
                         type="object" confirm="Do you want to delete all entries from the exchange log?"/>

@@ -22,7 +22,7 @@ class AtaExchangeIncomingController(http.Controller):
     @http.route('/api/ata_exchange_v4/<string:method_incoming>', type='ata_json', auth='public', csrf=False, methods=['POST'])
     def method_request(self, method_incoming=None, **kwargs):
         # start logging incoming request
-        ata_log = self.create_exchange_log()
+        log_id = self.create_exchange_log()
 
         """Handles incoming JSON requests for specific methods."""
         env = request.env
@@ -31,15 +31,12 @@ class AtaExchangeIncomingController(http.Controller):
         # Using sudo() as specific method access isn't tied to public user
         try:
             request_body = env['ata.exchange.json'].sudo().loads(request.httprequest.data)
-            self.update_exchange_log(ata_log, {
+            log_id.write({
                 'request_body': request_body,
-            }, True)
+            }, use_new_cursor = True)
             #TODO check structure fields of request body
         except Exception as e:
-            self.update_exchange_log(ata_log, {
-                'request_body': "Invalid JSON request",
-            }, True)
-            raise InvalidJsonError(method_incoming, e)
+            raise InvalidJsonError(method_incoming, e, log_id = log_id)
 
         if method_incoming == 'jsonrpc':
             method_exchange_name = request_body.get('method')
@@ -54,12 +51,16 @@ class AtaExchangeIncomingController(http.Controller):
         ], limit=1)
 
         if not method:
-            raise MethodNotFoundError(method_exchange_name)
+            raise MethodNotFoundError(method_exchange_name, log_id=log_id)
+        else:
+            log_id.write({
+                'method_name': method_exchange_name,
+            }, use_new_cursor = True)
 
         if method.need_api_key:
             api_key_header = request.httprequest.headers.get('X-API-Key')
             if not api_key_header:
-                raise ApiKeyMissingError(method)
+                raise ApiKeyMissingError(method, log_id=log_id)
 
             # Search for the active API key
             # Using sudo() as auth='public', access rights checked logically later or via handler's user
@@ -70,20 +71,20 @@ class AtaExchangeIncomingController(http.Controller):
             ], limit=1)
 
             if not api_key_record:
-                raise ApiKeyInvalidError(method)
+                raise ApiKeyInvalidError(method, log_id=log_id)
 
             ext_system = api_key_record.system_id
         else:
             ext_system = None
 
         try:
-            # Handler is expected to find the specific model and call its run method
             response_body = env['ata.exchange.handler'].sudo().process_incoming_request(
                 method=method,
                 ext_system=ext_system,
                 req_body=request_data
             )
-            self.update_exchange_log(ata_log, {
+            
+            log_id.write({
                 'method_name': method_exchange_name,
                 'system_id': ext_system.id if ext_system else None,
                 'response': response_body,
@@ -91,25 +92,16 @@ class AtaExchangeIncomingController(http.Controller):
             })
             return response_body
         except ValidationError as e:
-            raise InvalidJsonError(method_exchange_name, e)
+            raise InvalidJsonError(method_exchange_name, error_parsing=e, log_id=log_id)
         except UserError as e:
-            raise ServerError(str(e))
+            raise ServerError(str(e), log_id=log_id)
         except Exception as e:
-            _logger.exception(f"Unexpected error processing request for method '{method_exchange_name}': {e}")
-            raise ServerError(f"Unexpected error processing request for method '{method_exchange_name}'.")
+            # _logger.exception(f"Unexpected error processing request for method '{method_exchange_name}': {e}")
+            raise ServerError(f"Unexpected error processing request for method '{method_exchange_name}': {e}.", log_id=log_id)
 
     def create_exchange_log(self) -> ExchangeLog:
         log_vals = {
             'name': 'Incoming request',
             'start_date': datetime.now(),
         }
-
-        ata_log = request.env['ata.exchange.log'].create(log_vals)
-        request.env.cr.commit()
-
-        return ata_log
-
-    def update_exchange_log(self, ata_log: ExchangeLog, vals: dict, commit: bool = False):
-        ata_log.write(vals)
-        if commit:
-            request.env.cr.commit()
+        return request.env['ata.exchange.log'].create([log_vals], use_new_cursor=True)
