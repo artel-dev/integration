@@ -395,7 +395,6 @@ class AtaExchangeSystem(models.Model):
                 })
 
             self.env['ata.exchange.log'].create([log_val])
-            self.env.cr.commit()
 
     def action_test_connection(self):
         answers = []

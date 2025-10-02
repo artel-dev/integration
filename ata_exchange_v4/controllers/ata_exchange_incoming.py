@@ -1,7 +1,7 @@
 import logging
 from odoo.exceptions import ValidationError, UserError
 
-from odoo import fields, http
+from odoo import api, http, SUPERUSER_ID
 from odoo.http import request
 from datetime import datetime
 
@@ -78,25 +78,36 @@ class AtaExchangeIncomingController(http.Controller):
             ext_system = None
 
         try:
-            response_body = env['ata.exchange.handler'].sudo().process_incoming_request(
-                method=method,
-                ext_system=ext_system,
-                req_body=request_data
-            )
+            # Process request in separate transaction with SUPERUSER_ID
+            with request.env.registry.cursor() as new_cr:
+                new_env = api.Environment(new_cr, SUPERUSER_ID, {})
+                
+                response_body = new_env['ata.exchange.handler'].process_incoming_request(
+                    method=method,
+                    ext_system=ext_system,
+                    req_body=request_data
+                )
+                
+                # Commit the transaction with SUPERUSER_ID context
+                new_cr.commit()
             
+            # Log result in separate transaction
             log_id.write({
                 'method_name': method_exchange_name,
                 'system_id': ext_system.id if ext_system else None,
                 'response': response_body,
                 'finish_date': datetime.now(),
-            })
+                'is_executed': True,
+                'is_processed': True                
+            }, use_new_cursor = True)
+
             return response_body
         except ValidationError as e:
             raise InvalidJsonError(method_exchange_name, error_parsing=e, log_id=log_id)
         except UserError as e:
             raise ServerError(str(e), log_id=log_id)
         except Exception as e:
-            # _logger.exception(f"Unexpected error processing request for method '{method_exchange_name}': {e}")
+            _logger.exception(f"Unexpected error processing request for method '{method_exchange_name}': {e}")
             raise ServerError(f"Unexpected error processing request for method '{method_exchange_name}': {e}.", log_id=log_id)
 
     def create_exchange_log(self) -> ExchangeLog:

@@ -1,8 +1,9 @@
 from odoo import api, models
+from markupsafe import Markup
 from odoo.exceptions import UserError, ValidationError
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, cast
 from pydantic import BaseModel as BaseModelPydantic, ValidationError as ValidationErrorPydantic
 
 from .ata_exchange_base_incomingrequest_types import (
@@ -10,6 +11,8 @@ from .ata_exchange_base_incomingrequest_types import (
 )
 from .ata_exchange_method import AtaExchangeMethod
 from .ata_exchange_system import AtaExchangeSystem
+from odoo.addons.base.models.res_users import Users
+from odoo.addons.mail.models.mail_thread import MailThread
 
 
 @dataclass
@@ -37,6 +40,7 @@ class RecordHandlerParams:
     search_params: SearchRecordHandlerParams = field(default_factory=SearchRecordHandlerParams)
     incoming_params: IncomingParam | None = None
     response_data: IncomingResponseParam = field(default_factory=IncomingResponseParam)
+    warning_list: list[str] = field(default_factory=list)
     create_record: bool = False # create record if not found
     write_record: bool = False  # write data in record if found
     add_to_queue: bool = False  # add record to queue exchange to ext. system
@@ -87,7 +91,16 @@ class RecordHandlerParams:
             search_params   = search_params,
             response_data   = response_data if response_data else IncomingResponseParam()
         )
- 
+
+@dataclass
+class NotificationHandlerParams:
+    """Parameters for creating notifications and activities for users."""
+    user: Users | None
+    record: models.BaseModel  # Record to attach notification to
+    message_list: list[str]  # List of messages to send
+    activity_summary: str = 'Notification from exchange'  # Activity summary
+    activity_type_xmlid: str = 'mail.mail_activity_data_warning'  # Activity type XML ID
+
 
 class AtaExchangeModelHandlerMixin(models.AbstractModel):
     _name = "ata.exchange.model.handler.mixin"
@@ -131,3 +144,52 @@ class AtaExchangeModelHandlerMixin(models.AbstractModel):
     @api.model
     def ata_exchange_after_write(self, record_params: RecordHandlerParams):
         pass
+
+    @api.model
+    def ata_exchange_create_user_notification(self, 
+        notification_params: NotificationHandlerParams,
+        create_activity: bool = False,
+        create_notification: bool = False):
+        """Create notification and/or activity for user attached to record.
+        
+        Args:
+            notification_params: Parameters for notification creation
+            create_activity: Create mail.activity if True
+            create_notification: Create message_post notification if True
+        """
+        if not notification_params.message_list:
+            return
+        
+        message_body = Markup('<br/>'.join(notification_params.message_list))
+        
+        if not notification_params.user:
+            notification_params.user = self.env.ref('base.user_admin')
+        
+        # Create mail.activity if requested
+        if create_activity:
+            activity_type = self.env.ref(notification_params.activity_type_xmlid, raise_if_not_found=False) or \
+                self.env.ref('mail.mail_activity_data_warning')
+            
+            self.env['mail.activity'].create({
+                'activity_type_id': activity_type.id,
+                'res_id': notification_params.record.id,
+                'res_model_id': self.env['ir.model']._get(notification_params.record._name).id,
+                'user_id': notification_params.user.id,
+                'summary': notification_params.activity_summary,
+                'note': message_body,
+            })
+        
+        # Create message_post notification if requested
+        if create_notification:
+            if isinstance(notification_params.record, MailThread):
+                notification_params.record.message_post(
+                    body=message_body,
+                    partner_ids=[notification_params.user.partner_id.id],
+                    message_type='notification',
+                    subtype_xmlid='mail.mt_note',
+                )
+            else:
+                raise UserError(
+                    f"Model '{notification_params.record._name}' does not inherit 'mail.thread'. "
+                    f"Cannot create notification."
+                )
