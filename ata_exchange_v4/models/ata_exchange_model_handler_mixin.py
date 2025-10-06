@@ -24,6 +24,7 @@ class SearchRecordHandlerParams:
     key_matching_data: str = 'id_matching'  # field of object data for search matching data ('id_matching' by default)
     ext_system_id: AtaExchangeSystem | None = None  # external system for search record
     method_id: AtaExchangeMethod | None = None  # method for search record
+    stage: str = '' # stage for search record
 
     @classmethod
     def build(cls, inc_params: IncomingParam | None = None) -> 'SearchRecordHandlerParams':
@@ -39,11 +40,25 @@ class RecordHandlerParams:
     data: dict = field(default_factory=dict)
     search_params: SearchRecordHandlerParams = field(default_factory=SearchRecordHandlerParams)
     incoming_params: IncomingParam | None = None
+    stage: str = ''
     response_data: IncomingResponseParam = field(default_factory=IncomingResponseParam)
     warning_list: list[str] = field(default_factory=list)
     create_record: bool = False # create record if not found
     write_record: bool = False  # write data in record if found
     add_to_queue: bool = False  # add record to queue exchange to ext. system
+
+    def _change_stage(self, value: str) -> None:
+        """Synchronize stage with search_params and clear warnings."""
+        if hasattr(self, 'search_params'):
+            object.__setattr__(self.search_params, 'stage', value)
+            
+        if hasattr(self, 'warning_list') and self.warning_list:
+            self.warning_list.clear()
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        object.__setattr__(self, name, value)
+        if name == 'stage':
+            self._change_stage(value)
 
     @classmethod
     def build_from_class(cls, env, model_name: str, inc_params: IncomingParam|None = None) -> 'RecordHandlerParams':
@@ -193,3 +208,5 @@ class AtaExchangeModelHandlerMixin(models.AbstractModel):
                     f"Model '{notification_params.record._name}' does not inherit 'mail.thread'. "
                     f"Cannot create notification."
                 )
+
+        notification_params.message_list.clear()

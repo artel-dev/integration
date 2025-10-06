@@ -23,13 +23,15 @@ class AtaExchangeIncomingMatchingData(models.Model):
     key_object = fields.Char(
         string="Key (ID) of object",
         required=True)
+    stage = fields.Char(
+        string="Stage")
     matching_data = fields.Json(
         string="Matching data",
         required=True)
 
     _sql_constraints = [(
-        'method_ext_system_object_unique',
-        'unique(method_id, ext_system_id, key_object)',
+        'method_ext_system_object_stage_unique',
+        'unique(method_id, stage, ext_system_id, key_object)',
         'to search for records on incoming request'
     )]
 
@@ -42,7 +44,8 @@ class AtaExchangeIncomingMatchingData(models.Model):
             return self.search([
                 ('ext_system_id', '=', params.ext_system_id.id),
                 ('method_id', '=', params.method_id.id),            
-                ('key_object', '=', key_matching)
+                ('key_object', '=', key_matching),
+                ('stage', '=', params.stage)
             ], limit=1)
         else:
             return None
@@ -70,6 +73,7 @@ class AtaExchangeIncomingMatchingData(models.Model):
                 'method_id': method_id.id,
                 'ext_system_id': ext_system_id.id,
                 'key_object': key_object,
+                'stage': search_params.stage,
                 'matching_data': matching_data
             }
             

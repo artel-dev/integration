@@ -10,7 +10,8 @@
                     <group>
                         <field name="method_id" readonly="1"/>
                         <field name="ext_system_id" readonly="1"/>
-                        <field name="key_object" readonly="1"/>
+                        <field name="stage" readonly="1"/>
+                        <field name="key_object" readonly="1"/>                        
                         <field name="matching_data" readonly="1" widget="jsonb"/>
                     </group>
                 </sheet>
@@ -24,6 +25,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="method_id"/>
+                <field name="stage"/>
                 <field name="key_object"/>
                 <field name="matching_data"/>
                 <field name="ext_system_id"/>
