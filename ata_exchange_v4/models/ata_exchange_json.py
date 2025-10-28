@@ -7,9 +7,13 @@ from odoo import models
 
 class AtaCustomFieldEncoderJSON(json.JSONEncoder):
     def default(self, o):
-        if isinstance(o, datetime) or isinstance(o, date):
-            return o.strftime("%Y-%m-%dT%H:%M:%S")
-        return super().default(o)
+        if isinstance(o, datetime):
+            # Z - UTC, T - separator
+            return o.strftime("%Y-%m-%dT%H:%M:%SZ")
+        elif isinstance(o, date):
+            return o.strftime("%Y-%m-%d")
+        else:
+            return super().default(o)
 
 
 class AtaExchangeJson(models.AbstractModel):
@@ -41,14 +45,13 @@ class AtaExchangeJson(models.AbstractModel):
         return json.dumps(data, cls=AtaCustomFieldEncoderJSON)
 
     @staticmethod
-    def convert_view(json_str: str|dict) -> str:
+    def convert_view(json_incoming: str|dict) -> str:
         try:
-            if isinstance(json_str, dict):
-                json_object = json.dumps(json_str, indent=4, ensure_ascii=False)
+            if isinstance(json_incoming, str):
+                json_dict = json.loads(json_incoming.lstrip('\ufeff'), object_hook=AtaExchangeJson.parse_datetime)
             else:
-                json_object = json.loads(json_str.lstrip('\ufeff'), object_hook=AtaExchangeJson.parse_datetime)
-                json_object = json.dumps(json_object, indent=4, ensure_ascii=False)
-
-            return json_object
+                json_dict = json_incoming
+                
+            return json.dumps(json_dict, cls=AtaCustomFieldEncoderJSON, indent=4, ensure_ascii=False)
         except ValueError:
-            return str(json_str)
+            return str(json_incoming)

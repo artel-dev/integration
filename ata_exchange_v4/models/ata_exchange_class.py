@@ -38,16 +38,17 @@ class AtaExchangeClass(models.AbstractModel):
         return decorator
 
     @staticmethod
-    def _str_empty(value):
-        if value:
+    def _str_empty(value) -> str|date|datetime:
+        def value_to_str(value):
+            # date convert in ata.exchange.json
             if isinstance(value, datetime):
-                return value.strftime("%Y-%m-%d %H:%M:%S")
+                return value
             elif isinstance(value, date):
-                return value.strftime("%Y-%m-%d 00:00:00")
+                return value
             else:
                 return str(value)
-        else:
-            return ''
+
+        return value_to_str(value) if value else ''
 
     #region overload outgoingdata methods
     def ata_exchange_compute_methods(self) -> list[AtaExchangeMethod]:
