@@ -43,6 +43,21 @@
         </field>
     </record>
 
+    <record id="ata_exchange_queue_view_search" model="ir.ui.view">
+        <field name="name">Exchange queue search view</field>
+        <field name="model">ata.exchange.queue</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="method"/>
+                <field name="ref_object"/>
+                <field name="state_exchange"/>
+                <group expand="0" string="Group By">
+                    <filter string="Method" name="group_by_method" context="{'group_by': 'method'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="ata_exchange_queue_action" model="ir.actions.act_window">
         <field name="name">Exchange queue</field>
         <field name="res_model">ata.exchange.queue</field>
