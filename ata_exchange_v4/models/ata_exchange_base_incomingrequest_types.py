@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field, asdict, fields, MISSING
 
 from .ata_exchange_method import AtaExchangeMethod
 from .ata_exchange_system import AtaExchangeSystem
@@ -18,9 +18,15 @@ class IncomingParam:
         if type(source) is cls:
             return source
 
-        base_keys = cls.__annotations__.keys()
+        base_keys = {f.name for f in fields(cls)
+            if f.init and f.default is MISSING and
+            f.default_factory is MISSING}
         source_data = asdict(source)
         filtered_data = {k: v for k, v in source_data.items() if k in base_keys}
+
+        if not all(key in filtered_data for key in base_keys):
+            return None
+            
         return cls(**filtered_data)
 
 
