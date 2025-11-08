@@ -8,16 +8,20 @@ from requests_toolbelt import MultipartEncoder # type: ignore
 from requests.auth import HTTPBasicAuth
 
 
+class ExtResponseError(TypedDict):
+    code: int
+    message: str
+    data: Optional[dict]
+
 class ExtResponse(TypedDict):
     result: str
     result_json: Optional[dict]
     status_code: Optional[int]
     error: bool
-    error_msg: str
+    error_msg: str | ExtResponseError
     start_date: Optional[datetime]
     finish_date: Optional[datetime]
     headers: CaseInsensitiveDict
-
 
 class ExtRequestMethodParameters(TypedDict):
     # parameters for request.method()
