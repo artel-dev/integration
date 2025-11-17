@@ -11,9 +11,10 @@
                         <field name="ext_system" options="{'no_create': True}" required="1"/>                        
                         <field name="model_id" readonly="1"
                             invisible="not model_id"/>
+                        <field name="model_name" invisible="1"/>
                         <field name="domain" widget="domain"
                             options="{'model': 'model_name', 'in_dialog': True}"
-                            invisible="method.type != 'outgoing_data'"/> 
+                            invisible="method_type != 'outgoing_data'"/> 
                         <div colspan="2">
                             <button name="action_add_to_queue" string="Add filtering records to exchange queue" class="oe_highlight"
                                 type="object" invisible="method.type != 'outgoing_data'"/>
@@ -30,6 +31,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="method" required="1"/>
+                <field name="method_type"/>
                 <field name="domain"/>
                 <field name="ext_system"/>
             </list>

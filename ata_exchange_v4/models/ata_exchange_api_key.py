@@ -17,7 +17,6 @@ class AtaExchangeApiKey(models.Model):
         string='API Key',
         default=_generate_api_key,
         required=True,
-        readonly=True,
         copy=False,
         index='trigram', # Use trigram index for faster search if enabled
     )

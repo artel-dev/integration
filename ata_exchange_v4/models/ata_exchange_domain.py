@@ -17,6 +17,8 @@ class AtaExchangeDomain(models.Model):
         comodel_name="ata.exchange.system",
         string="External system",
         required=True,)
+    method_type = fields.Selection(
+        related="method.type")
     
     @api.model
     def get_ext_systems(self, record:AtaExchangeClass|None, method: AtaExchangeMethod) -> AtaExchangeSystem:

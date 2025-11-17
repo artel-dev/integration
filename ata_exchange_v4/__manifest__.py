@@ -1,7 +1,7 @@
 {
     'name': 'Exchange between systems',
     'summary': 'Exchange between systems (ATA)',
-    'version': '18.0.1.4.33',
+    'version': '18.0.1.4.34',
     'author': 'gnezamay',
     'website': 'todo.ltd',
     'license': 'OPL-1',
@@ -10,6 +10,11 @@
         'base',
         'mail',
     ],
+    'external_dependencies': {
+        'python': [
+            'pydantic',
+        ],
+    },
     'data': [
         'data/ata_exchange_category.xml',
         'data/ata_exchange_queue_cron.xml',
