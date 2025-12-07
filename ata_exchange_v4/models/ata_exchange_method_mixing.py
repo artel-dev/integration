@@ -7,7 +7,9 @@ class AtaExchangeMethodMixing(models.AbstractModel):
     _name = "ata.exchange.method.mixing"
     _description = "Exchange http methods"
 
-    method = fields.Many2one('ata.exchange.method', string='Method of exchange')
+    method = fields.Many2one(
+        comodel_name='ata.exchange.method',
+        string='Method of exchange')
 
     model_id = fields.Many2one('ir.model', string="Model", compute="_compute_model_name")
     model_name = fields.Char(string='Model Name', compute="_compute_model_name")

@@ -1,6 +1,7 @@
 from odoo import api, models
 
 from collections import namedtuple
+from contextlib import contextmanager
 from .ata_exchange_method import AtaExchangeMethod
 from .ata_exchange_class  import AtaExchangeClass
 
@@ -30,6 +31,14 @@ class AtaExchangeBaseOutgoingdata(models.AbstractModel):
     def _re_exchanged_delete(self, record:AtaExchangeClass) -> None:
         if (ref := record.ata_exchange_get_ref_from_record()):
             self._re_exchanged.discard(ref)
+
+    @contextmanager
+    def _re_exchanged_manager(self, record:AtaExchangeClass):
+        self._re_exchanged_add(record)
+        try:
+            yield
+        finally:
+            self._re_exchanged_delete(record)
     # endregion
 
     @api.model
@@ -81,9 +90,9 @@ class AtaExchangeBaseOutgoingdata(models.AbstractModel):
                             if not ext_response['error']:
                                 if (response_data := method.get_response_data(ext_response)):
                                     # post-processing response data
-                                    self._re_exchanged_add(record)
-                                    result = method.response_post_processing(ext_response, response_data, record)
-                                    self._re_exchanged_delete(record)
+                                    with self._re_exchanged_manager(record):
+                                        result = method.response_post_processing(ext_response, response_data, record)
+                                        
                                     error_msg = ext_response['error_msg']
                                 else:
                                     error_msg = "Response data is empty"

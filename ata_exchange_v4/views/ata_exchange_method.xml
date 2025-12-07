@@ -12,7 +12,7 @@
                         <field name="type" readonly="1"/>
                         <field name="model_id" readonly="1"/>
                         <field name="model_name" readonly="1" invisible="type != 'outgoing_data'"/>                        
-                        <field name="start_over_cron" invisible="type != 'request_data'" widget="boolean_toggle"/>
+                        <field name="start_over_cron" invisible="type == 'incoming_request'" widget="boolean_toggle"/>
                         <field name="description"/>
                         <t class="o_form_label" invisible="type != 'incoming_request' or not need_api_key">
                             <span class="fw-bold text-danger">Need API key</span>
