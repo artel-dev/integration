@@ -4,7 +4,7 @@ from odoo import api, fields, models, _
 from odoo.tools import config
 import logging
 import time
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 from typing import Union, cast, Optional
 from contextlib import contextmanager
 
@@ -33,7 +33,8 @@ class AtaExchangeQueue(models.Model):
         selection=[
             ('new', 'New'),
             ('idle', 'Idle'),
-            ('in_exchange', 'In exchange')],
+            ('in_exchange', 'In exchange'),
+            ('done', 'Done')],
         string='State exchange objects',
         default='new',
         index=True)
@@ -182,7 +183,7 @@ class AtaExchangeQueue(models.Model):
     @api.model
     def exchange(self):
         ExBase = self.env["ata.exchange.base.outgoingdata"]
-        max_time_cpu = config['limit_time_cpu']
+        max_time_cpu = min(config.get('limit_time_cpu', 60), config.get('limit_time_real', 60))
         permitted_time = int(max_time_cpu * 0.5)
         start_time = time.time()
         
@@ -201,7 +202,7 @@ class AtaExchangeQueue(models.Model):
                 ('method.start_over_cron', '=', True),
                 '|',
                     ('date_start', '=', False),
-                    ('date_start', '<', fields.Datetime.to_string(datetime.fromtimestamp(start_time))),
+                    ('date_start', '<', fields.Datetime.to_string(datetime.fromtimestamp(start_time, timezone.utc).replace(tzinfo=None))),
                 '|',
                     ('state_exchange', 'in', ('new', 'idle')), 
                     '&',
@@ -221,7 +222,7 @@ class AtaExchangeQueue(models.Model):
             record_to_process = record_to_process._check_ref_object()
             if not record_to_process:
                 if records:
-                    records -= record_to_process
+                    records = records[1:]
                 continue
 
             record_to_process.write({'state_exchange': 'in_exchange'})
@@ -233,6 +234,9 @@ class AtaExchangeQueue(models.Model):
 
                 if result_update.delete_queue:
                     record_to_process.unlink()
+                elif result_update.success:
+                    # undefined situation
+                    record_to_process.write({'state_exchange': 'done'})
                 
                 if result_update.error:
                     record_to_process.write({
