@@ -6,10 +6,14 @@ from odoo import models
 
 
 class AtaCustomFieldEncoderJSON(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, datetime) or isinstance(obj, date):
-            return obj.strftime("%Y-%m-%dT%H:%M:%S")
-        return super().default(obj)
+    def default(self, o):
+        if isinstance(o, datetime):
+            # Z - UTC, T - separator
+            return o.strftime("%Y-%m-%dT%H:%M:%SZ")
+        elif isinstance(o, date):
+            return o.strftime("%Y-%m-%d")
+        else:
+            return super().default(o)
 
 
 class AtaJson(models.AbstractModel):
