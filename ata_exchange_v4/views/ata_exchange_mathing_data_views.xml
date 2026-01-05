@@ -33,10 +33,26 @@
         </field>
     </record>
 
+    <record id="ata_exchange_matching_data_view_search" model="ir.ui.view">
+        <field name="name">Matching data search view</field>
+        <field name="model">ata.exchange.matching.data</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="method_id"/>
+                <field name="ext_system_id"/>
+                <field name="key_object"/>
+                <group expand="1" string="Group By">
+                    <filter name="group_by_method_id" string="Method" context="{'group_by': 'method_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="ata_exchange_matching_data_action" model="ir.actions.act_window">
         <field name="name">Matching data</field>
         <field name="res_model">ata.exchange.matching.data</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_group_by_method_id': 1}</field>
     </record>
 
     <menuitem
