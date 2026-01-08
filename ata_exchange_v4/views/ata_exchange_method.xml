@@ -26,7 +26,7 @@
                             <group>
                                 <group>
                                     <field name="parameter_always_rewrite" widget="boolean_toggle"
-                                        invisible="type not in ['incoming_request','request_data']"/>
+                                        invisible="type in ['outgoing_data']"/>
                                 </group>
                             </group>
                         </page>
@@ -61,7 +61,7 @@
         <field name="name">Methods</field>
         <field name="model">ata.exchange.method</field>
         <field name="arch" type="xml">
-            <list create="false" edit="false" default_order="name">
+            <list create="false" edit="false" default_order="type">
                 <field name="name"/>
                 <field name="description"/>
                 <field name="type"/>
@@ -74,7 +74,6 @@
     <record id="ata_exchange_method_action" model="ir.actions.act_window">
         <field name="name">Methods (notification)</field>
         <field name="res_model">ata.exchange.method</field>
-        <field name="domain">[('type', '!=', 'inner_types')]</field>
         <field name="view_mode">list,form</field>
     </record>
 
