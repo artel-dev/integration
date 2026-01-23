@@ -1,4 +1,5 @@
 from odoo import api, models
+from odoo.exceptions import UserError
 
 from collections import namedtuple
 from contextlib import contextmanager
@@ -73,36 +74,41 @@ class AtaExchangeBaseOutgoingdata(models.AbstractModel):
                 for ext_system in ext_systems:
                     result = False
                     request_data = record.ata_exchange_get_request_data(method)
-                    # request_data may be empty
-                    if request_data:
-                        ext_request = ext_system.get_init_extrequest()
-                        method.set_request_valid_codes(ext_request)
-                        
-                        ext_request['method']  = method
-                        ext_request['name']  = f'{method.description}'
-                        ext_request['exchange_id'] = record.ata_exchange_get_name()
-                        ext_system.calc_url(ext_request)
-                        ext_request['method_params']['request_body'] = method.get_request_body(request_data)
+                    try:
+                        # request_data may be empty
+                        if request_data:
+                            ext_request = ext_system.get_init_extrequest()
+                            method.set_request_valid_codes(ext_request)
+                            
+                            ext_request['method']  = method
+                            ext_request['name']  = f'{method.description}'
+                            ext_request['exchange_id'] = record.ata_exchange_get_name()
+                            ext_system.calc_url(ext_request)
+                            ext_request['method_params']['request_body'] = method.get_request_body(request_data)
 
-                        ext_system.execute(ext_request)
-                        
-                        if (ext_response := self.env['ata.exchange.method'].read_response_standard(ext_request)):
-                            if not ext_response['error']:
-                                if (response_data := method.get_response_data(ext_response)):
-                                    # post-processing response data
-                                    with self._re_exchanged_manager(record):
-                                        result = method.response_post_processing(ext_response, response_data, record)
-                                        
-                                    error_msg = ext_response['error_msg']
+                            ext_system.execute(ext_request)
+                            
+                            if (ext_response := self.env['ata.exchange.method'].read_response_standard(ext_request)):
+                                if not ext_response['error']:
+                                    if (response_data := method.get_response_data(ext_response)):
+                                        # post-processing response data
+                                        with self._re_exchanged_manager(record):
+                                            result = method.response_post_processing(ext_response, response_data, record)
+                                            
+                                        error_msg = ext_response['error_msg']
+                                    else:
+                                        error_msg = "Response data is empty"
                                 else:
-                                    error_msg = "Response data is empty"
+                                    error_msg = ext_response['error_msg']
+                                    result = method.response_error_post_processing(ext_response)
                             else:
-                                error_msg = ext_response['error_msg']
-                                result = method.response_error_post_processing(ext_response)
+                                error_msg = "Failed to receive a response from ext. systems."
                         else:
-                            error_msg = "Failed to receive a response from ext. systems."
-                    else:
-                        error_msg = "Request data is empty"
+                            error_msg = "Request data is empty"
+                    except UserError as e:
+                        error_msg = str(e)
+                    except Exception as e:
+                        raise e
 
                     results_ext_systems.append(result)
 
