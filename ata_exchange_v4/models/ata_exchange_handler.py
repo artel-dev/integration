@@ -5,7 +5,7 @@ from odoo.addons.ata_exchange_v4.controllers.jsonrpc_errors import ServerError
 from .ata_exchange_system import AtaExchangeSystem
 from .ata_exchange_method import AtaExchangeMethod
 from .ata_exchange_base_incomingrequest import AtaExchangeBaseIncomingrequest
-from .ata_exchange_base_incomingrequest_types import IncomingRequestParam
+from .ata_exchange_base_incomingrequest_types import IncomingRequestParam, IncomingResponseParam
 
 import logging
 
@@ -52,7 +52,7 @@ class AtaExchangeHandler(models.AbstractModel):
             )
             # Use sudo() for potential broad access needs within the run method.
             response_param = target_model_instance.sudo().ata_exchange_incomingrequest_run(incoming_param)
-            if response_param.has_error:
+            if isinstance(response_param, IncomingResponseParam) and response_param.has_error:
                 raise UserError('\n'.join(response_param.error))
             else:
                 _logger.debug(f"ata_exchange_incomingrequest for exchange method '{method.name}' executed successfully.")
