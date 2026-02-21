@@ -52,7 +52,7 @@ class AtaExchangeHandler(models.AbstractModel):
             )
             # Use sudo() for potential broad access needs within the run method.
             response_param = target_model_instance.sudo().ata_exchange_incomingrequest_run(incoming_param)
-            if isinstance(response_param, IncomingResponseParam) and response_param.has_error:
+            if response_param.has_error:
                 raise UserError('\n'.join(response_param.error))
             else:
                 _logger.debug(f"ata_exchange_incomingrequest for exchange method '{method.name}' executed successfully.")
